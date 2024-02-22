@@ -1,0 +1,218 @@
+[
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_championship_tap_light.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/championship_tap_light.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_ic_twitterx.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/ic_twitterx.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_ic_onda.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/ic_onda.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_medium_italic.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_medium_italic.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_berlin_sans_demi_bold.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/berlin_sans_demi_bold.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_black_italic.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_black_italic.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_black.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_black.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_medium.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_medium.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_beans_background.jpeg.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/beans_background.jpeg"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_legumbrestapas.png.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/legumbrestapas.png"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_regular.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_regular.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_extra_light.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_extra_light.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_ic_location.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/ic_location.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_semi_bold.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_semi_bold.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_extra_bold_italic.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_extra_bold_italic.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_header_onda.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/header_onda.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_extra_bold.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_extra_bold.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_ic_bean.png.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/ic_bean.png"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_ic_logout.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/ic_logout.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_rutappa_splash.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/rutappa_splash.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_garbanzos.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/garbanzos.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_light_italic.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_light_italic.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/xml_remote_config_defaults.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/xml/remote_config_defaults.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_ic_logo_google.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/ic_logo_google.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_ic_facebook.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/ic_facebook.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_thin.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_thin.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_italic.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_italic.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_extra_light_italic.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_extra_light_italic.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_alubias.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/alubias.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_thin_italic.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_thin_italic.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_destapa.png.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/destapa.png"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_championship_tapa.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/championship_tapa.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_ic_destapa.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/ic_destapa.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_tierra_sabor_logo.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/tierra_sabor_logo.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_light.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_light.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_ic_vote.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/ic_vote.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_lentejas.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/lentejas.xml"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_bold_italic.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_bold_italic.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_bold.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_bold.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/font_montserrat_semi_bold_italic.ttf.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/font/montserrat_semi_bold_italic.ttf"
+    },
+    {
+        "merged": "com.rgr.rutappa.android.androidApp-merged_res-69:/drawable_ic_instagram.xml.flat",
+        "source": "com.rgr.rutappa.android.androidApp-main-70:/drawable/ic_instagram.xml"
+    }
+]

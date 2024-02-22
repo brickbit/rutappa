@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Destapa las legumbres</string>
+    <!--SPLASH-->
+    <string name="splash_title">#LEGUMBRES♡TAPAS</string>
+    <string name="copyrigth">©2023 desTAPA las LEGUMBRES</string>
+    <!--LOGIN-->
+    <string name="login_title">I CAMPEONATO NACIONAL desTAPA las LEGUMBRES</string>
+    <string name="login_description">El próximo 12 de Febrero de 2024 quedará abierta la convocatoria del Primer Campeonato Nacional de Legumbres en Tapas: desTAPA las LEGUMBRES Tierra de Sabor.</string>
+    <string name="legal_context">Puedes consultar el reglamento del Campeonato en este enlace</string>
+    <string name="login_with_google">Inicia sesión con Google</string>
+    <string name="error">Error</string>
+    <string name="error_login">Ha cancelado el proceso de login</string>
+    <string name="error_unable_login">Se ha producido un error durante el proceso de login</string>
+    <string name="error_user_not_logged">El usuario no ha sido logado</string>
+    <string name="ok">Ok</string>
+    <!--MAIN-->
+    <string name="main_title">I CAMPEONATO NACIONAL desTAPA las LEGUMBRES</string>
+    <string name="main_subtitle">Las tapas del concurso</string>
+    <!--DETAIL-->
+    <string name="error_detail_firestore_other">Se ha producido un error al enviar la votación</string>
+    <string name="error_detail_firestore_voted_yet">No puedes volver a votar la misma tapa</string>
+    <string name="detail_about_tapa">Acerca de la tapa</string>
+    <string name="detail_location">%1$s (%2$s)</string>
+    <string name="detail_legumes">Legumbres</string>
+    <string name="rate_detail_tapa">Valora la tapa</string>
+    <string name="detail_rate_process">Podrás otorgar una valoración a cada tapa una sola vez con una puntuación de 0 a 100.\nPara valorar la tapa mueve la barra para obtener la puntuación deseada. Confirma tu valoración pulsando el botón</string>
+    <string name="zero">0</string>
+    <string name="one_hundred">100</string>
+    <string name="detail_rate_result">Valora con %1$s puntos</string>
+    <string name="detail_voted_yet">Ya has votado esta tapa</string>
+    <string name="main_logout_text_dialog">¿Desea cerrar la sesión o eliminar su cuenta?</string>
+    <string name="main_delete_account">Eliminar cuenta</string>
+    <string name="main_logout">Cerrar sesión</string>
+    <string name="main_stay_logged">Continuar logado</string>
+    <string name="error_logout_user">Error al cerrar sesión</string>
+    <string name="error_delete_account">Error al eliminar cuenta</string>
+    <string name="login_login">Estamos iniciando sesión...</string>
+</resources>

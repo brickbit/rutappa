@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>747962270451-2pcsh4288g4pcuc5l177idoh8ngcjjir.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.747962270451-2pcsh4288g4pcuc5l177idoh8ngcjjir</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>747962270451-6thga9btfp64mtpgr9d116lckmc640ia.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDiJDeA2LH-hX4Wvb5hKgrV4RowN02TMlg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>747962270451</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.rgr.rutappa</string>
+	<key>PROJECT_ID</key>
+	<string>rutappa-9ee6e</string>
+	<key>STORAGE_BUCKET</key>
+	<string>rutappa-9ee6e.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:747962270451:ios:17ab08e10dd4f8a113ad86</string>
+</dict>
+</plist>

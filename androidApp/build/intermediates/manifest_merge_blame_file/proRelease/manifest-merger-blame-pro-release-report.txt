@@ -1,0 +1,490 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.rgr.rutappa.android"
+4    android:versionCode="20240223"
+5    android:versionName="1.0.5" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="27"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:4:5-66
+11-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:4:22-64
+12    <!-- Although the *SdkVersion is captured in gradle build files, this is required for non gradle builds -->
+13    <!-- <uses-sdk android:minSdkVersion="14" /> -->
+14    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+14-->[com.google.firebase:firebase-firestore:24.10.1] /Users/rupestre/.gradle/caches/transforms-3/c8faa4f8f3190e010b55164ccd1f9aaa/transformed/firebase-firestore-24.10.1/AndroidManifest.xml:10:5-79
+14-->[com.google.firebase:firebase-firestore:24.10.1] /Users/rupestre/.gradle/caches/transforms-3/c8faa4f8f3190e010b55164ccd1f9aaa/transformed/firebase-firestore-24.10.1/AndroidManifest.xml:10:22-76
+15    <uses-permission android:name="android.permission.WAKE_LOCK" />
+15-->[com.google.android.gms:play-services-measurement-api:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/bda3a034476226bcef818d6c8cdc1ac0/transformed/play-services-measurement-api-21.5.0/AndroidManifest.xml:24:5-68
+15-->[com.google.android.gms:play-services-measurement-api:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/bda3a034476226bcef818d6c8cdc1ac0/transformed/play-services-measurement-api-21.5.0/AndroidManifest.xml:24:22-65
+16    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+16-->[com.google.android.gms:play-services-measurement-api:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/bda3a034476226bcef818d6c8cdc1ac0/transformed/play-services-measurement-api-21.5.0/AndroidManifest.xml:25:5-79
+16-->[com.google.android.gms:play-services-measurement-api:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/bda3a034476226bcef818d6c8cdc1ac0/transformed/play-services-measurement-api-21.5.0/AndroidManifest.xml:25:22-76
+17    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION" />
+17-->[com.google.android.gms:play-services-measurement-api:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/bda3a034476226bcef818d6c8cdc1ac0/transformed/play-services-measurement-api-21.5.0/AndroidManifest.xml:26:5-88
+17-->[com.google.android.gms:play-services-measurement-api:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/bda3a034476226bcef818d6c8cdc1ac0/transformed/play-services-measurement-api-21.5.0/AndroidManifest.xml:26:22-85
+18    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" />
+18-->[com.google.android.gms:play-services-measurement-api:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/bda3a034476226bcef818d6c8cdc1ac0/transformed/play-services-measurement-api-21.5.0/AndroidManifest.xml:27:5-82
+18-->[com.google.android.gms:play-services-measurement-api:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/bda3a034476226bcef818d6c8cdc1ac0/transformed/play-services-measurement-api-21.5.0/AndroidManifest.xml:27:22-79
+19    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+19-->[com.google.android.recaptcha:recaptcha:18.4.0] /Users/rupestre/.gradle/caches/transforms-3/417ae4b4e4853f6ecc1cc8d2272effbf/transformed/recaptcha-18.4.0/AndroidManifest.xml:9:5-98
+19-->[com.google.android.recaptcha:recaptcha:18.4.0] /Users/rupestre/.gradle/caches/transforms-3/417ae4b4e4853f6ecc1cc8d2272effbf/transformed/recaptcha-18.4.0/AndroidManifest.xml:9:22-95
+20    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+20-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:26:5-110
+20-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:26:22-107
+21
+22    <permission
+22-->[androidx.core:core:1.12.0] /Users/rupestre/.gradle/caches/transforms-3/c20d556102513eeb483f8bbbaa366da9/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
+23        android:name="com.rgr.rutappa.android.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+23-->[androidx.core:core:1.12.0] /Users/rupestre/.gradle/caches/transforms-3/c20d556102513eeb483f8bbbaa366da9/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
+24        android:protectionLevel="signature" />
+24-->[androidx.core:core:1.12.0] /Users/rupestre/.gradle/caches/transforms-3/c20d556102513eeb483f8bbbaa366da9/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
+25
+26    <uses-permission android:name="com.rgr.rutappa.android.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+26-->[androidx.core:core:1.12.0] /Users/rupestre/.gradle/caches/transforms-3/c20d556102513eeb483f8bbbaa366da9/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
+26-->[androidx.core:core:1.12.0] /Users/rupestre/.gradle/caches/transforms-3/c20d556102513eeb483f8bbbaa366da9/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
+27    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+28    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+29    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+30
+31    <application
+31-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:6:5-21:19
+32        android:name="com.rgr.rutappa.android.app.Rutappa"
+32-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:7:9-36
+33        android:allowBackup="false"
+33-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:10:9-36
+34        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+34-->[androidx.core:core:1.12.0] /Users/rupestre/.gradle/caches/transforms-3/c20d556102513eeb483f8bbbaa366da9/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
+35        android:extractNativeLibs="false"
+36        android:icon="@mipmap/ic_launcher"
+36-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:8:9-43
+37        android:label="@string/app_name"
+37-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:9:9-41
+38        android:supportsRtl="true"
+38-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:11:9-35
+39        android:testOnly="true"
+40        android:theme="@style/Theme.MySplashScreen" >
+40-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:12:9-52
+41        <activity
+41-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:13:9-20:20
+42            android:name="com.rgr.rutappa.android.MainActivity"
+42-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:14:13-41
+43            android:exported="true" >
+43-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:15:13-36
+44            <intent-filter>
+44-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:16:13-19:29
+45                <action android:name="android.intent.action.MAIN" />
+45-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:17:17-69
+45-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:17:25-66
+46
+47                <category android:name="android.intent.category.LAUNCHER" />
+47-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:18:17-77
+47-->/Users/rupestre/Documents/rutappa/androidApp/src/main/AndroidManifest.xml:18:27-74
+48            </intent-filter>
+49        </activity>
+50        <activity
+50-->[com.google.android.gms:play-services-auth:20.7.0] /Users/rupestre/.gradle/caches/transforms-3/1fd4e0fbe82a120924e8f99fd3959aab/transformed/play-services-auth-20.7.0/AndroidManifest.xml:23:9-27:75
+51            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+51-->[com.google.android.gms:play-services-auth:20.7.0] /Users/rupestre/.gradle/caches/transforms-3/1fd4e0fbe82a120924e8f99fd3959aab/transformed/play-services-auth-20.7.0/AndroidManifest.xml:24:13-93
+52            android:excludeFromRecents="true"
+52-->[com.google.android.gms:play-services-auth:20.7.0] /Users/rupestre/.gradle/caches/transforms-3/1fd4e0fbe82a120924e8f99fd3959aab/transformed/play-services-auth-20.7.0/AndroidManifest.xml:25:13-46
+53            android:exported="false"
+53-->[com.google.android.gms:play-services-auth:20.7.0] /Users/rupestre/.gradle/caches/transforms-3/1fd4e0fbe82a120924e8f99fd3959aab/transformed/play-services-auth-20.7.0/AndroidManifest.xml:26:13-37
+54            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+54-->[com.google.android.gms:play-services-auth:20.7.0] /Users/rupestre/.gradle/caches/transforms-3/1fd4e0fbe82a120924e8f99fd3959aab/transformed/play-services-auth-20.7.0/AndroidManifest.xml:27:13-72
+55        <!--
+56            Service handling Google Sign-In user revocation. For apps that do not integrate with
+57            Google Sign-In, this service will never be started.
+58        -->
+59        <service
+59-->[com.google.android.gms:play-services-auth:20.7.0] /Users/rupestre/.gradle/caches/transforms-3/1fd4e0fbe82a120924e8f99fd3959aab/transformed/play-services-auth-20.7.0/AndroidManifest.xml:33:9-37:51
+60            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+60-->[com.google.android.gms:play-services-auth:20.7.0] /Users/rupestre/.gradle/caches/transforms-3/1fd4e0fbe82a120924e8f99fd3959aab/transformed/play-services-auth-20.7.0/AndroidManifest.xml:34:13-89
+61            android:exported="true"
+61-->[com.google.android.gms:play-services-auth:20.7.0] /Users/rupestre/.gradle/caches/transforms-3/1fd4e0fbe82a120924e8f99fd3959aab/transformed/play-services-auth-20.7.0/AndroidManifest.xml:35:13-36
+62            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+62-->[com.google.android.gms:play-services-auth:20.7.0] /Users/rupestre/.gradle/caches/transforms-3/1fd4e0fbe82a120924e8f99fd3959aab/transformed/play-services-auth-20.7.0/AndroidManifest.xml:36:13-107
+63            android:visibleToInstantApps="true" />
+63-->[com.google.android.gms:play-services-auth:20.7.0] /Users/rupestre/.gradle/caches/transforms-3/1fd4e0fbe82a120924e8f99fd3959aab/transformed/play-services-auth-20.7.0/AndroidManifest.xml:37:13-48
+64        <service
+64-->[com.google.firebase:firebase-firestore:24.10.1] /Users/rupestre/.gradle/caches/transforms-3/c8faa4f8f3190e010b55164ccd1f9aaa/transformed/firebase-firestore-24.10.1/AndroidManifest.xml:14:9-23:19
+65            android:name="com.google.firebase.components.ComponentDiscoveryService"
+65-->[com.google.firebase:firebase-firestore:24.10.1] /Users/rupestre/.gradle/caches/transforms-3/c8faa4f8f3190e010b55164ccd1f9aaa/transformed/firebase-firestore-24.10.1/AndroidManifest.xml:15:13-84
+66            android:directBootAware="true"
+66-->[com.google.firebase:firebase-common:20.4.2] /Users/rupestre/.gradle/caches/transforms-3/75c7f089306d4fa8a1045c0a8554aab7/transformed/firebase-common-20.4.2/AndroidManifest.xml:32:13-43
+67            android:exported="false" >
+67-->[com.google.firebase:firebase-firestore:24.10.1] /Users/rupestre/.gradle/caches/transforms-3/c8faa4f8f3190e010b55164ccd1f9aaa/transformed/firebase-firestore-24.10.1/AndroidManifest.xml:16:13-37
+68            <meta-data
+68-->[com.google.firebase:firebase-firestore:24.10.1] /Users/rupestre/.gradle/caches/transforms-3/c8faa4f8f3190e010b55164ccd1f9aaa/transformed/firebase-firestore-24.10.1/AndroidManifest.xml:17:13-19:85
+69                android:name="com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar"
+69-->[com.google.firebase:firebase-firestore:24.10.1] /Users/rupestre/.gradle/caches/transforms-3/c8faa4f8f3190e010b55164ccd1f9aaa/transformed/firebase-firestore-24.10.1/AndroidManifest.xml:18:17-122
+70                android:value="com.google.firebase.components.ComponentRegistrar" />
+70-->[com.google.firebase:firebase-firestore:24.10.1] /Users/rupestre/.gradle/caches/transforms-3/c8faa4f8f3190e010b55164ccd1f9aaa/transformed/firebase-firestore-24.10.1/AndroidManifest.xml:19:17-82
+71            <meta-data
+71-->[com.google.firebase:firebase-firestore:24.10.1] /Users/rupestre/.gradle/caches/transforms-3/c8faa4f8f3190e010b55164ccd1f9aaa/transformed/firebase-firestore-24.10.1/AndroidManifest.xml:20:13-22:85
+72                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+72-->[com.google.firebase:firebase-firestore:24.10.1] /Users/rupestre/.gradle/caches/transforms-3/c8faa4f8f3190e010b55164ccd1f9aaa/transformed/firebase-firestore-24.10.1/AndroidManifest.xml:21:17-111
+73                android:value="com.google.firebase.components.ComponentRegistrar" />
+73-->[com.google.firebase:firebase-firestore:24.10.1] /Users/rupestre/.gradle/caches/transforms-3/c8faa4f8f3190e010b55164ccd1f9aaa/transformed/firebase-firestore-24.10.1/AndroidManifest.xml:22:17-82
+74            <meta-data
+74-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/affdb99ffdde0f0fb12c127da254a9c5/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:11:13-13:85
+75                android:name="com.google.firebase.components:com.google.firebase.auth.ktx.FirebaseAuthLegacyRegistrar"
+75-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/affdb99ffdde0f0fb12c127da254a9c5/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:12:17-119
+76                android:value="com.google.firebase.components.ComponentRegistrar" />
+76-->[com.google.firebase:firebase-auth-ktx:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/affdb99ffdde0f0fb12c127da254a9c5/transformed/firebase-auth-ktx-22.3.1/AndroidManifest.xml:13:17-82
+77            <meta-data
+77-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:69:13-71:85
+78                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+78-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:70:17-109
+79                android:value="com.google.firebase.components.ComponentRegistrar" />
+79-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:71:17-82
+80            <meta-data
+80-->[com.google.firebase:firebase-config-ktx:21.6.0] /Users/rupestre/.gradle/caches/transforms-3/40569bd6509048688333af8ad9a88ea0/transformed/firebase-config-ktx-21.6.0/AndroidManifest.xml:12:13-14:85
+81                android:name="com.google.firebase.components:com.google.firebase.remoteconfig.ktx.FirebaseConfigLegacyRegistrar"
+81-->[com.google.firebase:firebase-config-ktx:21.6.0] /Users/rupestre/.gradle/caches/transforms-3/40569bd6509048688333af8ad9a88ea0/transformed/firebase-config-ktx-21.6.0/AndroidManifest.xml:13:17-129
+82                android:value="com.google.firebase.components.ComponentRegistrar" />
+82-->[com.google.firebase:firebase-config-ktx:21.6.0] /Users/rupestre/.gradle/caches/transforms-3/40569bd6509048688333af8ad9a88ea0/transformed/firebase-config-ktx-21.6.0/AndroidManifest.xml:14:17-82
+83            <meta-data
+83-->[com.google.firebase:firebase-config:21.6.0] /Users/rupestre/.gradle/caches/transforms-3/910ca57cbb14668fa33b9760fbd7cdd9/transformed/firebase-config-21.6.0/AndroidManifest.xml:29:13-31:85
+84                android:name="com.google.firebase.components:com.google.firebase.remoteconfig.FirebaseRemoteConfigKtxRegistrar"
+84-->[com.google.firebase:firebase-config:21.6.0] /Users/rupestre/.gradle/caches/transforms-3/910ca57cbb14668fa33b9760fbd7cdd9/transformed/firebase-config-21.6.0/AndroidManifest.xml:30:17-128
+85                android:value="com.google.firebase.components.ComponentRegistrar" />
+85-->[com.google.firebase:firebase-config:21.6.0] /Users/rupestre/.gradle/caches/transforms-3/910ca57cbb14668fa33b9760fbd7cdd9/transformed/firebase-config-21.6.0/AndroidManifest.xml:31:17-82
+86            <meta-data
+86-->[com.google.firebase:firebase-config:21.6.0] /Users/rupestre/.gradle/caches/transforms-3/910ca57cbb14668fa33b9760fbd7cdd9/transformed/firebase-config-21.6.0/AndroidManifest.xml:32:13-34:85
+87                android:name="com.google.firebase.components:com.google.firebase.remoteconfig.RemoteConfigRegistrar"
+87-->[com.google.firebase:firebase-config:21.6.0] /Users/rupestre/.gradle/caches/transforms-3/910ca57cbb14668fa33b9760fbd7cdd9/transformed/firebase-config-21.6.0/AndroidManifest.xml:33:17-117
+88                android:value="com.google.firebase.components.ComponentRegistrar" />
+88-->[com.google.firebase:firebase-config:21.6.0] /Users/rupestre/.gradle/caches/transforms-3/910ca57cbb14668fa33b9760fbd7cdd9/transformed/firebase-config-21.6.0/AndroidManifest.xml:34:17-82
+89            <meta-data
+89-->[com.google.firebase:firebase-abt:21.1.1] /Users/rupestre/.gradle/caches/transforms-3/4dbcc684cb3599d1f2ce47c26b694859/transformed/firebase-abt-21.1.1/AndroidManifest.xml:12:13-14:85
+90                android:name="com.google.firebase.components:com.google.firebase.abt.component.AbtRegistrar"
+90-->[com.google.firebase:firebase-abt:21.1.1] /Users/rupestre/.gradle/caches/transforms-3/4dbcc684cb3599d1f2ce47c26b694859/transformed/firebase-abt-21.1.1/AndroidManifest.xml:13:17-109
+91                android:value="com.google.firebase.components.ComponentRegistrar" />
+91-->[com.google.firebase:firebase-abt:21.1.1] /Users/rupestre/.gradle/caches/transforms-3/4dbcc684cb3599d1f2ce47c26b694859/transformed/firebase-abt-21.1.1/AndroidManifest.xml:14:17-82
+92            <meta-data
+92-->[com.google.firebase:firebase-crashlytics-ktx:18.6.1] /Users/rupestre/.gradle/caches/transforms-3/be50ddb766dbdea9930f18e3bcbc7f3f/transformed/firebase-crashlytics-ktx-18.6.1/AndroidManifest.xml:24:13-26:85
+93                android:name="com.google.firebase.components:com.google.firebase.crashlytics.ktx.FirebaseCrashlyticsKtxRegistrar"
+93-->[com.google.firebase:firebase-crashlytics-ktx:18.6.1] /Users/rupestre/.gradle/caches/transforms-3/be50ddb766dbdea9930f18e3bcbc7f3f/transformed/firebase-crashlytics-ktx-18.6.1/AndroidManifest.xml:25:17-130
+94                android:value="com.google.firebase.components.ComponentRegistrar" />
+94-->[com.google.firebase:firebase-crashlytics-ktx:18.6.1] /Users/rupestre/.gradle/caches/transforms-3/be50ddb766dbdea9930f18e3bcbc7f3f/transformed/firebase-crashlytics-ktx-18.6.1/AndroidManifest.xml:26:17-82
+95            <meta-data
+95-->[com.google.firebase:firebase-analytics-ktx:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/caa104b097a3e69da4b315694340eb07/transformed/firebase-analytics-ktx-21.5.0/AndroidManifest.xml:11:13-13:85
+96                android:name="com.google.firebase.components:com.google.firebase.analytics.ktx.FirebaseAnalyticsLegacyRegistrar"
+96-->[com.google.firebase:firebase-analytics-ktx:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/caa104b097a3e69da4b315694340eb07/transformed/firebase-analytics-ktx-21.5.0/AndroidManifest.xml:12:17-129
+97                android:value="com.google.firebase.components.ComponentRegistrar" />
+97-->[com.google.firebase:firebase-analytics-ktx:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/caa104b097a3e69da4b315694340eb07/transformed/firebase-analytics-ktx-21.5.0/AndroidManifest.xml:13:17-82
+98            <meta-data
+98-->[com.google.firebase:firebase-crashlytics:18.6.1] /Users/rupestre/.gradle/caches/transforms-3/fb5d97f10bc50ab08ccd6b037a18e0c8/transformed/firebase-crashlytics-18.6.1/AndroidManifest.xml:15:13-17:85
+99                android:name="com.google.firebase.components:com.google.firebase.crashlytics.FirebaseCrashlyticsKtxRegistrar"
+99-->[com.google.firebase:firebase-crashlytics:18.6.1] /Users/rupestre/.gradle/caches/transforms-3/fb5d97f10bc50ab08ccd6b037a18e0c8/transformed/firebase-crashlytics-18.6.1/AndroidManifest.xml:16:17-126
+100                android:value="com.google.firebase.components.ComponentRegistrar" />
+100-->[com.google.firebase:firebase-crashlytics:18.6.1] /Users/rupestre/.gradle/caches/transforms-3/fb5d97f10bc50ab08ccd6b037a18e0c8/transformed/firebase-crashlytics-18.6.1/AndroidManifest.xml:17:17-82
+101            <meta-data
+101-->[com.google.firebase:firebase-crashlytics:18.6.1] /Users/rupestre/.gradle/caches/transforms-3/fb5d97f10bc50ab08ccd6b037a18e0c8/transformed/firebase-crashlytics-18.6.1/AndroidManifest.xml:18:13-20:85
+102                android:name="com.google.firebase.components:com.google.firebase.crashlytics.CrashlyticsRegistrar"
+102-->[com.google.firebase:firebase-crashlytics:18.6.1] /Users/rupestre/.gradle/caches/transforms-3/fb5d97f10bc50ab08ccd6b037a18e0c8/transformed/firebase-crashlytics-18.6.1/AndroidManifest.xml:19:17-115
+103                android:value="com.google.firebase.components.ComponentRegistrar" />
+103-->[com.google.firebase:firebase-crashlytics:18.6.1] /Users/rupestre/.gradle/caches/transforms-3/fb5d97f10bc50ab08ccd6b037a18e0c8/transformed/firebase-crashlytics-18.6.1/AndroidManifest.xml:20:17-82
+104            <meta-data
+104-->[com.google.firebase:firebase-sessions:1.2.1] /Users/rupestre/.gradle/caches/transforms-3/09204ea1406b369c6242d0ff20c7d965/transformed/firebase-sessions-1.2.1/AndroidManifest.xml:29:13-31:85
+105                android:name="com.google.firebase.components:com.google.firebase.sessions.FirebaseSessionsRegistrar"
+105-->[com.google.firebase:firebase-sessions:1.2.1] /Users/rupestre/.gradle/caches/transforms-3/09204ea1406b369c6242d0ff20c7d965/transformed/firebase-sessions-1.2.1/AndroidManifest.xml:30:17-117
+106                android:value="com.google.firebase.components.ComponentRegistrar" />
+106-->[com.google.firebase:firebase-sessions:1.2.1] /Users/rupestre/.gradle/caches/transforms-3/09204ea1406b369c6242d0ff20c7d965/transformed/firebase-sessions-1.2.1/AndroidManifest.xml:31:17-82
+107            <meta-data
+107-->[com.google.android.gms:play-services-measurement-api:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/bda3a034476226bcef818d6c8cdc1ac0/transformed/play-services-measurement-api-21.5.0/AndroidManifest.xml:37:13-39:85
+108                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
+108-->[com.google.android.gms:play-services-measurement-api:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/bda3a034476226bcef818d6c8cdc1ac0/transformed/play-services-measurement-api-21.5.0/AndroidManifest.xml:38:17-139
+109                android:value="com.google.firebase.components.ComponentRegistrar" />
+109-->[com.google.android.gms:play-services-measurement-api:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/bda3a034476226bcef818d6c8cdc1ac0/transformed/play-services-measurement-api-21.5.0/AndroidManifest.xml:39:17-82
+110            <meta-data
+110-->[com.google.firebase:firebase-installations:17.2.0] /Users/rupestre/.gradle/caches/transforms-3/b0a2e5d212becab5a8aa9e8835da1531/transformed/firebase-installations-17.2.0/AndroidManifest.xml:15:13-17:85
+111                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsKtxRegistrar"
+111-->[com.google.firebase:firebase-installations:17.2.0] /Users/rupestre/.gradle/caches/transforms-3/b0a2e5d212becab5a8aa9e8835da1531/transformed/firebase-installations-17.2.0/AndroidManifest.xml:16:17-130
+112                android:value="com.google.firebase.components.ComponentRegistrar" />
+112-->[com.google.firebase:firebase-installations:17.2.0] /Users/rupestre/.gradle/caches/transforms-3/b0a2e5d212becab5a8aa9e8835da1531/transformed/firebase-installations-17.2.0/AndroidManifest.xml:17:17-82
+113            <meta-data
+113-->[com.google.firebase:firebase-installations:17.2.0] /Users/rupestre/.gradle/caches/transforms-3/b0a2e5d212becab5a8aa9e8835da1531/transformed/firebase-installations-17.2.0/AndroidManifest.xml:18:13-20:85
+114                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+114-->[com.google.firebase:firebase-installations:17.2.0] /Users/rupestre/.gradle/caches/transforms-3/b0a2e5d212becab5a8aa9e8835da1531/transformed/firebase-installations-17.2.0/AndroidManifest.xml:19:17-127
+115                android:value="com.google.firebase.components.ComponentRegistrar" />
+115-->[com.google.firebase:firebase-installations:17.2.0] /Users/rupestre/.gradle/caches/transforms-3/b0a2e5d212becab5a8aa9e8835da1531/transformed/firebase-installations-17.2.0/AndroidManifest.xml:20:17-82
+116            <meta-data
+116-->[com.google.firebase:firebase-common-ktx:20.4.2] /Users/rupestre/.gradle/caches/transforms-3/6b51e1a82df9f40eb779b7acd9e2f256/transformed/firebase-common-ktx-20.4.2/AndroidManifest.xml:12:13-14:85
+117                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+117-->[com.google.firebase:firebase-common-ktx:20.4.2] /Users/rupestre/.gradle/caches/transforms-3/6b51e1a82df9f40eb779b7acd9e2f256/transformed/firebase-common-ktx-20.4.2/AndroidManifest.xml:13:17-116
+118                android:value="com.google.firebase.components.ComponentRegistrar" />
+118-->[com.google.firebase:firebase-common-ktx:20.4.2] /Users/rupestre/.gradle/caches/transforms-3/6b51e1a82df9f40eb779b7acd9e2f256/transformed/firebase-common-ktx-20.4.2/AndroidManifest.xml:14:17-82
+119            <meta-data
+119-->[com.google.firebase:firebase-common:20.4.2] /Users/rupestre/.gradle/caches/transforms-3/75c7f089306d4fa8a1045c0a8554aab7/transformed/firebase-common-20.4.2/AndroidManifest.xml:35:13-37:85
+120                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+120-->[com.google.firebase:firebase-common:20.4.2] /Users/rupestre/.gradle/caches/transforms-3/75c7f089306d4fa8a1045c0a8554aab7/transformed/firebase-common-20.4.2/AndroidManifest.xml:36:17-109
+121                android:value="com.google.firebase.components.ComponentRegistrar" />
+121-->[com.google.firebase:firebase-common:20.4.2] /Users/rupestre/.gradle/caches/transforms-3/75c7f089306d4fa8a1045c0a8554aab7/transformed/firebase-common-20.4.2/AndroidManifest.xml:37:17-82
+122            <meta-data
+122-->[com.google.firebase:firebase-datatransport:18.1.8] /Users/rupestre/.gradle/caches/transforms-3/9a5785a09dda3e03007f2b21595d68c3/transformed/firebase-datatransport-18.1.8/AndroidManifest.xml:27:13-29:85
+123                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+123-->[com.google.firebase:firebase-datatransport:18.1.8] /Users/rupestre/.gradle/caches/transforms-3/9a5785a09dda3e03007f2b21595d68c3/transformed/firebase-datatransport-18.1.8/AndroidManifest.xml:28:17-115
+124                android:value="com.google.firebase.components.ComponentRegistrar" />
+124-->[com.google.firebase:firebase-datatransport:18.1.8] /Users/rupestre/.gradle/caches/transforms-3/9a5785a09dda3e03007f2b21595d68c3/transformed/firebase-datatransport-18.1.8/AndroidManifest.xml:29:17-82
+125        </service>
+126
+127        <activity
+127-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:29:9-46:20
+128            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
+128-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:30:13-80
+129            android:excludeFromRecents="true"
+129-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:31:13-46
+130            android:exported="true"
+130-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:32:13-36
+131            android:launchMode="singleTask"
+131-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:33:13-44
+132            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+132-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:34:13-72
+133            <intent-filter>
+133-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:35:13-45:29
+134                <action android:name="android.intent.action.VIEW" />
+134-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:36:17-69
+134-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:36:25-66
+135
+136                <category android:name="android.intent.category.DEFAULT" />
+136-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:38:17-76
+136-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:38:27-73
+137                <category android:name="android.intent.category.BROWSABLE" />
+137-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:39:17-78
+137-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:39:27-75
+138
+139                <data
+139-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:41:17-44:51
+140                    android:host="firebase.auth"
+140-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:42:21-49
+141                    android:path="/"
+141-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:43:21-37
+142                    android:scheme="genericidp" />
+142-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:44:21-48
+143            </intent-filter>
+144        </activity>
+145        <activity
+145-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:47:9-64:20
+146            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
+146-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:48:13-79
+147            android:excludeFromRecents="true"
+147-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:49:13-46
+148            android:exported="true"
+148-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:50:13-36
+149            android:launchMode="singleTask"
+149-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:51:13-44
+150            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+150-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:52:13-72
+151            <intent-filter>
+151-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:53:13-63:29
+152                <action android:name="android.intent.action.VIEW" />
+152-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:36:17-69
+152-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:36:25-66
+153
+154                <category android:name="android.intent.category.DEFAULT" />
+154-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:38:17-76
+154-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:38:27-73
+155                <category android:name="android.intent.category.BROWSABLE" />
+155-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:39:17-78
+155-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:39:27-75
+156
+157                <data
+157-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:41:17-44:51
+158                    android:host="firebase.auth"
+158-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:42:21-49
+159                    android:path="/"
+159-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:43:21-37
+160                    android:scheme="recaptcha" />
+160-->[com.google.firebase:firebase-auth:22.3.1] /Users/rupestre/.gradle/caches/transforms-3/278b3d27883b5b3c5f3bdef386724626/transformed/firebase-auth-22.3.1/AndroidManifest.xml:44:21-48
+161            </intent-filter>
+162        </activity>
+163        <activity
+163-->[com.google.android.gms:play-services-base:18.0.1] /Users/rupestre/.gradle/caches/transforms-3/5d04576b6b6bb878650f0661fb33f649/transformed/play-services-base-18.0.1/AndroidManifest.xml:20:9-22:45
+164            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+164-->[com.google.android.gms:play-services-base:18.0.1] /Users/rupestre/.gradle/caches/transforms-3/5d04576b6b6bb878650f0661fb33f649/transformed/play-services-base-18.0.1/AndroidManifest.xml:20:19-85
+165            android:exported="false"
+165-->[com.google.android.gms:play-services-base:18.0.1] /Users/rupestre/.gradle/caches/transforms-3/5d04576b6b6bb878650f0661fb33f649/transformed/play-services-base-18.0.1/AndroidManifest.xml:22:19-43
+166            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+166-->[com.google.android.gms:play-services-base:18.0.1] /Users/rupestre/.gradle/caches/transforms-3/5d04576b6b6bb878650f0661fb33f649/transformed/play-services-base-18.0.1/AndroidManifest.xml:21:19-78
+167
+168        <service
+168-->[com.google.firebase:firebase-sessions:1.2.1] /Users/rupestre/.gradle/caches/transforms-3/09204ea1406b369c6242d0ff20c7d965/transformed/firebase-sessions-1.2.1/AndroidManifest.xml:22:9-25:40
+169            android:name="com.google.firebase.sessions.SessionLifecycleService"
+169-->[com.google.firebase:firebase-sessions:1.2.1] /Users/rupestre/.gradle/caches/transforms-3/09204ea1406b369c6242d0ff20c7d965/transformed/firebase-sessions-1.2.1/AndroidManifest.xml:23:13-80
+170            android:enabled="true"
+170-->[com.google.firebase:firebase-sessions:1.2.1] /Users/rupestre/.gradle/caches/transforms-3/09204ea1406b369c6242d0ff20c7d965/transformed/firebase-sessions-1.2.1/AndroidManifest.xml:24:13-35
+171            android:exported="false" />
+171-->[com.google.firebase:firebase-sessions:1.2.1] /Users/rupestre/.gradle/caches/transforms-3/09204ea1406b369c6242d0ff20c7d965/transformed/firebase-sessions-1.2.1/AndroidManifest.xml:25:13-37
+172
+173        <property
+173-->[com.google.android.gms:play-services-measurement-api:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/bda3a034476226bcef818d6c8cdc1ac0/transformed/play-services-measurement-api-21.5.0/AndroidManifest.xml:30:9-32:61
+174            android:name="android.adservices.AD_SERVICES_CONFIG"
+174-->[com.google.android.gms:play-services-measurement-api:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/bda3a034476226bcef818d6c8cdc1ac0/transformed/play-services-measurement-api-21.5.0/AndroidManifest.xml:31:13-65
+175            android:resource="@xml/ga_ad_services_config" />
+175-->[com.google.android.gms:play-services-measurement-api:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/bda3a034476226bcef818d6c8cdc1ac0/transformed/play-services-measurement-api-21.5.0/AndroidManifest.xml:32:13-58
+176
+177        <provider
+177-->[com.google.firebase:firebase-common:20.4.2] /Users/rupestre/.gradle/caches/transforms-3/75c7f089306d4fa8a1045c0a8554aab7/transformed/firebase-common-20.4.2/AndroidManifest.xml:23:9-28:39
+178            android:name="com.google.firebase.provider.FirebaseInitProvider"
+178-->[com.google.firebase:firebase-common:20.4.2] /Users/rupestre/.gradle/caches/transforms-3/75c7f089306d4fa8a1045c0a8554aab7/transformed/firebase-common-20.4.2/AndroidManifest.xml:24:13-77
+179            android:authorities="com.rgr.rutappa.android.firebaseinitprovider"
+179-->[com.google.firebase:firebase-common:20.4.2] /Users/rupestre/.gradle/caches/transforms-3/75c7f089306d4fa8a1045c0a8554aab7/transformed/firebase-common-20.4.2/AndroidManifest.xml:25:13-72
+180            android:directBootAware="true"
+180-->[com.google.firebase:firebase-common:20.4.2] /Users/rupestre/.gradle/caches/transforms-3/75c7f089306d4fa8a1045c0a8554aab7/transformed/firebase-common-20.4.2/AndroidManifest.xml:26:13-43
+181            android:exported="false"
+181-->[com.google.firebase:firebase-common:20.4.2] /Users/rupestre/.gradle/caches/transforms-3/75c7f089306d4fa8a1045c0a8554aab7/transformed/firebase-common-20.4.2/AndroidManifest.xml:27:13-37
+182            android:initOrder="100" />
+182-->[com.google.firebase:firebase-common:20.4.2] /Users/rupestre/.gradle/caches/transforms-3/75c7f089306d4fa8a1045c0a8554aab7/transformed/firebase-common-20.4.2/AndroidManifest.xml:28:13-36
+183
+184        <receiver
+184-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:29:9-33:20
+185            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+185-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:30:13-85
+186            android:enabled="true"
+186-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:31:13-35
+187            android:exported="false" >
+187-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:32:13-37
+188        </receiver>
+189
+190        <service
+190-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:35:9-38:40
+191            android:name="com.google.android.gms.measurement.AppMeasurementService"
+191-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:36:13-84
+192            android:enabled="true"
+192-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:37:13-35
+193            android:exported="false" />
+193-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:38:13-37
+194        <service
+194-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:39:9-43:72
+195            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+195-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:40:13-87
+196            android:enabled="true"
+196-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:41:13-35
+197            android:exported="false"
+197-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:42:13-37
+198            android:permission="android.permission.BIND_JOB_SERVICE" />
+198-->[com.google.android.gms:play-services-measurement:21.5.0] /Users/rupestre/.gradle/caches/transforms-3/5878c2f5b1a52752cab558620bafcf3b/transformed/play-services-measurement-21.5.0/AndroidManifest.xml:43:13-69
+199
+200        <provider
+200-->[androidx.emoji2:emoji2:1.3.0] /Users/rupestre/.gradle/caches/transforms-3/8d2fdfca781f105b2bdba7ab6940bc40/transformed/emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
+201            android:name="androidx.startup.InitializationProvider"
+201-->[androidx.emoji2:emoji2:1.3.0] /Users/rupestre/.gradle/caches/transforms-3/8d2fdfca781f105b2bdba7ab6940bc40/transformed/emoji2-1.3.0/AndroidManifest.xml:25:13-67
+202            android:authorities="com.rgr.rutappa.android.androidx-startup"
+202-->[androidx.emoji2:emoji2:1.3.0] /Users/rupestre/.gradle/caches/transforms-3/8d2fdfca781f105b2bdba7ab6940bc40/transformed/emoji2-1.3.0/AndroidManifest.xml:26:13-68
+203            android:exported="false" >
+203-->[androidx.emoji2:emoji2:1.3.0] /Users/rupestre/.gradle/caches/transforms-3/8d2fdfca781f105b2bdba7ab6940bc40/transformed/emoji2-1.3.0/AndroidManifest.xml:27:13-37
+204            <meta-data
+204-->[androidx.emoji2:emoji2:1.3.0] /Users/rupestre/.gradle/caches/transforms-3/8d2fdfca781f105b2bdba7ab6940bc40/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
+205                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+205-->[androidx.emoji2:emoji2:1.3.0] /Users/rupestre/.gradle/caches/transforms-3/8d2fdfca781f105b2bdba7ab6940bc40/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
+206                android:value="androidx.startup" />
+206-->[androidx.emoji2:emoji2:1.3.0] /Users/rupestre/.gradle/caches/transforms-3/8d2fdfca781f105b2bdba7ab6940bc40/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
+207            <meta-data
+207-->[androidx.lifecycle:lifecycle-process:2.6.2] /Users/rupestre/.gradle/caches/transforms-3/6988a3fa31f24051a7d3e31748419e55/transformed/lifecycle-process-2.6.2/AndroidManifest.xml:29:13-31:52
+208                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+208-->[androidx.lifecycle:lifecycle-process:2.6.2] /Users/rupestre/.gradle/caches/transforms-3/6988a3fa31f24051a7d3e31748419e55/transformed/lifecycle-process-2.6.2/AndroidManifest.xml:30:17-78
+209                android:value="androidx.startup" />
+209-->[androidx.lifecycle:lifecycle-process:2.6.2] /Users/rupestre/.gradle/caches/transforms-3/6988a3fa31f24051a7d3e31748419e55/transformed/lifecycle-process-2.6.2/AndroidManifest.xml:31:17-49
+210            <meta-data
+210-->[io.realm.kotlin:cinterop-android:1.13.0] /Users/rupestre/.gradle/caches/transforms-3/ffbd96b1a3fe38ff1d5ab135ebe99a28/transformed/cinterop-release/AndroidManifest.xml:32:13-34:52
+211                android:name="io.realm.kotlin.internal.RealmInitializer"
+211-->[io.realm.kotlin:cinterop-android:1.13.0] /Users/rupestre/.gradle/caches/transforms-3/ffbd96b1a3fe38ff1d5ab135ebe99a28/transformed/cinterop-release/AndroidManifest.xml:33:17-73
+212                android:value="androidx.startup" />
+212-->[io.realm.kotlin:cinterop-android:1.13.0] /Users/rupestre/.gradle/caches/transforms-3/ffbd96b1a3fe38ff1d5ab135ebe99a28/transformed/cinterop-release/AndroidManifest.xml:34:17-49
+213            <meta-data
+213-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+214                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+214-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+215                android:value="androidx.startup" />
+215-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+216        </provider>
+217
+218        <uses-library
+218-->[androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05] /Users/rupestre/.gradle/caches/transforms-3/9c15b6581971316aa7a1e9dcdef0d307/transformed/ads-adservices-1.0.0-beta05/AndroidManifest.xml:23:9-25:40
+219            android:name="android.ext.adservices"
+219-->[androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05] /Users/rupestre/.gradle/caches/transforms-3/9c15b6581971316aa7a1e9dcdef0d307/transformed/ads-adservices-1.0.0-beta05/AndroidManifest.xml:24:13-50
+220            android:required="false" />
+220-->[androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05] /Users/rupestre/.gradle/caches/transforms-3/9c15b6581971316aa7a1e9dcdef0d307/transformed/ads-adservices-1.0.0-beta05/AndroidManifest.xml:25:13-37
+221
+222        <meta-data
+222-->[com.google.android.gms:play-services-basement:18.2.0] /Users/rupestre/.gradle/caches/transforms-3/70536a57480638fe78181b97fd407d29/transformed/play-services-basement-18.2.0/AndroidManifest.xml:21:9-23:69
+223            android:name="com.google.android.gms.version"
+223-->[com.google.android.gms:play-services-basement:18.2.0] /Users/rupestre/.gradle/caches/transforms-3/70536a57480638fe78181b97fd407d29/transformed/play-services-basement-18.2.0/AndroidManifest.xml:22:13-58
+224            android:value="@integer/google_play_services_version" />
+224-->[com.google.android.gms:play-services-basement:18.2.0] /Users/rupestre/.gradle/caches/transforms-3/70536a57480638fe78181b97fd407d29/transformed/play-services-basement-18.2.0/AndroidManifest.xml:23:13-66
+225
+226        <service
+226-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/rupestre/.gradle/caches/transforms-3/cce459151663d3b35bd3bac1e4c3b6cb/transformed/transport-backend-cct-3.1.9/AndroidManifest.xml:28:9-34:19
+227            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+227-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/rupestre/.gradle/caches/transforms-3/cce459151663d3b35bd3bac1e4c3b6cb/transformed/transport-backend-cct-3.1.9/AndroidManifest.xml:29:13-103
+228            android:exported="false" >
+228-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/rupestre/.gradle/caches/transforms-3/cce459151663d3b35bd3bac1e4c3b6cb/transformed/transport-backend-cct-3.1.9/AndroidManifest.xml:30:13-37
+229            <meta-data
+229-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/rupestre/.gradle/caches/transforms-3/cce459151663d3b35bd3bac1e4c3b6cb/transformed/transport-backend-cct-3.1.9/AndroidManifest.xml:31:13-33:39
+230                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+230-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/rupestre/.gradle/caches/transforms-3/cce459151663d3b35bd3bac1e4c3b6cb/transformed/transport-backend-cct-3.1.9/AndroidManifest.xml:32:17-94
+231                android:value="cct" />
+231-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/rupestre/.gradle/caches/transforms-3/cce459151663d3b35bd3bac1e4c3b6cb/transformed/transport-backend-cct-3.1.9/AndroidManifest.xml:33:17-36
+232        </service>
+233
+234        <receiver
+234-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+235            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+235-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+236            android:directBootAware="false"
+236-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+237            android:enabled="true"
+237-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+238            android:exported="true"
+238-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+239            android:permission="android.permission.DUMP" >
+239-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+240            <intent-filter>
+240-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+241                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+241-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+241-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+242            </intent-filter>
+243            <intent-filter>
+243-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+244                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+244-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+244-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+245            </intent-filter>
+246            <intent-filter>
+246-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+247                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+247-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+247-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+248            </intent-filter>
+249            <intent-filter>
+249-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+250                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+250-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+250-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/rupestre/.gradle/caches/transforms-3/79e489cb0c208ff25e4f692ae34f7346/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
+251            </intent-filter>
+252        </receiver>
+253
+254        <service
+254-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/rupestre/.gradle/caches/transforms-3/da3fecfc4127da53fc7beeafd89deb9a/transformed/transport-runtime-3.1.9/AndroidManifest.xml:26:9-30:19
+255            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+255-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/rupestre/.gradle/caches/transforms-3/da3fecfc4127da53fc7beeafd89deb9a/transformed/transport-runtime-3.1.9/AndroidManifest.xml:27:13-117
+256            android:exported="false"
+256-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/rupestre/.gradle/caches/transforms-3/da3fecfc4127da53fc7beeafd89deb9a/transformed/transport-runtime-3.1.9/AndroidManifest.xml:28:13-37
+257            android:permission="android.permission.BIND_JOB_SERVICE" >
+257-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/rupestre/.gradle/caches/transforms-3/da3fecfc4127da53fc7beeafd89deb9a/transformed/transport-runtime-3.1.9/AndroidManifest.xml:29:13-69
+258        </service>
+259
+260        <receiver
+260-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/rupestre/.gradle/caches/transforms-3/da3fecfc4127da53fc7beeafd89deb9a/transformed/transport-runtime-3.1.9/AndroidManifest.xml:32:9-34:40
+261            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+261-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/rupestre/.gradle/caches/transforms-3/da3fecfc4127da53fc7beeafd89deb9a/transformed/transport-runtime-3.1.9/AndroidManifest.xml:33:13-132
+262            android:exported="false" />
+262-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/rupestre/.gradle/caches/transforms-3/da3fecfc4127da53fc7beeafd89deb9a/transformed/transport-runtime-3.1.9/AndroidManifest.xml:34:13-37
+263    </application>
+264
+265</manifest>

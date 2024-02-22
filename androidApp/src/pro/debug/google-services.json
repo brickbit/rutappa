@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "747962270451",
+    "project_id": "rutappa-9ee6e",
+    "storage_bucket": "rutappa-9ee6e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:747962270451:android:d90ffece44afb39f13ad86",
+        "android_client_info": {
+          "package_name": "com.rgr.rutappa.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "747962270451-6thga9btfp64mtpgr9d116lckmc640ia.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rgr.rutappa.android",
+            "certificate_hash": "11d35d8b324c657eb88dc5767a18a2aee3127179"
+          }
+        },
+        {
+          "client_id": "747962270451-c34361sh47iepjshntp4213sqphcativ.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rgr.rutappa.android",
+            "certificate_hash": "33b349a8c31f17d61c51fdca878277d50e4c510c"
+          }
+        },
+        {
+          "client_id": "747962270451-p44lih31jrsdk85scjbvosjl0jukrc61.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDK2PXFKPiqjzqjV3dsHXsj_pV7-wqceUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "747962270451-fj5as17n2q5jfa3d4dma0h43a70phl5d.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "747962270451-2pcsh4288g4pcuc5l177idoh8ngcjjir.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.rgr.rutappa"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

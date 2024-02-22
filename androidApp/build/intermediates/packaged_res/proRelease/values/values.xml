@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <color name="ic_launcher_background">#473829</color>
+    <string name="app_name">Destapa las legumbres</string>
+    <string name="com.google.firebase.crashlytics.mapping_file_id" ns1:ignore="UnusedResources,TypographyDashes" translatable="false">00000000000000000000000000000000</string>
+    <string name="copyrigth">©2023 desTAPA las LEGUMBRES</string>
+    <string name="default_web_client_id" translatable="false">747962270451-p44lih31jrsdk85scjbvosjl0jukrc61.apps.googleusercontent.com</string>
+    <string name="detail_about_tapa">Acerca de la tapa</string>
+    <string name="detail_legumes">Legumbres</string>
+    <string name="detail_location">%1$s (%2$s)</string>
+    <string name="detail_rate_process">Podrás otorgar una valoración a cada tapa una sola vez con una puntuación de 0 a 100.\nPara valorar la tapa mueve la barra para obtener la puntuación deseada. Confirma tu valoración pulsando el botón</string>
+    <string name="detail_rate_result">Valora con %1$s puntos</string>
+    <string name="detail_voted_yet">Ya has votado esta tapa</string>
+    <string name="error">Error</string>
+    <string name="error_delete_account">Error al eliminar cuenta</string>
+    <string name="error_detail_firestore_other">Se ha producido un error al enviar la votación</string>
+    <string name="error_detail_firestore_voted_yet">No puedes volver a votar la misma tapa</string>
+    <string name="error_login">Ha cancelado el proceso de login</string>
+    <string name="error_logout_user">Error al cerrar sesión</string>
+    <string name="error_unable_login">Se ha producido un error durante el proceso de login</string>
+    <string name="error_user_not_logged">El usuario no ha sido logado</string>
+    <string name="gcm_defaultSenderId" translatable="false">747962270451</string>
+    <string name="google_api_key" translatable="false">AIzaSyDK2PXFKPiqjzqjV3dsHXsj_pV7-wqceUE</string>
+    <string name="google_app_id" translatable="false">1:747962270451:android:d90ffece44afb39f13ad86</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDK2PXFKPiqjzqjV3dsHXsj_pV7-wqceUE</string>
+    <string name="google_storage_bucket" translatable="false">rutappa-9ee6e.appspot.com</string>
+    <string name="legal_context">Puedes consultar el reglamento del Campeonato en este enlace</string>
+    <string name="login_description">El próximo 12 de Febrero de 2024 quedará abierta la convocatoria del Primer Campeonato Nacional de Legumbres en Tapas: desTAPA las LEGUMBRES Tierra de Sabor.</string>
+    <string name="login_login">Estamos iniciando sesión...</string>
+    <string name="login_title">I CAMPEONATO NACIONAL desTAPA las LEGUMBRES</string>
+    <string name="login_with_google">Inicia sesión con Google</string>
+    <string name="main_delete_account">Eliminar cuenta</string>
+    <string name="main_logout">Cerrar sesión</string>
+    <string name="main_logout_text_dialog">¿Desea cerrar la sesión o eliminar su cuenta?</string>
+    <string name="main_stay_logged">Continuar logado</string>
+    <string name="main_subtitle">Las tapas del concurso</string>
+    <string name="main_title">I CAMPEONATO NACIONAL desTAPA las LEGUMBRES</string>
+    <string name="ok">Ok</string>
+    <string name="one_hundred">100</string>
+    <string name="project_id" translatable="false">rutappa-9ee6e</string>
+    <string name="rate_detail_tapa">Valora la tapa</string>
+    <string name="splash_title">#LEGUMBRES♡TAPAS</string>
+    <string name="zero">0</string>
+    <style name="AppTheme" parent="android:Theme.Material.NoActionBar"/>
+    <style name="Theme.MySplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+    </style>
+</resources>

@@ -50,12 +50,5 @@ fun Header(
                 }
             }
         }
-        Image(
-            modifier = Modifier
-                .padding(end = 16.dp, top = 24.dp)
-                .size(48.dp),
-            painter = painterResource(id = R.drawable.tierra_sabor_logo),
-            contentDescription = null
-        )
     }
 }

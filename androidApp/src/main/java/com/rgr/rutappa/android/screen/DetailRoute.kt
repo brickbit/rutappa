@@ -131,10 +131,14 @@ fun DetailScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(colorStops = backgroundColor(isSystemInDarkTheme())))
+            .background(Brush.verticalGradient(colorStops = backgroundColor(isSystemInDarkTheme()))),
+        contentAlignment = Alignment.BottomCenter
 
     ) {
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
             item {
                 TapaCover(tapa = tapa)
                 Column {
@@ -148,10 +152,10 @@ fun DetailScreen(
                         voted = voted,
                         onVoteClicked = { onVoteClicked(it, tapa.id) }
                     )
-                    SocialWall()
                 }
             }
         }
+        SocialWall()
     }
 }
 

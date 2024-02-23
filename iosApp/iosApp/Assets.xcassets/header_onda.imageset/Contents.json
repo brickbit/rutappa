@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "header_onda.svg",
+      "filename" : "header_onda.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "header_onda 1.svg",
+      "filename" : "header_onda 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "header_onda 2.svg",
+      "filename" : "header_onda 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

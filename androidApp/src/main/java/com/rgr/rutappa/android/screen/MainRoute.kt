@@ -233,8 +233,11 @@ fun TapaItemComposable(
 ) {
     Row(
         modifier = Modifier
+            .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 20.dp)
-            .clickable { onItemClicked(tapa.id) }
+            .clickable { onItemClicked(tapa.id) },
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
             modifier = Modifier

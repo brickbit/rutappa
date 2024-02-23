@@ -72,6 +72,10 @@ class MainViewModel(
                 _state.update {
                     MainState.Logout
                 }
+            } else {
+                _state.update {
+                    MainState.MainStateError
+                }
             }
         }
     }

@@ -1,6 +1,8 @@
 package com.rgr.rutappa.domain.useCase
 
 import at.asitplus.KmmResult
+import com.rgr.rutappa.domain.error.FirestoreError
+import com.rgr.rutappa.domain.error.LoginError
 import com.rgr.rutappa.domain.provider.FirestoreProvider
 import com.rgr.rutappa.domain.provider.LoginProvider
 import com.rgr.rutappa.domain.repository.LocalRepository
@@ -12,13 +14,18 @@ class DeleteAccountUseCase(
 ) {
 
     suspend operator fun invoke(): KmmResult<Unit> {
-        val user = localRepository.getUid()
-        val result = loginProvider.deleteAccount()
-        if(result.isSuccess) {
-            localRepository.removeUid()
-            localRepository.removeTapaVoted()
-            firestoreProvider.removeVote(user)
+        try {
+            val user = localRepository.getUid()
+            val result = loginProvider.deleteAccount()
+            if (result.isSuccess) {
+                localRepository.removeUid()
+                localRepository.removeTapaVoted()
+                firestoreProvider.removeVote(user)
+            }
+            return result
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return KmmResult.failure(LoginError.UnableToDeleteUser)
         }
-        return result
     }
 }

@@ -71,8 +71,8 @@ class FirestoreProviderImpl: FirestoreProvider {
                             completionHandler(nil, FirestoreError.ReadingError() as? Error)
                         }
                     }
-                    completionHandler(KmmresultKmmResult(value: KotlinUnit()), nil)
                 }
+                completionHandler(KmmresultKmmResult(value: KotlinUnit()), nil)
             } catch {
                 print("Error getting documents: \(error)")
                 completionHandler(nil, FirestoreError.ReadingError() as? Error)

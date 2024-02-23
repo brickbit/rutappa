@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rgr.rutappa.android"
-    android:versionCode="20240223"
+    android:versionCode="20240225"
     android:versionName="1.0.5" >
 
     <uses-sdk
@@ -36,7 +36,6 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:testOnly="true"
         android:theme="@style/Theme.MySplashScreen" >
         <activity
             android:name="com.rgr.rutappa.android.MainActivity"

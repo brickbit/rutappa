@@ -28,7 +28,7 @@ class LoginProvideImpl: LoginProvider {
             try Auth.auth().signOut()
             completionHandler(KmmresultKmmResult(value: KotlinUnit()), nil)
         } catch {
-            print("Failed to deleteCurrentUser")
+            completionHandler(nil, LoginError.UnableToLogout() as? Error)
         }
     }
     
@@ -45,11 +45,13 @@ class LoginProvideImpl: LoginProvider {
                     
                     guard let appleIdToken = appleIdCredential.identityToken else {
                         print("Unable to fetch identity token")
+                        completionHandler(nil, LoginError.UnableToDeleteUser() as? Error)
                         return
                     }
                     
                     guard let idTokenString = String(data: appleIdToken, encoding: .utf8) else {
                         print("Unable to serialize token stringfrom data")
+                        completionHandler(nil, LoginError.UnableToDeleteUser() as? Error)
                         return
                     }
                     
@@ -71,6 +73,7 @@ class LoginProvideImpl: LoginProvider {
                 completionHandler(KmmresultKmmResult(value: KotlinUnit()), nil)                
             } catch {
                 print("Unable to delete account")
+                completionHandler(nil, LoginError.UnableToDeleteUser() as? Error)
             }
         }
     }

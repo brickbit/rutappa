@@ -37,6 +37,7 @@ struct DetailView: View {
         switch viewModel.state {
         case .loading: return AnyView(LoadingView())
         case .loaded(let tapa, let voted):
+            print("$$$$ \(tapa.local.instagram) \(tapa.local.facebook)")
             return AnyView(
                 DetailScreen(
                     tapa: tapa,
@@ -152,11 +153,21 @@ struct DetailScreen: View {
                                             Image("instagram")
                                                 .resizable()
                                                 .frame(width: 24, height: 24)
+                                                .onTapGesture {
+                                                    if let url = URL(string: tapa.local.instagram), UIApplication.shared.canOpenURL(url) {
+                                                        UIApplication.shared.open(url)
+                                                    }
+                                                }
                                         }
                                         if(!tapa.local.facebook.isEmpty) {
                                             Image("facebook")
                                                 .resizable()
                                                 .frame(width: 24, height: 24)
+                                                .onTapGesture {
+                                                    if let url = URL(string: tapa.local.facebook), UIApplication.shared.canOpenURL(url) {
+                                                        UIApplication.shared.open(url)
+                                                    }
+                                                }
                                         }
                                     }
                                 }.padding(.bottom)
@@ -219,9 +230,9 @@ struct LegumesSection: View {
     var body: some View {
         VStack {
             ScrollView() {
-                VStack(spacing: 8) {
+                VStack(alignment: .leading, spacing: 8) {
                     ForEach(tapa.legumes, id: \.self) { legume in
-                        VStack(alignment: .center) {
+                        VStack(alignment: .leading) {
                             HStack {
                                 Image(uiImage: getLegumeImage(legume: legume))
                                     .resizable()
@@ -231,7 +242,7 @@ struct LegumesSection: View {
                                     .foregroundStyle(Color("secondaryColor"))
                                     .font(Font.custom("Montserrat", size: 14))
                                     .multilineTextAlignment(.center)
-                            }.padding()
+                            }
                         }
                     }
                 }

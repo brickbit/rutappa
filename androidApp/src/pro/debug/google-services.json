@@ -14,14 +14,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "747962270451-6thga9btfp64mtpgr9d116lckmc640ia.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.rgr.rutappa.android",
-            "certificate_hash": "11d35d8b324c657eb88dc5767a18a2aee3127179"
-          }
-        },
-        {
           "client_id": "747962270451-c34361sh47iepjshntp4213sqphcativ.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

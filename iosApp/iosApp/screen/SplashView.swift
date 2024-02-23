@@ -65,7 +65,7 @@ struct SplashScreen: View {
                 Text("#LEGUMBRES♡TAPAS")
                     .foregroundStyle(Color("primaryColor"))
                     .font(Font.custom("Berlin Sans FB Demi", size: 20))
-                Text("©2023 desTAPA las LEGUMBRES")
+                Text("©2024 desTAPA las LEGUMBRES")
                     .foregroundStyle(Color("primaryColor"))
                     .font(Font.custom("Montserrat", size: 16))
             }

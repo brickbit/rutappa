@@ -13,12 +13,16 @@ import shared
 struct MainView: View {
     @ObservedObject var viewModel: IOSMainViewModel
     @EnvironmentObject var navigator: Navigator
+    @State var isLogout = false
+    
     init() {
         self.viewModel = IOSMainViewModel()
     }
     
     var body: some View {
-        VStack {
+        let _ = Self._printChanges()
+    
+        VStack(alignment: .leading) {
             mainContent()
         }
         .onAppear {
@@ -30,7 +34,9 @@ struct MainView: View {
     }
     
     func mainContent() -> AnyView {
+        print("########## mainContent")
         var navigated = false
+        
         
         switch viewModel.state {
         case .loading: return AnyView(LoadingView())
@@ -44,9 +50,7 @@ struct MainView: View {
                         }
                     },
                     logoutAction:  {
-                        Task {
-                            viewModel.logout()
-                        }
+                        viewModel.logout()
                     },
                     deleteAccountAction:  {
                         Task {
@@ -61,21 +65,13 @@ struct MainView: View {
                 }
             )
         case .logout:
-            Task{
-                if(!navigated) {
-                    navigated = true
-                    navigator.navigate(to: .login)
-                }
-            }
-            return AnyView(LoadingView())
+            return AnyView(LoadingView().task {
+                navigator.navigate(to: .login)
+            })
         case .error:
-            Task{
-                if(!navigated) {
-                    navigated = true
-                    navigator.navigate(to: .login)
-                }
-            }
-            return AnyView(LoadingView())
+            return AnyView(LoadingView().task {
+                navigator.navigate(to: .login)
+            })
         }
     
     }
@@ -137,7 +133,6 @@ struct MainScreen: View {
                 }
                 ScrollView {
                     VStack(alignment: .leading) {
-                        
                         Text("Las tapas del concurso")
                             .foregroundStyle(Color("secondaryColor"))
                             .font(Font.custom("Berlin Sans FB Demi", size: 18))
@@ -167,7 +162,7 @@ struct TapaItemList: View {
     let tapa: TapaItemBo
     var body: some View {
         VStack(alignment: .leading) {
-            HStack(alignment: .center) {
+            HStack(alignment: .center, spacing: 16) {
                 AsyncImage(
                     url: URL(string: tapa.photo),
                     content: { image in
@@ -183,22 +178,12 @@ struct TapaItemList: View {
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 VStack(alignment: .leading) {
                     Text(tapa.name)
-                        .frame(width: 200)
                         .foregroundStyle(Color("secondaryColor"))
                         .font(Font.custom("Montserrat", size: 16))
-                    HStack {
-                        Image("ic_location")
-                            .resizable()
-                            .frame(width: 16, height: 16)
-                        Text("\(tapa.local.name) \(tapa.local.province)")
-                            .foregroundStyle(Color("secondaryColor"))
-                            .font(Font.custom("Montserrat", size: 12))
-
-                    }                        
-                    .frame(width: 200)
-
+                    Text("\(tapa.local.name) (\(tapa.local.province))")
+                        .foregroundStyle(Color("secondaryColor"))
+                        .font(Font.custom("Montserrat", size: 12))
                     Text(tapa.shortDescription)
-                        .frame(width: 200)
                         .lineLimit(3)
                         .foregroundStyle(Color("secondaryColor").opacity(0.6))
                         .font(Font.custom("Montserrat", size: 12))
@@ -224,7 +209,10 @@ struct MainView_Previews: PreviewProvider {
 extension MainView {
     @MainActor class IOSMainViewModel: ObservableObject {
         private let viewModel: MainViewModel
-                
+        private let localRepository: LocalRepository = LocalRepositoryImpl.shared
+        private let loginProvider: LoginProvider = LoginProvideImpl.shared
+        private let firestoreProvider: FirestoreProvider = FirestoreProviderImpl.shared
+
         @Published var state: MainStateSwift = MainStateSwift.loading
         
         private var handle: DisposableHandle?
@@ -244,11 +232,29 @@ extension MainView {
         }
         
         func logout() {
+            print("########## logout")
             viewModel.logout()
         }
         
         func deleteAccount() {
-            viewModel.deleteAccount()
+            //viewModel.deleteAccount() FAILS COROUTINE
+            print("########## deleteAccount")
+            Task {
+                do {
+                    let user = try await localRepository.getUid()
+                    let result =  try await loginProvider.deleteAccount()
+                    if (result.isSuccess) {
+                        try await localRepository.removeUid()
+                        try await localRepository.removeTapaVoted()
+                        try await firestoreProvider.removeVote(user: user)
+                        print("########## deleteAccount Result OK OK OK")
+                        self.state = .logout
+                    }
+                } catch {
+                    print("Unable to delete account")
+                    self.state = .error
+                }
+            }
         }
         
         // Removes the listener

@@ -27,7 +27,7 @@ android {
         applicationId = "com.rgr.rutappa.android"
         minSdk = 27
         targetSdk = 34
-        versionCode = 20240223
+        versionCode = 20240225
         versionName = "1.0.5"
     }
     buildFeatures {

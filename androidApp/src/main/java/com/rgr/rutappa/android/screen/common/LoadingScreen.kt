@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.rgr.rutappa.android.backgroundColor
@@ -19,10 +20,16 @@ fun LoadingScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(colorStops = backgroundColor(isSystemInDarkTheme()))),
-        contentAlignment = Alignment.Center
+            .background(Color.White)
     ) {
-        CircularProgressIndicator(trackColor = MaterialTheme.colorScheme.secondary)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Brush.verticalGradient(colorStops = backgroundColor(isSystemInDarkTheme()))),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(trackColor = MaterialTheme.colorScheme.secondary)
+        }
     }
 }
 

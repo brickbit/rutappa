@@ -27,8 +27,8 @@ android {
         applicationId = "com.rgr.rutappa.android"
         minSdk = 27
         targetSdk = 34
-        versionCode = 20240225
-        versionName = "1.0.5"
+        versionCode = 20240236
+        versionName = "1.0.15"
     }
     buildFeatures {
         compose = true
@@ -44,12 +44,13 @@ android {
     buildTypes {
         getByName("release") {
             //isMinifyEnabled = false
+            //isDebuggable = true
             signingConfig = signingConfigs.getByName("release")
-            buildConfigField("String", "clientId", "\"747962270451-pmm32sbgqdfh0gvg8gm7osc6t2f0mr6v.apps.googleusercontent.com\"")
+            buildConfigField("String", "clientId", "\"747962270451-6sppvshi1ttva2o0vgsl5l8ii0jnfn1k.apps.googleusercontent.com\"")
         }
         getByName("debug") {
             isDebuggable = true
-            buildConfigField("String", "clientId", "\"747962270451-pmm32sbgqdfh0gvg8gm7osc6t2f0mr6v.apps.googleusercontent.com\"")
+            buildConfigField("String", "clientId", "\"747962270451-6sppvshi1ttva2o0vgsl5l8ii0jnfn1k.apps.googleusercontent.com\"")
         }
     }
     flavorDimensions.add("version")
@@ -109,6 +110,13 @@ dependencies {
     implementation("com.google.firebase:firebase-config-ktx")
     implementation("com.google.firebase:firebase-firestore")
     implementation(libs.play.services.auth)
+    implementation("androidx.credentials:credentials:1.3.0-alpha01")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0-alpha01")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+
     //kmm result
     implementation("at.asitplus:kmmresult:1.5.4")
+    //Play integrity
+    implementation("com.google.android.play:integrity:1.3.0")
+
 }

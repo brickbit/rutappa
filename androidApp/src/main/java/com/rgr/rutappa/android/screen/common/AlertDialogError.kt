@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.rgr.rutappa.android.R
 
@@ -14,8 +15,9 @@ fun AlertDialogError(
     onDismissRequest: () -> Unit,
 ) {
     AlertDialog(
+        containerColor = Color(0xFFFFFFFF),
         title = {
-            Text(text = stringResource(R.string.error))
+            Text(text = stringResource(R.string.error), color = MaterialTheme.colorScheme.secondary)
         },
         text = {
             description()

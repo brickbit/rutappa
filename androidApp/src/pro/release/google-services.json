@@ -7,35 +7,27 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:747962270451:android:d90ffece44afb39f13ad86",
+        "mobilesdk_app_id": "1:747962270451:android:df2467e4c2f3357c13ad86",
         "android_client_info": {
           "package_name": "com.rgr.rutappa.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "747962270451-c34361sh47iepjshntp4213sqphcativ.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.rgr.rutappa.android",
-            "certificate_hash": "33b349a8c31f17d61c51fdca878277d50e4c510c"
-          }
-        },
-        {
-          "client_id": "747962270451-p44lih31jrsdk85scjbvosjl0jukrc61.apps.googleusercontent.com",
+          "client_id": "747962270451-qgogu6a23nni18arupkc53sjet8iu9f5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDK2PXFKPiqjzqjV3dsHXsj_pV7-wqceUE"
+          "current_key": "AIzaSyCAaz33uMG3YqGdzu4Ni_RP6RK6oVsC_UA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "747962270451-fj5as17n2q5jfa3d4dma0h43a70phl5d.apps.googleusercontent.com",
+              "client_id": "747962270451-qgogu6a23nni18arupkc53sjet8iu9f5.apps.googleusercontent.com",
               "client_type": 3
             },
             {

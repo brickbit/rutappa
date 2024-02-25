@@ -13,6 +13,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -129,12 +130,12 @@ fun LoginRoute(
             AlertDialogError(
                 description = {
                     when(errorState) {
-                        LoginError.LoginCancelled -> Text(text = stringResource(R.string.error_login))
+                        LoginError.LoginCancelled -> Text(text = stringResource(R.string.error_login), color = MaterialTheme.colorScheme.secondary)
                         LoginError.NoError -> {}
-                        LoginError.UnableToSignIn -> Text(text = stringResource(R.string.error_unable_login))
-                        LoginError.UserNotLogged -> Text(text = stringResource(R.string.error_user_not_logged))
-                        LoginError.UnableToDeleteUser -> Text(stringResource(R.string.error_delete_account))
-                        LoginError.UnableToLogout -> Text(stringResource(R.string.error_logout_user))
+                        LoginError.UnableToSignIn -> Text(text = stringResource(R.string.error_unable_login), color = MaterialTheme.colorScheme.secondary)
+                        LoginError.UserNotLogged -> Text(text = stringResource(R.string.error_user_not_logged), color = MaterialTheme.colorScheme.secondary)
+                        LoginError.UnableToDeleteUser -> Text(stringResource(R.string.error_delete_account), color = MaterialTheme.colorScheme.secondary)
+                        LoginError.UnableToLogout -> Text(stringResource(R.string.error_logout_user), color = MaterialTheme.colorScheme.secondary)
                     }
                 },
                 onDismissRequest = {
@@ -159,92 +160,101 @@ fun LoginScreen(
     LaunchedEffect(state) {
         login()
     }
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .background(Brush.verticalGradient(colorStops = backgroundColor(isSystemInDarkTheme())))
-            .padding(top = 24.dp),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .background(Color.White)
     ) {
-        Spacer(modifier = Modifier.size(30.dp))
         Column(
-            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Brush.verticalGradient(colorStops = backgroundColor(isSystemInDarkTheme())))
+                .verticalScroll(rememberScrollState())
+                .padding(top = 24.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                modifier = Modifier
-                    .height(200.dp)
-                    .padding(bottom = 40.dp)
-                    .padding(horizontal = 24.dp),
-                painter = painterResource(id = R.drawable.championship_tapa),
-                contentDescription = null,
-                contentScale = ContentScale.FillHeight
-            )
-            Text(
-                modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 8.dp),
-                text = stringResource(R.string.login_title),
-                style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Center
-            )
-            Text(
-                modifier = Modifier.padding(horizontal = 24.dp),
-                text = stringResource(R.string.login_description),
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center
-            )
-            Text(
-                modifier = Modifier
-                    .padding(24.dp)
-                    .clickable {
-                        val intent = Intent(ACTION_VIEW)
-                        intent.setData(Uri.parse("https://destapalaslegumbres.es/reglamento/"))
-                        startActivity(context, intent, null)
-                    },
-                text = stringResource(R.string.legal_context),
-                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
-                textAlign = TextAlign.Center
-            )
-            if(loading) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterHorizontally)
-                ) {
-                    CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
-                    Text(
-                        modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 8.dp),
-                        text = stringResource(R.string.login_login),
-                        style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            } else {
-                Button(
-                    onClick = {
-                        signIn()
-                    },
+            Spacer(modifier = Modifier.size(30.dp))
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, bottom = 36.dp, top = 16.dp),
-                    shape = RoundedCornerShape(30.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Black,
-                        contentColor = Color.White
-                    )
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_logo_google),
-                        contentDescription = null
-                    )
-                    Text(
-                        text = stringResource(R.string.login_with_google),
-                        modifier = Modifier.padding(6.dp)
-                    )
+                        .height(200.dp)
+                        .padding(bottom = 40.dp)
+                        .padding(horizontal = 24.dp),
+                    painter = painterResource(id = R.drawable.championship_tapa),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillHeight
+                )
+                Text(
+                    modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 8.dp),
+                    text = stringResource(R.string.login_title),
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                    text = stringResource(R.string.login_description),
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(24.dp)
+                        .clickable {
+                            val intent = Intent(ACTION_VIEW)
+                            intent.setData(Uri.parse("https://destapalaslegumbres.es/reglamento/"))
+                            startActivity(context, intent, null)
+                        },
+                    text = stringResource(R.string.legal_context),
+                    style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
+                    textAlign = TextAlign.Center
+                )
+                if (loading) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(
+                            16.dp,
+                            alignment = Alignment.CenterHorizontally
+                        )
+                    ) {
+                        CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
+                        Text(
+                            modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 8.dp),
+                            text = stringResource(R.string.login_login),
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                } else {
+                    Button(
+                        onClick = {
+                            signIn()
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, bottom = 36.dp, top = 16.dp),
+                        shape = RoundedCornerShape(30.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_logo_google),
+                            contentDescription = null
+                        )
+                        Text(
+                            text = stringResource(R.string.login_with_google),
+                            modifier = Modifier.padding(6.dp)
+                        )
+                    }
                 }
             }
+            SocialWall()
         }
-        SocialWall()
     }
 }
 

@@ -79,7 +79,7 @@ fun MainRoute(
     }
 
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().background(Color.White)
     ) {
         when(errorState) {
             RemoteConfigError.ItemNotFound -> {}
@@ -157,6 +157,9 @@ fun MainScreen(
                             .padding(vertical = 8.dp)
                     )
                 }
+            }
+            item {
+                Box(modifier = Modifier.padding(bottom = 100.dp))
             }
         }
         SocialWall()
@@ -261,16 +264,8 @@ fun TapaItemComposable(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Image(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .padding(end = 8.dp),
-                        painter = painterResource(id = R.drawable.ic_location),
-                        contentDescription = null,
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.secondary)
-                    )
                     Text(
-                        text = tapa.local.name,
+                        text = "${tapa.local.name} (${tapa.local.province})",
                         style = MaterialTheme.typography.displaySmall
                     )
                 }

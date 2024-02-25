@@ -130,13 +130,13 @@ val ShadowColor = arrayOf(
 
 fun backgroundColor(darkTheme: Boolean) = if(darkTheme) {
     arrayOf(
-        0.0f to Color.White,
+        0.0f to Color(0xFFFFFFFF),
         0.5f to Color(0xFFefdbb2).copy(alpha = 0.6f),
         1f to Color(0xFFefdbb2)
     )
 } else {
     arrayOf(
-        0.0f to Color.White,
+        0.0f to Color(0xFFFFFFFF),
         0.5f to Color(0xFFefdbb2).copy(alpha = 0.6f),
         1f to Color(0xFFefdbb2)
     )

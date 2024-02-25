@@ -37,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -107,10 +108,10 @@ fun DetailRoute(
                 description = {
                     when(errorState) {
                         FirestoreError.NoError -> {}
-                        FirestoreError.NoUserError -> Text(text = stringResource(R.string.error_detail_firestore_other))
-                        FirestoreError.ReadingError -> Text(text = stringResource(R.string.error_detail_firestore_other))
-                        FirestoreError.TapaVotedYet -> Text(text = stringResource(R.string.error_detail_firestore_voted_yet))
-                        FirestoreError.WritingError -> Text(text = stringResource(R.string.error_detail_firestore_other))
+                        FirestoreError.NoUserError -> Text(text = stringResource(R.string.error_detail_firestore_other), color = MaterialTheme.colorScheme.secondary)
+                        FirestoreError.ReadingError -> Text(text = stringResource(R.string.error_detail_firestore_other), color = MaterialTheme.colorScheme.secondary)
+                        FirestoreError.TapaVotedYet -> Text(text = stringResource(R.string.error_detail_firestore_voted_yet), color = MaterialTheme.colorScheme.secondary)
+                        FirestoreError.WritingError -> Text(text = stringResource(R.string.error_detail_firestore_other), color = MaterialTheme.colorScheme.secondary)
                     }
                 },
                 onDismissRequest = {
@@ -129,33 +130,37 @@ fun DetailScreen(
     onVoteClicked: (Int, String) -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Brush.verticalGradient(colorStops = backgroundColor(isSystemInDarkTheme()))),
-        contentAlignment = Alignment.BottomCenter
-
+        modifier = Modifier.fillMaxSize().background(Color.White)
     ) {
-        LazyColumn(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Brush.verticalGradient(colorStops = backgroundColor(isSystemInDarkTheme()))),
+            contentAlignment = Alignment.BottomCenter
+
         ) {
-            item {
-                TapaCover(tapa = tapa)
-                Column {
-                    TapaInfo(tapa)
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                item {
+                    TapaCover(tapa = tapa)
+                    Column {
+                        TapaInfo(tapa)
+                    }
+                }
+                legumesSection(tapa.legumes)
+                item {
+                    Column {
+                        VoteSection(
+                            voted = voted,
+                            onVoteClicked = { onVoteClicked(it, tapa.id) }
+                        )
+                    }
                 }
             }
-            legumesSection(tapa.legumes)
-            item {
-                Column {
-                    VoteSection(
-                        voted = voted,
-                        onVoteClicked = { onVoteClicked(it, tapa.id) }
-                    )
-                }
-            }
+            SocialWall()
         }
-        SocialWall()
     }
 }
 
@@ -286,7 +291,7 @@ fun VoteSection(
     var sliderPosition by remember { mutableFloatStateOf(50f) }
 
     Column(
-        modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)
+        modifier = Modifier.padding(horizontal = 20.dp).padding(top = 16.dp, bottom = 48.dp)
     ) {
         Text(
             text = stringResource(R.string.rate_detail_tapa),
@@ -376,8 +381,9 @@ fun DetailScreenPreview() {
                     facebook = ""
                 )
             ),
-            voted = false,
-            onVoteClicked = {_,_ ->}
+            onVoteClicked={_,_ ->},
+            voted = false
         )
     }
 }
+ 

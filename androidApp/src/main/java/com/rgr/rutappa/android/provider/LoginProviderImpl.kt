@@ -103,8 +103,8 @@ class LoginProviderImpl(
             .setGoogleIdTokenRequestOptions(
                 GoogleIdTokenRequestOptions.Builder()
                     .setSupported(true)
+                    .setServerClientId("747962270451-6sppvshi1ttva2o0vgsl5l8ii0jnfn1k.apps.googleusercontent.com")
                     .setFilterByAuthorizedAccounts(false)
-                    .setServerClientId(BuildConfig.clientId)
                     .build()
             )
             .setAutoSelectEnabled(true)

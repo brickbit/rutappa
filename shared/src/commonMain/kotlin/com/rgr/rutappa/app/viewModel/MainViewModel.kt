@@ -4,6 +4,7 @@ import com.rgr.rutappa.app.flow.toCommonStateFlow
 import com.rgr.rutappa.app.state.MainState
 import com.rgr.rutappa.domain.error.RemoteConfigError
 import com.rgr.rutappa.domain.model.ResultKMM
+import com.rgr.rutappa.domain.repository.LocalRepository
 import com.rgr.rutappa.domain.useCase.DeleteAccountUseCase
 import com.rgr.rutappa.domain.useCase.GetTapaListUseCase
 import com.rgr.rutappa.domain.useCase.LogoutUseCase
@@ -16,7 +17,8 @@ import kotlinx.coroutines.launch
 class MainViewModel(
     private val getTapaUseCase: GetTapaListUseCase,
     private val logoutUseCase: LogoutUseCase,
-    private val deleteAccountUseCase: DeleteAccountUseCase
+    private val deleteAccountUseCase: DeleteAccountUseCase,
+    private val localRepository: LocalRepository,
 ): BaseViewModel() {
     private val _state: MutableStateFlow<MainState> = MutableStateFlow(MainState.Loading)
     val state = _state.stateIn(
@@ -67,6 +69,7 @@ class MainViewModel(
 
     fun logout() {
         scope.launch {
+            localRepository.removeUid()
             val result = logoutUseCase.invoke()
             if(result.isSuccess) {
                 _state.update {

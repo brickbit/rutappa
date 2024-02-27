@@ -3,6 +3,7 @@ package com.rgr.rutappa.app.viewModel
 import com.rgr.rutappa.app.flow.toCommonStateFlow
 import com.rgr.rutappa.app.navigation.Routes
 import com.rgr.rutappa.app.state.SplashState
+import com.rgr.rutappa.domain.repository.LocalRepository
 import com.rgr.rutappa.domain.useCase.IsUserLoggedUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SplashViewModel(
-    private val isUserLoggedUseCase: IsUserLoggedUseCase
+    private val isUserLoggedUseCase: IsUserLoggedUseCase,
+    private val localRepository: LocalRepository,
 ): BaseViewModel() {
     private val _state: MutableStateFlow<SplashState> = MutableStateFlow(SplashState.Init)
     val state = _state.stateIn(
@@ -26,19 +28,27 @@ class SplashViewModel(
     }
 
     private fun initializeSplash() {
+
         scope.launch {
             delay(3000)
-            isUserLoggedUseCase.invoke()
-                .onSuccess {
-                    _state.update {
-                        SplashState.Finished(Routes.Main)
-                    }
+            if(localRepository.getUid().isNotEmpty()) {
+                _state.update {
+                    SplashState.Finished(Routes.Main)
                 }
-                .onFailure {
-                    _state.update {
-                        SplashState.Finished(Routes.Login)
+            } else {
+
+                isUserLoggedUseCase.invoke()
+                    .onSuccess {
+                        _state.update {
+                            SplashState.Finished(Routes.Main)
+                        }
                     }
-                }
+                    .onFailure {
+                        _state.update {
+                            SplashState.Finished(Routes.Login)
+                        }
+                    }
+            }
         }
     }
 }

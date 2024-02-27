@@ -17,11 +17,9 @@ class DeleteAccountUseCase(
         try {
             val user = localRepository.getUid()
             val result = loginProvider.deleteAccount()
-            if (result.isSuccess) {
-                localRepository.removeUid()
-                localRepository.removeTapaVoted()
-                firestoreProvider.removeVote(user)
-            }
+            localRepository.removeUid()
+            localRepository.removeTapaVoted()
+            firestoreProvider.removeVote(user)
             return result
         } catch (e: Exception) {
             e.printStackTrace()

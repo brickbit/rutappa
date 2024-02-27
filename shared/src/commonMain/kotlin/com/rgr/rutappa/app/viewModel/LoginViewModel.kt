@@ -4,6 +4,7 @@ import com.rgr.rutappa.app.flow.toCommonStateFlow
 import com.rgr.rutappa.app.state.LoginState
 import com.rgr.rutappa.domain.error.LoginError
 import com.rgr.rutappa.domain.model.ResultKMM
+import com.rgr.rutappa.domain.repository.LocalRepository
 import com.rgr.rutappa.domain.useCase.SignInUseCase
 import com.rgr.rutappa.domain.useCase.SignInWithIntentUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val signInUseCase: SignInUseCase,
-    private val signInWithIntentUseCase: SignInWithIntentUseCase
+    private val signInWithIntentUseCase: SignInWithIntentUseCase,
+    private val localRepository: LocalRepository,
 
 ): BaseViewModel() {
     private val _state: MutableStateFlow<LoginState> = MutableStateFlow(LoginState.NotLogged)
@@ -45,6 +47,15 @@ class LoginViewModel(
                 result.exceptionOrNull()?.let {
                     processError(it)
                 }
+            }
+        }
+    }
+
+    fun signInWithDevice(uuid: String) {
+        scope.launch {
+            _state.update {
+                localRepository.saveUid(uuid)
+                LoginState.Logged(uuid)
             }
         }
     }

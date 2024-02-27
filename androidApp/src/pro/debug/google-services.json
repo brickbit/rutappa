@@ -7,29 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:747962270451:android:df2467e4c2f3357c13ad86",
+        "mobilesdk_app_id": "1:747962270451:android:ad2b298c3a18edab13ad86",
         "android_client_info": {
           "package_name": "com.rgr.rutappa.android"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "747962270451-qgogu6a23nni18arupkc53sjet8iu9f5.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCAaz33uMG3YqGdzu4Ni_RP6RK6oVsC_UA"
+          "current_key": "AIzaSyDafi22EnUGXnO5ToGxidAvTfrZ2yp5ZtA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
-            {
-              "client_id": "747962270451-qgogu6a23nni18arupkc53sjet8iu9f5.apps.googleusercontent.com",
-              "client_type": 3
-            },
             {
               "client_id": "747962270451-2pcsh4288g4pcuc5l177idoh8ngcjjir.apps.googleusercontent.com",
               "client_type": 2,

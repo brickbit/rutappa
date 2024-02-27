@@ -27,8 +27,8 @@ android {
         applicationId = "com.rgr.rutappa.android"
         minSdk = 27
         targetSdk = 34
-        versionCode = 20240236
-        versionName = "1.0.15"
+        versionCode = 20240248
+        versionName = "1.0.27"
     }
     buildFeatures {
         compose = true

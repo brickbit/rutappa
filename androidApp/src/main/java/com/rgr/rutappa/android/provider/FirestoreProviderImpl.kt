@@ -62,7 +62,7 @@ class FirestoreProviderImpl: FirestoreProvider {
                                 db.collection("tapa_contest").document(document.id).delete()
                             }
                         }
-                        cont.resume(KmmResult.failure(FirestoreError.TapaVotedYet))
+                        cont.resume(KmmResult.success(Unit))
                     }
                     .addOnFailureListener { _ ->
                         cont.resume(KmmResult.failure(FirestoreError.ReadingError))

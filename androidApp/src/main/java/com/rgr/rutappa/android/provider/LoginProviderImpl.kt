@@ -103,7 +103,7 @@ class LoginProviderImpl(
             .setGoogleIdTokenRequestOptions(
                 GoogleIdTokenRequestOptions.Builder()
                     .setSupported(true)
-                    .setServerClientId("747962270451-6sppvshi1ttva2o0vgsl5l8ii0jnfn1k.apps.googleusercontent.com")
+                    .setServerClientId("747962270451-ksshp66gkvcrrpa8b8kivjch4nmcnoh0.apps.googleusercontent.com")
                     .setFilterByAuthorizedAccounts(false)
                     .build()
             )

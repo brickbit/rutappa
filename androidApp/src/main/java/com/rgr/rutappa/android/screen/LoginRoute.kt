@@ -1,9 +1,14 @@
 package com.rgr.rutappa.android.screen
 
+import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
+import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
@@ -50,6 +55,11 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.rgr.rutappa.android.MainActivity
 import com.rgr.rutappa.android.MyApplicationTheme
 import com.rgr.rutappa.android.R
@@ -66,17 +76,44 @@ import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
 
+
 @Composable
 fun LoginRoute(
     viewModel: LoginViewModel = koinViewModel(),
     navigateToMain: () -> Unit
 ) {
+    val context = LocalContext.current
+    val RC_SIGN_IN = 9001
+    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken("747962270451-ksshp66gkvcrrpa8b8kivjch4nmcnoh0.apps.googleusercontent.com")
+        .requestEmail()
+        .build()
+
+    val mGoogleSignInClient = GoogleSignIn.getClient(context, gso)
+    val launcher2 = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult(),
+        onResult = { result ->
+            if (result.resultCode == RESULT_OK) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                try {
+                    // Google Sign In was successful, authenticate with Firebase
+                    val account = task.getResult(ApiException::class.java)
+                    account.idToken?.let { firebaseAuthWithGoogle(it, context as MainActivity) }
+                } catch (e: ApiException) {
+                    // Google Sign In failed, update UI appropriately
+                }
+            }
+        }
+    )
+
+
+
+
     val state = viewModel.state.collectAsState().value
     val errorState = viewModel.errorState.collectAsState().value
     val scope = rememberCoroutineScope()
     val intentSenderProvider: IntentSenderProvider = get()
     val intentProvider: IntentProvider = get()
-    val context = LocalContext.current
     val openAlertDialog = remember { mutableStateOf(false) }
 
     val launcher = rememberLauncherForActivityResult(
@@ -100,7 +137,12 @@ fun LoginRoute(
             LoginScreen(
                 state = state,
                 loading = true,
-                signIn = { viewModel.signIn() },
+                signIn = {
+                    viewModel.signIn()
+                },
+                signInWithDevice = {
+                    viewModel.signInWithDevice(it)
+                },
                 login = {
                     scope.launch {
                         val signInIntentSender = intentSenderProvider.getIntentSender()
@@ -121,7 +163,17 @@ fun LoginRoute(
             LoginScreen(
                 state = state,
                 loading = false,
-                signIn = { viewModel.signIn() }
+                signInWithDevice = {
+                    viewModel.signInWithDevice(it)
+                },
+                signIn = {
+                    val signInIntent = mGoogleSignInClient.signInIntent
+                    val intentSender = PendingIntent.getActivities(context,RC_SIGN_IN,
+                        arrayOf(signInIntent),FLAG_UPDATE_CURRENT).intentSender
+                    launcher2.launch(IntentSenderRequest.Builder(intentSender).build())
+
+                    //viewModel.signIn()
+                }
             )
         }
     }
@@ -149,11 +201,30 @@ fun LoginRoute(
 
 }
 
+private fun firebaseAuthWithGoogle(idToken: String, context: Activity) {
+    val mAuth = FirebaseAuth.getInstance()
+    val credential = GoogleAuthProvider.getCredential(idToken,  null)
+    mAuth.signInWithCredential(credential)
+        .addOnCompleteListener(context) { task ->
+            if (task.isSuccessful) {
+                // Sign in success, update UI with the signed-in user's information
+                val user = mAuth.currentUser
+                Toast.makeText(context,"Login existoso ${user?.uid}", Toast.LENGTH_SHORT).show()
+                //updateUI(user)
+            } else {
+                // If sign in fails, display a message to the user.
+                Toast.makeText(context, "Authentication Failed.", Toast.LENGTH_SHORT).show()
+                //updateUI(null)
+            }
+        }
+}
+
 @Composable
 fun LoginScreen(
     state: LoginState,
     loading: Boolean,
     signIn: () -> Unit,
+    signInWithDevice: (String) -> Unit,
     login: () -> Unit = {},
 ) {
     val context = LocalContext.current
@@ -229,6 +300,7 @@ fun LoginScreen(
                         )
                     }
                 } else {
+                    /*
                     Button(
                         onClick = {
                             signIn()
@@ -251,6 +323,26 @@ fun LoginScreen(
                             modifier = Modifier.padding(6.dp)
                         )
                     }
+                     */
+                    Button(
+                        onClick = {
+                            val uuid = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+                            signInWithDevice(uuid)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, bottom = 36.dp, top = 16.dp),
+                        shape = RoundedCornerShape(30.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text(
+                            text = stringResource(R.string.press_to_continue),
+                            modifier = Modifier.padding(6.dp)
+                        )
+                    }
                 }
             }
             SocialWall()
@@ -265,8 +357,10 @@ fun LoginScreenPreview() {
         LoginScreen(
             state = LoginState.NotLogged,
             signIn = {},
+            signInWithDevice = {} ,
             login = {},
             loading = true
         )
     }
 }
+

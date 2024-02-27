@@ -36,4 +36,5 @@
     <string name="error_logout_user">Error al cerrar sesión</string>
     <string name="error_delete_account">Error al eliminar cuenta</string>
     <string name="login_login">Estamos iniciando sesión...</string>
+    <string name="press_to_continue">Pulsa para continuar</string>
 </resources>

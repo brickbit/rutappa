@@ -353,7 +353,8 @@ fun VoteSection(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(16.dp)
+                    .padding(bottom = 32.dp),
                 text = stringResource(R.string.detail_voted_yet),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center

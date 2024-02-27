@@ -100,7 +100,7 @@ fun MainRoute(
                 navigateToLogin()
             }
             is MainState.MainStateError -> {
-                Toast.makeText(context, "Error al eliminar cuenta. Inicie sesión y elimine la cuenta para continuar", Toast.LENGTH_LONG).show()
+                //Toast.makeText(context, "Error al eliminar cuenta. Inicie sesión y elimine la cuenta para continuar", Toast.LENGTH_LONG).show()
                 navigateToLogin()
             }
         }

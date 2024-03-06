@@ -9,13 +9,13 @@ plugins {
 android {
     signingConfigs {
         getByName("debug") {
-            storeFile = file("/Users/rupestre/Projects/rutappa/rutappa")
+            storeFile = file("/Users/pw-rgarcia/projects/rutappa/rutappa")
             storePassword = "rutappa.2024"
             keyAlias = "rutappa"
             keyPassword = "rutappa.2024"
         }
         create("release") {
-            storeFile = file("/Users/rupestre/Projects/rutappa/rutappa")
+            storeFile = file("/Users/pw-rgarcia/projects/rutappa/rutappa")
             storePassword = "rutappa.2024"
             keyAlias = "rutappa"
             keyPassword = "rutappa.2024"
@@ -25,7 +25,7 @@ android {
     compileSdk = 34
     defaultConfig {
         applicationId = "com.rgr.rutappa.android"
-        minSdk = 27
+        minSdk = 29
         targetSdk = 34
         versionCode = 20240248
         versionName = "1.0.27"
@@ -44,7 +44,7 @@ android {
     buildTypes {
         getByName("release") {
             //isMinifyEnabled = false
-            //isDebuggable = true
+            isDebuggable = true
             signingConfig = signingConfigs.getByName("release")
             buildConfigField("String", "clientId", "\"747962270451-6sppvshi1ttva2o0vgsl5l8ii0jnfn1k.apps.googleusercontent.com\"")
         }

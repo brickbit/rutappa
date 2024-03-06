@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TapaResult(
     @SerialName("tapa")
-    val tapa: String,
+    val tapa: String = "",
     @SerialName("user")
-    val user: String,
+    val user: String = "",
     @SerialName("vote")
-    val vote: Int
+    val vote: Int = 0
 )

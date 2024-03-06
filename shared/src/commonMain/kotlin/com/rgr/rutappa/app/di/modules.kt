@@ -31,5 +31,5 @@ val useCaseModule = module {
     single { TapaVotedUseCase(get()) }
     single { DeleteAccountUseCase(get(), get(), get()) }
     single { LogoutUseCase(get()) }
-    single { ResultUseCase(get()) }
+    single { ResultUseCase(get(), get()) }
 }

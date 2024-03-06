@@ -12,7 +12,6 @@ xcuserdata
 
 *.aab
 
-*.apk
 
 androidApp/pro/release/
 shared/build/*

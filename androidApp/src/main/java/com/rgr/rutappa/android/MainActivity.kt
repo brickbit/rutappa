@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.rgr.rutappa.android.provider.ActivityProvider
 import com.rgr.rutappa.android.scaffold.RutappaScaffold
+import com.rgr.rutappa.android.screen.ResultScreen
 import org.koin.android.ext.android.get
 
 class MainActivity : ComponentActivity() {
@@ -26,7 +27,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    RutappaScaffold(navController = navController)
+                    ResultScreen()
+                    //RutappaScaffold(navController = navController)
                 }
             }
         }

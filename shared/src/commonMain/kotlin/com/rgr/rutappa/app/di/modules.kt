@@ -9,6 +9,7 @@ import com.rgr.rutappa.domain.useCase.GetTapaDetailUseCase
 import com.rgr.rutappa.domain.useCase.GetTapaListUseCase
 import com.rgr.rutappa.domain.useCase.IsUserLoggedUseCase
 import com.rgr.rutappa.domain.useCase.LogoutUseCase
+import com.rgr.rutappa.domain.useCase.ResultUseCase
 import com.rgr.rutappa.domain.useCase.SignInUseCase
 import com.rgr.rutappa.domain.useCase.SignInWithIntentUseCase
 import com.rgr.rutappa.domain.useCase.TapaVotedUseCase
@@ -30,4 +31,5 @@ val useCaseModule = module {
     single { TapaVotedUseCase(get()) }
     single { DeleteAccountUseCase(get(), get(), get()) }
     single { LogoutUseCase(get()) }
+    single { ResultUseCase(get()) }
 }

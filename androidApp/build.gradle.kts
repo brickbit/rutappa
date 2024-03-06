@@ -9,13 +9,13 @@ plugins {
 android {
     signingConfigs {
         getByName("debug") {
-            storeFile = file("/Users/rupestre/Documents/rutappa/rutappa")
+            storeFile = file("/Users/rupestre/Projects/rutappa/rutappa")
             storePassword = "rutappa.2024"
             keyAlias = "rutappa"
             keyPassword = "rutappa.2024"
         }
         create("release") {
-            storeFile = file("/Users/rupestre/Documents/rutappa/rutappa")
+            storeFile = file("/Users/rupestre/Projects/rutappa/rutappa")
             storePassword = "rutappa.2024"
             keyAlias = "rutappa"
             keyPassword = "rutappa.2024"
@@ -103,7 +103,7 @@ dependencies {
     //serialization
     implementation(libs.kotlinx.serialization.json)
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")

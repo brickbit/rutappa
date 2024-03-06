@@ -4,6 +4,7 @@ import at.asitplus.KmmResult
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.rgr.rutappa.domain.error.FirestoreError
+import com.rgr.rutappa.domain.model.TapaResult
 import com.rgr.rutappa.domain.provider.FirestoreProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -71,5 +72,23 @@ class FirestoreProviderImpl: FirestoreProvider {
         }
     }
 
+    override suspend fun getResult(): KmmResult<List<TapaResult?>> {
+        return withContext(Dispatchers.IO) {
+            suspendCancellableCoroutine { cont ->
+                db.collection("tapa_contest")
+                    .get()
+                    .addOnSuccessListener { result ->
+                        val result = result.documents.map {
+                            it.toObject(TapaResult::class.java)
+                        }
+                        cont.resume(KmmResult.success(result))
+                    }
+                    .addOnFailureListener { _ ->
+                        cont.resume(KmmResult.failure(FirestoreError.ReadingError))
+                    }
+            }
+        }
+    }
 
 }
+

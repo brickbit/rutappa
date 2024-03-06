@@ -4,17 +4,20 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.rgr.rutappa.android.provider.ActivityProvider
+import com.rgr.rutappa.android.provider.DocumentProviderImpl
 import com.rgr.rutappa.android.provider.FirebaseRemoteDataProviderImpl
 import com.rgr.rutappa.android.provider.FirestoreProviderImpl
 import com.rgr.rutappa.android.provider.IntentProvider
 import com.rgr.rutappa.android.provider.IntentSenderProvider
 import com.rgr.rutappa.android.provider.LoginProviderImpl
+import com.rgr.rutappa.android.screen.ResultViewModel
 import com.rgr.rutappa.app.viewModel.DetailViewModel
 import com.rgr.rutappa.app.viewModel.LoginViewModel
 import com.rgr.rutappa.app.viewModel.MainViewModel
 import com.rgr.rutappa.app.viewModel.SplashViewModel
 import com.rgr.rutappa.data.local.SETTINGS_PREFERENCES
 import com.rgr.rutappa.data.local.dataStorePreferences
+import com.rgr.rutappa.domain.provider.DocumentProvider
 import com.rgr.rutappa.domain.provider.FirebaseRemoteDataProvider
 import com.rgr.rutappa.domain.provider.FirestoreProvider
 import com.rgr.rutappa.domain.provider.LoginProvider
@@ -39,6 +42,7 @@ fun providerModules(context: Context) = module {
     single { IntentProvider() }
     factory<FirebaseRemoteDataProvider>{ FirebaseRemoteDataProviderImpl(get()) }
     factory<FirestoreProvider>{ FirestoreProviderImpl() }
+    factory<DocumentProvider>{ DocumentProviderImpl(context) }
     factory<LoginProvider> { LoginProviderImpl(context, get(), get()) }
 }
 
@@ -47,4 +51,5 @@ val viewModelModules = module {
     viewModel { LoginViewModel(get(), get(), get()) }
     viewModel { MainViewModel(get(), get(), get(), get()) }
     viewModel { DetailViewModel(get(), get(), get()) }
+    viewModel { ResultViewModel(get()) }
 }

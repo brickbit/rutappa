@@ -5,9 +5,11 @@ import com.rgr.rutappa.data.repository.TapaRepositoryImpl
 import com.rgr.rutappa.domain.repository.LocalRepository
 import com.rgr.rutappa.domain.repository.TapaRepository
 import com.rgr.rutappa.domain.useCase.DeleteAccountUseCase
+import com.rgr.rutappa.domain.useCase.GetLocationUseCase
 import com.rgr.rutappa.domain.useCase.GetTapaDetailUseCase
 import com.rgr.rutappa.domain.useCase.GetTapaListUseCase
 import com.rgr.rutappa.domain.useCase.IsUserLoggedUseCase
+import com.rgr.rutappa.domain.useCase.IsWithinRadiusUseCase
 import com.rgr.rutappa.domain.useCase.LogoutUseCase
 import com.rgr.rutappa.domain.useCase.SignInUseCase
 import com.rgr.rutappa.domain.useCase.SignInWithIntentUseCase
@@ -30,4 +32,6 @@ val useCaseModule = module {
     single { TapaVotedUseCase(get()) }
     single { DeleteAccountUseCase(get(), get(), get()) }
     single { LogoutUseCase(get()) }
+    single { GetLocationUseCase(get()) }
+    single { IsWithinRadiusUseCase() }
 }

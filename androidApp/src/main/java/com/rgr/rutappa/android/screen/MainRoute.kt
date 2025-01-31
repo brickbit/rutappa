@@ -299,7 +299,9 @@ fun MainScreenPreview() {
                         name = "Taberna los Cazurros",
                         province = "León",
                         instagram = "",
-                        facebook = ""
+                        facebook = "",
+                        longitude = "",
+                        latitude = ""
                     )
                 ),
             ),

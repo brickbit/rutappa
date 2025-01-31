@@ -33,7 +33,9 @@ val tapas = listOf(
             name = "Taberna los Cazurros",
             province = "León",
             instagram = "",
-            facebook = ""
+            facebook = "",
+            longitude = "-6.379673",
+            latitude = "39.466362"
         )
     ),
     TapaItemBo(
@@ -47,7 +49,9 @@ val tapas = listOf(
             name = "Restaurante tapería lio Salamanca",
             province = "Salamanca",
             instagram = "",
-            facebook = ""
+            facebook = "",
+            longitude = "-6.380052",
+            latitude = "39.455370"
         )
     ),
     TapaItemBo(
@@ -61,7 +65,9 @@ val tapas = listOf(
             name = "Tapería de la Vega",
             province = "Salamanca",
             instagram = "",
-            facebook = ""
+            facebook = "",
+            longitude = "-6.380052",
+            latitude = "39.455370"
         )
     ),
     TapaItemBo(
@@ -75,7 +81,9 @@ val tapas = listOf(
             name = "La Tasquita",
             province = "Valladolid",
             instagram = "",
-            facebook = ""
+            facebook = "",
+            longitude = "-6.380052",
+            latitude = "39.455370"
         )
     ),
     TapaItemBo(
@@ -89,7 +97,9 @@ val tapas = listOf(
             name = "Salamanca",
             province = "Salamanca",
             instagram = "",
-            facebook = ""
+            facebook = "",
+            longitude = "-6.380052",
+            latitude = "39.455370"
         )
     ),
     TapaItemBo(
@@ -103,7 +113,9 @@ val tapas = listOf(
             name = "El pez de San Lorenzo",
             province = "Burgos",
             instagram = "",
-            facebook = ""
+            facebook = "",
+            longitude = "-6.380052",
+            latitude = "39.455370"
         )
     ),
 )

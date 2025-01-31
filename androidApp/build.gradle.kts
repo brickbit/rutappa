@@ -9,13 +9,13 @@ plugins {
 android {
     signingConfigs {
         getByName("debug") {
-            storeFile = file("/Users/rupestre/Documents/rutappa/rutappa")
+            storeFile = file("./rutappa")
             storePassword = "rutappa.2024"
             keyAlias = "rutappa"
             keyPassword = "rutappa.2024"
         }
         create("release") {
-            storeFile = file("/Users/rupestre/Documents/rutappa/rutappa")
+            storeFile = file("./rutappa")
             storePassword = "rutappa.2024"
             keyAlias = "rutappa"
             keyPassword = "rutappa.2024"
@@ -118,5 +118,9 @@ dependencies {
     implementation("at.asitplus:kmmresult:1.5.4")
     //Play integrity
     implementation("com.google.android.play:integrity:1.3.0")
+
+    //location
+    implementation("androidx.activity:activity-ktx:1.9.2")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 
 }

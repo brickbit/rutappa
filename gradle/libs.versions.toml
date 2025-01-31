@@ -30,6 +30,7 @@ ktorClientCore = "2.3.7"
 androidx-data-store = "1.1.0-beta01"
 okio = "3.7.0"
 playServicesAuth = "21.0.0"
+activityKtx = "1.8.0"
 
 [libraries]
 aboutlibraries-compose = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "aboutlibrariesCompose" }
@@ -71,6 +72,7 @@ library-base = { module = "io.realm.kotlin:library-base", version.ref = "library
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

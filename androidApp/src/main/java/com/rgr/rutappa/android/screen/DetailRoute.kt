@@ -75,30 +75,35 @@ fun DetailRoute(
     val openAlertDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
+        viewModel.getLocation()
         viewModel.getDetail(
             configuration = R.xml.remote_config_defaults,
             id = tapaId
         )
     }
-    when (state) {
-        is DetailState.Loaded -> {
-            DetailScreen(
-                tapa = state.tapa,
-                voted = state.voted,
-                onVoteClicked = { vote, tapa ->
-                    viewModel.vote(vote = vote, tapa =  tapa)
-                }
-            )
-        }
-        DetailState.Loading -> LoadingScreen()
-        is DetailState.Voted -> {
-            DetailScreen(
-                tapa = state.tapa,
-                voted = true,
-                onVoteClicked = { vote, tapa ->
-                    viewModel.vote(vote = vote, tapa =  tapa)
-                }
-            )
+    if(state.isLoading) {
+        LoadingScreen()
+    } else {
+        if(state.voted) {
+            state.tapa?.let {
+                DetailScreen(
+                    tapa = it,
+                    voted = true,
+                    onVoteClicked = { vote, tapa ->
+                        viewModel.vote(vote = vote, tapa =  tapa)
+                    }
+                )
+            }
+        } else {
+            state.tapa?.let {
+                DetailScreen(
+                    tapa = it,
+                    voted = state.voted,
+                    onVoteClicked = { vote, tapa ->
+                        viewModel.vote(vote = vote, tapa =  tapa)
+                    }
+                )
+            }
         }
     }
     when (errorState) {
@@ -379,7 +384,9 @@ fun DetailScreenPreview() {
                     name = "Taberna los Cazurros",
                     province = "León",
                     instagram = "",
-                    facebook = ""
+                    facebook = "",
+                    longitude = "",
+                    latitude = ""
                 )
             ),
             onVoteClicked={_,_ ->},

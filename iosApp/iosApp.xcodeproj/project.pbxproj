@@ -10,6 +10,8 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
+		6217A5932D4E4BCA00F4B58D /* remote_config_defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6217A5922D4E4BCA00F4B58D /* remote_config_defaults.plist */; };
+		6217A5952D4EBC3900F4B58D /* LocationProviderImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6217A5942D4EBC3900F4B58D /* LocationProviderImpl.swift */; };
 		CE128BE12B78EAC300EDDE15 /* LoginProviderImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE128BE02B78EAC300EDDE15 /* LoginProviderImpl.swift */; };
 		CE1477122B7A78160084C8EB /* SocialWallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1477112B7A78160084C8EB /* SocialWallView.swift */; };
 		CE20BAD52B717BBD001ED257 /* RoutesSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE20BAD42B717BBD001ED257 /* RoutesSwift.swift */; };
@@ -48,7 +50,6 @@
 		CE2517FA2B76FC8E0053261E /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CE2517F92B76FC8E0053261E /* FirebaseStorage */; };
 		CE2517FC2B76FC8E0053261E /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = CE2517FB2B76FC8E0053261E /* FirebaseStorageCombine-Community */; };
 		CE2518052B77CE780053261E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2518042B77CE780053261E /* AppDelegate.swift */; };
-		CE2518082B77D4B90053261E /* remote_config_defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE2518072B77D4B90053261E /* remote_config_defaults.plist */; };
 		CE25180C2B77ED3A0053261E /* FirebaseRemoteDataProviderImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25180B2B77ED3A0053261E /* FirebaseRemoteDataProviderImpl.swift */; };
 		CE25180F2B7810140053261E /* TapaItemSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25180E2B7810140053261E /* TapaItemSwift.swift */; };
 		CE2518112B78111C0053261E /* LocalItemSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2518102B78111C0053261E /* LocalItemSwift.swift */; };
@@ -82,6 +83,8 @@
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
+		6217A5922D4E4BCA00F4B58D /* remote_config_defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = remote_config_defaults.plist; sourceTree = "<group>"; };
+		6217A5942D4EBC3900F4B58D /* LocationProviderImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationProviderImpl.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* Rutappa dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rutappa dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE128BE02B78EAC300EDDE15 /* LoginProviderImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginProviderImpl.swift; sourceTree = "<group>"; };
@@ -98,7 +101,6 @@
 		CE20BAE62B717E5C001ED257 /* DetailState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailState.swift; sourceTree = "<group>"; };
 		CE20BAE92B72C782001ED257 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		CE2518042B77CE780053261E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CE2518072B77D4B90053261E /* remote_config_defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = remote_config_defaults.plist; path = ../../../../Downloads/remote_config_defaults.plist; sourceTree = "<group>"; };
 		CE25180B2B77ED3A0053261E /* FirebaseRemoteDataProviderImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseRemoteDataProviderImpl.swift; sourceTree = "<group>"; };
 		CE25180E2B7810140053261E /* TapaItemSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapaItemSwift.swift; sourceTree = "<group>"; };
 		CE2518102B78111C0053261E /* LocalItemSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalItemSwift.swift; sourceTree = "<group>"; };
@@ -193,7 +195,7 @@
 				CE20BACF2B717B51001ED257 /* app */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF8C242A565B00829871 /* Info.plist */,
-				CE2518072B77D4B90053261E /* remote_config_defaults.plist */,
+				6217A5922D4E4BCA00F4B58D /* remote_config_defaults.plist */,
 				CE20BAD12B717B6B001ED257 /* navigation */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
 				CE20BAD32B717B95001ED257 /* screen */,
@@ -268,6 +270,7 @@
 				CE128BE02B78EAC300EDDE15 /* LoginProviderImpl.swift */,
 				CE9A50B12B7923DD008344AE /* AppleAuthProvider.swift */,
 				CE9A50B32B7923E9008344AE /* ResultAuthProvider.swift */,
+				6217A5942D4EBC3900F4B58D /* LocationProviderImpl.swift */,
 			);
 			path = provider;
 			sourceTree = "<group>";
@@ -425,9 +428,9 @@
 			files = (
 				CE6B93E92B7C261700DF3647 /* commonMain in Resources */,
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
+				6217A5932D4E4BCA00F4B58D /* remote_config_defaults.plist in Resources */,
 				CE86AF932B7D8EE700DC7738 /* GoogleService-Info.plist in Resources */,
 				058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */,
-				CE2518082B77D4B90053261E /* remote_config_defaults.plist in Resources */,
 				CE9A50AF2B79104F008344AE /* montserrat.ttf in Resources */,
 				CE6B93E82B7C261700DF3647 /* iosMain in Resources */,
 				CE9A50B02B79104F008344AE /* berlin.ttf in Resources */,
@@ -501,6 +504,7 @@
 				CE20BAD72B717C3C001ED257 /* Navigator.swift in Sources */,
 				CE128BE12B78EAC300EDDE15 /* LoginProviderImpl.swift in Sources */,
 				CE6B93EB2B7C3E0C00DF3647 /* FirestoreErrorStateSwift.swift in Sources */,
+				6217A5952D4EBC3900F4B58D /* LocationProviderImpl.swift in Sources */,
 				CE2518052B77CE780053261E /* AppDelegate.swift in Sources */,
 				CE20BAE32B717D7F001ED257 /* LoginState.swift in Sources */,
 				CE20BAD92B717CBE001ED257 /* SplashView.swift in Sources */,

@@ -9,25 +9,13 @@
 import Foundation
 import shared
 
-enum DetailStateSwift {
-    case loading
-    case loaded(tapa: TapaItemBo, voted: Bool)
-    case voted(tapa: TapaItemBo, voted: Bool)
-}
-
-extension DetailStateSwift {
-    init?(_ value: DetailState) {
-        switch value {
-        case is DetailState.Loading:
-            self = .loading
-        case let loaded as DetailState.Loaded:
-            self = .loaded(tapa: loaded.tapa, voted: loaded.voted)
-        case let votedTapa as DetailState.Voted:
-            self = .voted(tapa: votedTapa.tapa, voted: votedTapa.voted)
-        default:
-            return nil
-        }
-    }
+struct DetailStateSwift {
+    var isLoading: Bool = true
+    var tapa: TapaItemBo? = nil
+    var voted: Bool = false
+    var location: KotlinPair<NSString, NSString>? = nil
+    var canVote: Bool = false
+    var isWithinRadius: Bool = false
 }
 
 

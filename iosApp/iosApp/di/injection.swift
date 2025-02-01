@@ -16,7 +16,7 @@ extension IsUserLoggedUseCase {
 }
 
 extension SplashViewModel {
-    static let shared = SplashViewModel(isUserLoggedUseCase: IsUserLoggedUseCase.shared)
+    static let shared = SplashViewModel(isUserLoggedUseCase: IsUserLoggedUseCase.shared, localRepository: LocalRepositoryImpl.shared)
 }
 
 //LOGIN
@@ -25,7 +25,7 @@ extension SignInUseCase {
 }
 
 extension LocalRepositoryImpl {
-    static let shared = LocalRepositoryImpl(dataStore: DataStoreNativeKt.dataStoreNative())
+    static let shared = LocalRepositoryImpl(dataStore: DataStorePreference_nativeKt.dataStorePreferences(corruptionHandler: nil, coroutineScope: nil, migrations: [], calculatedPath: ""))
 }
 
 extension SignInWithIntentUseCase {
@@ -33,7 +33,7 @@ extension SignInWithIntentUseCase {
 }
 
 extension LoginViewModel {
-    static let shared = LoginViewModel(signInUseCase: SignInUseCase.shared, signInWithIntentUseCase: SignInWithIntentUseCase.shared)
+    static let shared = LoginViewModel(signInUseCase: SignInUseCase.shared, signInWithIntentUseCase: SignInWithIntentUseCase.shared, localRepository: LocalRepositoryImpl.shared)
 }
 
 //MAIN
@@ -50,10 +50,14 @@ extension GetTapaListUseCase {
 }
 
 extension MainViewModel {
-    static let shared = MainViewModel(getTapaUseCase: GetTapaListUseCase.shared, logoutUseCase: LogoutUseCase.shared, deleteAccountUseCase: DeleteAccountUseCase.shared)
+    static let shared = MainViewModel(getTapaUseCase: GetTapaListUseCase.shared, logoutUseCase: LogoutUseCase.shared, deleteAccountUseCase: DeleteAccountUseCase.shared, localRepository: LocalRepositoryImpl.shared)
 }
 
 //DETAIL
+
+extension LocationProviderImpl {
+    static let shared = LocationProviderImpl()
+}
 
 extension GetTapaDetailUseCase {
     static let shared = GetTapaDetailUseCase(remoteConfig: FirebaseRemoteDataProviderImpl.shared)
@@ -70,10 +74,19 @@ extension TapaVotedUseCase {
     static let shared = TapaVotedUseCase(localRepository: LocalRepositoryImpl.shared)
 }
 
+extension GetLocationUseCase {
+    static let shared = GetLocationUseCase(repository: LocationProviderImpl.shared)
+}
+
+extension IsWithinRadiusUseCase {
+    static let shared = IsWithinRadiusUseCase()
+}
 extension DetailViewModel {
     static let shared = DetailViewModel(
         detailUseCase: GetTapaDetailUseCase.shared,
         voteUseCase: VoteUseCase.shared,
-        tapaVotedUseCase: TapaVotedUseCase.shared
+        tapaVotedUseCase: TapaVotedUseCase.shared,
+        locationUseCase: GetLocationUseCase.shared,
+        isWithinRadiusUseCase: IsWithinRadiusUseCase.shared
     )
 }

@@ -34,43 +34,44 @@ struct DetailView: View {
     }
     
     func detailContent() -> AnyView {
-        switch viewModel.state {
-        case .loading: return AnyView(LoadingView())
-        case .loaded(let tapa, let voted):
-            print("$$$$ \(tapa.local.instagram) \(tapa.local.facebook)")
-            return AnyView(
-                DetailScreen(
-                    tapa: tapa,
-                    voted: voted,
-                    voteTapa: { vote, tapa in
-                        Task {
-                            viewModel.voteTapa(vote: vote, tapa: tapa)
+        if(viewModel.state.isLoading) {
+            return AnyView(LoadingView())
+        } else {
+            if(viewModel.state.voted) {
+                return AnyView(
+                    DetailScreen(
+                        tapa: viewModel.state.tapa!,
+                        voted: true,
+                        voteTapa: { vote, tapa in
+                            Task {
+                                viewModel.voteTapa(vote: vote, tapa: tapa)
+                            }
                         }
+                    ).overlay(alignment: .top) {
+                        Color("secondaryColor")
+                            .background(Color("secondaryColor"))
+                            .ignoresSafeArea(edges: .top)
+                            .frame(height: 0)
                     }
-                ).overlay(alignment: .top) {
-                    Color("secondaryColor")
-                        .background(Color("secondaryColor"))
-                        .ignoresSafeArea(edges: .top)
-                        .frame(height: 0)
-                }
-            )
-        case .voted(let tapa, _):
-            return AnyView(
-                DetailScreen(
-                    tapa: tapa,
-                    voted: true,
-                    voteTapa: { vote, tapa in
-                        Task {
-                            viewModel.voteTapa(vote: vote, tapa: tapa)
+                )
+            } else {
+                return AnyView(
+                    DetailScreen(
+                        tapa: viewModel.state.tapa!,
+                        voted: viewModel.state.voted,
+                        voteTapa: { vote, tapa in
+                            Task {
+                                viewModel.voteTapa(vote: vote, tapa: tapa)
+                            }
                         }
+                    ).overlay(alignment: .top) {
+                        Color("secondaryColor")
+                            .background(Color("secondaryColor"))
+                            .ignoresSafeArea(edges: .top)
+                            .frame(height: 0)
                     }
-                ).overlay(alignment: .top) {
-                    Color("secondaryColor")
-                        .background(Color("secondaryColor"))
-                        .ignoresSafeArea(edges: .top)
-                        .frame(height: 0)
-                }
-            )
+                )
+            }
         }
     }
     
@@ -316,7 +317,7 @@ extension DetailView {
     @MainActor class IOSDetailViewModel: ObservableObject {
         private let viewModel: DetailViewModel
                 
-        @Published var state: DetailStateSwift = DetailStateSwift.loading
+        @Published var state: DetailStateSwift = DetailStateSwift()
         @Published var errorState: FirestoreErrorStateSwift = FirestoreErrorStateSwift.noError
 
         private var handle: DisposableHandle?
@@ -330,7 +331,9 @@ extension DetailView {
         func startObserving() {
             handle = viewModel.state.subscribe(onCollect: { state in
                 if let state = state {
-                    self.state = DetailStateSwift(state) ?? .loading
+                    self.state = DetailStateSwift(
+                        
+                    )
                 }
             })
         }

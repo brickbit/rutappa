@@ -8,13 +8,13 @@ import kotlinx.coroutines.CoroutineScope
 
 actual fun dataStorePreferences(
     corruptionHandler: ReplaceFileCorruptionHandler<Preferences>?,
-    coroutineScope: CoroutineScope,
+    coroutineScope: CoroutineScope?,
     migrations: List<DataMigration<Preferences>>,
     calculatedPath: String
 ): DataStore<Preferences> = createDataStoreWithDefaults(
     corruptionHandler = corruptionHandler,
     migrations = migrations,
-    coroutineScope = coroutineScope,
+    coroutineScope = coroutineScope!!,
     path = {
         calculatedPath
     })

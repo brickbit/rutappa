@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -82,15 +83,9 @@ fun SplashScreen(
         ) {
             Image(
                 modifier = Modifier
-                    .size(50.dp)
-                    .padding(bottom = 8.dp),
-                painter = painterResource(id = R.drawable.tierra_sabor_logo),
-                contentDescription = null)
-            Text(
-                text = stringResource(R.string.splash_title),
-                style = MaterialTheme.typography.displayLarge.copy(
-                    color = MaterialTheme.colorScheme.primary
-                )
+                    .width(200.dp),
+                painter = painterResource(id = R.drawable.legumbres_tapas_white),
+                contentDescription = null
             )
             Text(
                 text = stringResource(R.string.copyrigth),
@@ -98,7 +93,13 @@ fun SplashScreen(
                     color = MaterialTheme.colorScheme.primary
                 )
             )
-
+            Image(
+                modifier = Modifier
+                    .size(90.dp)
+                    .padding(bottom = 8.dp),
+                painter = painterResource(id = R.drawable.tierra_sabor_logo),
+                contentDescription = null
+            )
         }
     }
 }

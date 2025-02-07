@@ -37,4 +37,8 @@
     <string name="error_delete_account">Error al eliminar cuenta</string>
     <string name="login_login">Estamos iniciando sesión...</string>
     <string name="press_to_continue">Pulsa para continuar</string>
+    <string name="logout">SALIR</string>
+    <string name="tapas">TAPAS</string>
+    <string name="partners">PATROCINADORES</string>
+    <string name="x">X</string>
 </resources>

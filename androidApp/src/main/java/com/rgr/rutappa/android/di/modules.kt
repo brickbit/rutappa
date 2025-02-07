@@ -14,6 +14,7 @@ import com.rgr.rutappa.android.provider.LoginProviderImpl
 import com.rgr.rutappa.app.viewModel.DetailViewModel
 import com.rgr.rutappa.app.viewModel.LoginViewModel
 import com.rgr.rutappa.app.viewModel.MainViewModel
+import com.rgr.rutappa.app.viewModel.PartnerViewModel
 import com.rgr.rutappa.app.viewModel.SplashViewModel
 import com.rgr.rutappa.data.local.SETTINGS_PREFERENCES
 import com.rgr.rutappa.data.local.dataStorePreferences
@@ -52,4 +53,5 @@ val viewModelModules = module {
     viewModel { LoginViewModel(get(), get(), get()) }
     viewModel { MainViewModel(get(), get(), get(), get()) }
     viewModel { DetailViewModel(get(), get(), get(), get(), get()) }
+    viewModel { PartnerViewModel(get()) }
 }

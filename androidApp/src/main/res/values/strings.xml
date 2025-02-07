@@ -41,4 +41,8 @@
     <string name="tapas">TAPAS</string>
     <string name="partners">PATROCINADORES</string>
     <string name="x">X</string>
+    <string name="gretings_1">Gracias a todos aquellos que han hecho posible que el Campeonato desTAPA las LEGUMBRES Tierra de Sabor sea hoy una realidad.</string>
+    <string name="gretings_2">Ellos han confiado en esta idea, y han contribuido a dar a las legumbres el lugar que se merecen.</string>
+    <string name="main_collaborator">COLABORADOR PRINCIPAL</string>
+    <string name="technical_organization">ORGANIZACIÓN TÉCNICA</string>
 </resources>

@@ -1,8 +1,6 @@
 package com.rgr.rutappa.android.screen
 
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -34,10 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,6 +48,7 @@ import com.rgr.rutappa.android.R
 import com.rgr.rutappa.android.backgroundColor
 import com.rgr.rutappa.android.screen.common.Header
 import com.rgr.rutappa.android.screen.common.LoadingScreen
+import com.rgr.rutappa.android.screen.common.Menu
 import com.rgr.rutappa.android.screen.common.SocialWall
 import com.rgr.rutappa.app.state.MainState
 import com.rgr.rutappa.app.viewModel.MainViewModel
@@ -64,7 +61,8 @@ import org.koin.androidx.compose.koinViewModel
 fun MainRoute(
     viewModel: MainViewModel = koinViewModel(),
     navigateToDetail: (String) -> Unit,
-    navigateToLogin: () -> Unit
+    navigateToLogin: () -> Unit,
+    navigateToPartners: () -> Unit
 ) {
     val state = viewModel.state.collectAsState().value
     val errorState = viewModel.errorState.collectAsState().value
@@ -93,7 +91,10 @@ fun MainRoute(
                 tapas = state.tapas,
                 navigateToDetail = navigateToDetail,
                 deleteAccount = { viewModel.deleteAccount() },
-                logout = { viewModel.logout() }
+                logout = { viewModel.logout() },
+                navigateToPartners = {
+                    navigateToPartners()
+                }
             )
             MainState.Loading -> LoadingScreen()
             MainState.Logout -> {
@@ -112,9 +113,11 @@ fun MainScreen(
     tapas: List<TapaItemBo>,
     navigateToDetail: (String) -> Unit,
     deleteAccount: () -> Unit,
-    logout: () -> Unit
+    logout: () -> Unit,
+    navigateToPartners: () -> Unit
 ) {
     val openLogoutDialog = remember { mutableStateOf(false) }
+    val showMenu = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -128,9 +131,11 @@ fun MainScreen(
         ) {
             item {
                 Column {
-                    Header {
-                        openLogoutDialog.value = true
-                    }
+                    Header(
+                        hasLogout = true,
+                        onShowMenu = { showMenu.value = true }
+                    )
+
                     Text(
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
@@ -164,6 +169,21 @@ fun MainScreen(
         }
         SocialWall()
     }
+    if(showMenu.value) {
+        Menu(
+            onTapaClicked = { showMenu.value = false },
+            onPartnersClicked = {
+                showMenu.value = false
+                navigateToPartners()
+            },
+            onCloseClicked = { showMenu.value = false },
+            onLogoutClicked = {
+                showMenu.value = false
+                openLogoutDialog.value = true
+            }
+        )
+    }
+
     if(openLogoutDialog.value) {
         Dialog(
             onDismissRequest = { openLogoutDialog.value = false }
@@ -307,7 +327,8 @@ fun MainScreenPreview() {
             ),
             navigateToDetail = {},
             deleteAccount = {},
-            logout = {}
+            logout = {},
+            navigateToPartners = {}
         )
     }
 }

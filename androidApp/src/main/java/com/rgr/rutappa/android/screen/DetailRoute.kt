@@ -185,7 +185,8 @@ fun TapaCover(
             contentScale = ContentScale.Crop
         )
         Header(
-            hasLogout = false
+            hasLogout = false,
+            onShowMenu = {}
         )
     }
 }

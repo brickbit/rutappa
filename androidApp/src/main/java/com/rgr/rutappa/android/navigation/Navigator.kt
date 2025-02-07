@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import com.rgr.rutappa.android.screen.DetailRoute
 import com.rgr.rutappa.android.screen.LoginRoute
 import com.rgr.rutappa.android.screen.MainRoute
+import com.rgr.rutappa.android.screen.PartnerRoute
 import com.rgr.rutappa.android.screen.SplashRoute
 import com.rgr.rutappa.app.navigation.Routes
 
@@ -38,6 +39,9 @@ fun Navigator(
                 },
                 navigateToLogin = {
                     navController.navigate(Routes.Login.name)
+                },
+                navigateToPartners = {
+                    navController.navigate(Routes.Partners.name)
                 }
             )
         }
@@ -47,6 +51,18 @@ fun Navigator(
         ) { backStackEntry ->
             val tapaId = backStackEntry.arguments?.getString("tapa") ?: ""
             DetailRoute(tapaId = tapaId)
+        }
+        composable(
+            route = Routes.Partners.name
+        ) {
+            PartnerRoute(
+                navigateToTapa = {
+                    navController.navigate(Routes.Main.name)
+                },
+                navigateToLogout = {
+                    navController.navigate(Routes.Login.name)
+                }
+            )
         }
     }
 }

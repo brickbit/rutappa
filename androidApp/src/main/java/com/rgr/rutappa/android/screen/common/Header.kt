@@ -2,14 +2,10 @@ package com.rgr.rutappa.android.screen.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,13 +18,13 @@ import com.rgr.rutappa.android.R
 @Composable
 fun Header(
     hasLogout: Boolean = true,
-    onItemClicked: () -> Unit = {}
+    onShowMenu: () -> Unit,
 ) {
     Box(
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.BottomEnd
     ) {
-        Box(contentAlignment = Alignment.Center) {
+        Box(contentAlignment = Alignment.TopEnd) {
             Image(
                 painter = painterResource(id = R.drawable.header_onda),
                 contentDescription = null
@@ -40,10 +36,10 @@ fun Header(
                 ) {
                     Image(
                         modifier = Modifier
-                            .padding(end = 16.dp, bottom = 48.dp)
-                            .size(24.dp)
-                            .clickable { onItemClicked() },
-                        painter = painterResource(id = R.drawable.ic_logout),
+                            .padding(end = 16.dp, top = 28.dp)
+                            .size(32.dp)
+                            .clickable { onShowMenu() },
+                        painter = painterResource(id = R.drawable.ic_menu),
                         contentDescription = null,
                         colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
                     )
@@ -52,3 +48,4 @@ fun Header(
         }
     }
 }
+

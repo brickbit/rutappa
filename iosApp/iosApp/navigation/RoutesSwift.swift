@@ -14,6 +14,7 @@ enum RouteSwift: Hashable {
     case login
     case main
     case detail(tapaId: String)
+    case partners
 }
 
 extension RouteSwift {
@@ -27,6 +28,8 @@ extension RouteSwift {
             self = .main
         case let detailRoute as Routes.Detail:
             self = .detail(tapaId: "")
+        case let partners as Routes.Partners:
+            self = .partners
         default:
             return nil
         }

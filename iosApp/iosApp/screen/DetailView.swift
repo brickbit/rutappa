@@ -191,7 +191,7 @@ struct DetailScreen: View {
                     .zIndex(1)
                     .safeAreaInset(edge: .top) {
                         VStack {
-                            HeaderView(hasLogout: false, onItemClicked: {}).padding(.top,1)
+                            HeaderView(hasMenu: false, onItemClicked: {}).padding(.top,1)
                         }.zIndex(2)
                     }
                     

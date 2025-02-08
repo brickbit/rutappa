@@ -93,74 +93,30 @@ struct MainScreen: View {
 
     var body: some View {
         ZStack {
-            ZStack {
-                ZStack {
-                    Rectangle().fill(
-                        LinearGradient(
-                            gradient: Gradient(
-                                colors: [
-                                    Color.white,
-                                    Color("primaryColor").opacity(0.6),
-                                    Color("primaryColor")
-                                ]
-                            ),
-                            startPoint: .top,
-                            endPoint: .bottom
+            ZStack(alignment: .bottom) {
+                ZStack(alignment: .top) {
+                    ZStack {
+                        GradientBackground()
+                        TapaListScrollable(
+                            action: action,
+                            tapas: tapas
                         )
-                    ).frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .edgesIgnoringSafeArea(.all)
-                    
-                }
-                ZStack {
-                    GeometryReader { geometry in
-                        ScrollView {}
-                            .safeAreaInset(edge: .top) {
-                                VStack{
-                                    HeaderView(
-                                        hasMenu: true,
-                                        onItemClicked: {
-                                            showingMenu.toggle()
-                                        }
-                                    ).padding(.top,1)
-                                        .confirmationDialog("Change background", isPresented: $showingLogout) {
-                                            Button("Eliminar cuenta") { deleteAccountAction() }
-                                            Button("Cerrar sesión") { logoutAction() }
-                                            Button("Continuar logado", role: .cancel) { }
-                                        } message: {
-                                            Text("¿Desea cerrar la sesión o eliminar su cuenta?")
-                                        }
-                                }
-                            }
-                            .safeAreaInset(edge: .bottom) {
-                                VStack{
-                                    SocialWallView()
-                                }
-                            }
-                            .frame(maxWidth: .infinity, alignment: .bottom)
                     }
-                    ScrollView {
-                        VStack(alignment: .leading) {
-                            Text("Las tapas del concurso")
-                                .foregroundStyle(Color("secondaryColor"))
-                                .font(Font.custom("Berlin Sans FB Demi", size: 18))
-                                .padding(.horizontal,24)
-                                .padding(.top, 16)
-                                .padding(.bottom,16)
-                            VStack(alignment: .leading, spacing: 8) {
-                                ForEach(tapas, id: \.self) { tapa in
-                                    TapaItemList(
-                                        tapa: tapa
-                                    ).onTapGesture {
-                                        action(tapa.id)
-                                    }
-                                }
-                            }
-                            .padding(.horizontal, 24)
-                        }.ignoresSafeArea()
-                    }
-                    .padding(.top, 120)
-                    .padding(.bottom,100)
+                    HeaderView(
+                        hasMenu: true,
+                        onItemClicked: {
+                            showingMenu.toggle()
+                        }
+                    ).padding(.top,1)
+                        .confirmationDialog("Change background", isPresented: $showingLogout) {
+                            Button("Eliminar cuenta") { deleteAccountAction() }
+                            Button("Cerrar sesión") { logoutAction() }
+                            Button("Continuar logado", role: .cancel) { }
+                        } message: {
+                            Text("¿Desea cerrar la sesión o eliminar su cuenta?")
+                        }
                 }
+                SocialWallView()
             }
             if(showingMenu) {
                 Menu(
@@ -297,3 +253,33 @@ extension MainView {
     }
 }
 
+
+struct TapaListScrollable: View {
+    var action: (String) -> ()
+    var tapas: [TapaItemBo]
+    
+    var body: some View {
+        ScrollView {
+            Spacer(minLength: 140)
+            VStack(alignment: .leading) {
+                Text("Las tapas del concurso")
+                    .foregroundStyle(Color("secondaryColor"))
+                    .font(Font.custom("Berlin Sans FB Demi", size: 18))
+                    .padding(.horizontal,24)
+                    .padding(.top, 16)
+                    .padding(.bottom,16)
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(tapas, id: \.self) { tapa in
+                        TapaItemList(
+                            tapa: tapa
+                        ).onTapGesture {
+                            action(tapa.id)
+                        }
+                    }
+                }
+                .padding(.horizontal, 24)
+            }.ignoresSafeArea()
+            Spacer(minLength: 120)
+        }
+    }
+}

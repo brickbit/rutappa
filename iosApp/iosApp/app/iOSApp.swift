@@ -25,6 +25,8 @@ struct iOSApp: App {
                             MainView().navigationBarBackButtonHidden(true)
                         case .detail(let id):
                             DetailView(id: id)
+                        case .partners:
+                            PartnersView()
                         }
                     }
             }.accentColor(.white)

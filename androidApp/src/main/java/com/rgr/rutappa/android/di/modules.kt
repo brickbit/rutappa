@@ -53,5 +53,5 @@ val viewModelModules = module {
     viewModel { LoginViewModel(get(), get(), get()) }
     viewModel { MainViewModel(get(), get(), get(), get()) }
     viewModel { DetailViewModel(get(), get(), get(), get(), get()) }
-    viewModel { PartnerViewModel(get()) }
+    viewModel { PartnerViewModel(get(), get(), get()) }
 }

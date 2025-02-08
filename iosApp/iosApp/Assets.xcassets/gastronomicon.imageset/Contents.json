@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "tierra_sabor_negro.png",
+      "filename" : "gastronomicom 1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "tierra_sabor_negro 1.png",
+      "filename" : "gastronomicom 2.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "tierra_sabor_negro 2.png",
+      "filename" : "gastronomicom.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

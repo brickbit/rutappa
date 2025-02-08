@@ -15,14 +15,11 @@ struct HeaderView: View {
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            GeometryReader { metrics in
-                Image("header_onda")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .scaledToFill()
-                    .frame(maxWidth: metrics.size.width)
-                    .frame(height: 120)
-            }.edgesIgnoringSafeArea(.top)
+            Image("header_onda")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .scaledToFill()
+                .frame(height: 120)
             if(hasMenu) {
                 ZStack {
                     Image(uiImage: menu!)

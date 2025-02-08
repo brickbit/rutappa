@@ -90,3 +90,9 @@ extension DetailViewModel {
         isWithinRadiusUseCase: IsWithinRadiusUseCase.shared
     )
 }
+
+//PARTNERS
+
+extension PartnerViewModel {
+    static let shared = PartnerViewModel(deleteAccountUseCase: DeleteAccountUseCase.shared, localRepository: LocalRepositoryImpl.shared, logoutUseCase: LogoutUseCase.shared)
+}

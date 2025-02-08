@@ -95,9 +95,9 @@ extension SplashView {
         // Observes to state changes
         func startObserving() {
             handle = viewModel.state.subscribe(onCollect: { state in
-                /*if let state = state {
+                if let state = state {
                     self.state = SplashStateSwift(state) ?? .initialized
-                }*/
+                }
             })
         }
         

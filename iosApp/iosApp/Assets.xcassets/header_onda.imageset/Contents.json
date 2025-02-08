@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "header_onda.png",
+      "filename" : "header_onda_ios 2.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "header_onda@2x.png",
+      "filename" : "header_onda_ios 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "header_onda@3x.png",
+      "filename" : "header_onda_ios.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

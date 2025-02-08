@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct HeaderView: View {
-    let hasLogout: Bool
+    let hasMenu: Bool
     let onItemClicked: () -> ()
-    var logout = UIImage(named: "logout")
+    var menu = UIImage(named: "menu")
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -23,9 +23,9 @@ struct HeaderView: View {
                     .frame(maxWidth: metrics.size.width)
                     .frame(height: 120)
             }.edgesIgnoringSafeArea(.top)
-            if(hasLogout) {
+            if(hasMenu) {
                 ZStack {
-                    Image(uiImage: logout!)
+                    Image(uiImage: menu!)
                         .resizable()
                         .tint(Color("primaryColor"))
                         .frame(width: 24, height: 24)

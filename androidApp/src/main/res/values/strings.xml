@@ -16,7 +16,7 @@
     <string name="ok">Ok</string>
     <!--MAIN-->
     <string name="main_title">I CAMPEONATO NACIONAL desTAPA las LEGUMBRES</string>
-    <string name="main_subtitle">Las tapas del concurso</string>
+    <string name="main_subtitle">LAS TAPAS</string>
     <!--DETAIL-->
     <string name="error_detail_firestore_other">Se ha producido un error al enviar la votación</string>
     <string name="error_detail_firestore_voted_yet">No puedes volver a votar la misma tapa</string>
@@ -45,4 +45,5 @@
     <string name="gretings_2">Ellos han confiado en esta idea, y han contribuido a dar a las legumbres el lugar que se merecen.</string>
     <string name="main_collaborator">COLABORADOR PRINCIPAL</string>
     <string name="technical_organization">ORGANIZACIÓN TÉCNICA</string>
+    <string name="filter_by_province">Filtrar por provincia</string>
 </resources>

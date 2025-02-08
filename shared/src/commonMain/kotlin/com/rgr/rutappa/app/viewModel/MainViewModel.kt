@@ -2,6 +2,7 @@ package com.rgr.rutappa.app.viewModel
 
 import com.rgr.rutappa.app.flow.toCommonStateFlow
 import com.rgr.rutappa.app.state.MainState
+import com.rgr.rutappa.data.repository.tapas
 import com.rgr.rutappa.domain.error.RemoteConfigError
 import com.rgr.rutappa.domain.model.ResultKMM
 import com.rgr.rutappa.domain.repository.LocalRepository
@@ -20,45 +21,45 @@ class MainViewModel(
     private val deleteAccountUseCase: DeleteAccountUseCase,
     private val localRepository: LocalRepository,
 ): BaseViewModel() {
-    private val _state: MutableStateFlow<MainState> = MutableStateFlow(MainState.Loading)
+    private val _state: MutableStateFlow<MainState> = MutableStateFlow(MainState())
     val state = _state.stateIn(
         scope = scope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = MainState.Loading
-    ).toCommonStateFlow()
-
-    private val _errorState: MutableStateFlow<RemoteConfigError> = MutableStateFlow(RemoteConfigError.NoError)
-    val errorState = _errorState.stateIn(
-        scope = scope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = RemoteConfigError.NoError
+        initialValue = MainState()
     ).toCommonStateFlow()
 
     fun getListTapas(configuration: Int) {
         scope.launch {
-            val result = getTapaUseCase.invoke(configuration)
-            when(result) {
+            _state.update { it.copy(isLoading = false) }
+            when(val result = getTapaUseCase.invoke(configuration)) {
                 is ResultKMM.Success -> {
+                    val provinces = result.data.map { tapa -> tapa.local.province }.toSet().sorted().toMutableList()
+                    provinces.add(0, ALL_TAPAS)
                     _state.update {
-                        MainState.Loaded(result.data)
+                        it.copy(
+                            tapas = result.data,
+                            filteredTapas = result.data,
+                            provinces = provinces,
+                            isLoading = false
+                        )
                     }
                 }
                 is ResultKMM.Failure -> {
                     when(result.error) {
                         RemoteConfigError.NoError -> { /*Nothing to do here*/ }
                         RemoteConfigError.ItemNotFound -> {
-                            _errorState.update {
-                                RemoteConfigError.ItemNotFound
+                            _state.update {
+                                it.copy(isLoading = false, error = RemoteConfigError.ItemNotFound)
                             }
                         }
                         RemoteConfigError.NoActivityError -> {
-                            _errorState.update {
-                                RemoteConfigError.NoActivityError
+                            _state.update {
+                                it.copy(isLoading = false, error = RemoteConfigError.NoActivityError)
                             }
                         }
                         RemoteConfigError.RemoteConfigTaskFailed -> {
-                            _errorState.update {
-                                RemoteConfigError.RemoteConfigTaskFailed
+                            _state.update {
+                                it.copy(isLoading = false, error = RemoteConfigError.RemoteConfigTaskFailed)
                             }
                         }
                     }
@@ -73,11 +74,11 @@ class MainViewModel(
             val result = logoutUseCase.invoke()
             if(result.isSuccess) {
                 _state.update {
-                    MainState.Logout
+                    it.copy(isLoading = false, logout = true)
                 }
             } else {
                 _state.update {
-                    MainState.MainStateError
+                    it.copy(isLoading = false, error = RemoteConfigError.LogoutFailed)
                 }
             }
         }
@@ -86,18 +87,35 @@ class MainViewModel(
     fun deleteAccount() {
         scope.launch {
             _state.update {
-                MainState.Loading
+                it.copy(isLoading = true)
             }
             val result = deleteAccountUseCase.invoke()
             if(result.isSuccess) {
                 _state.update {
-                    MainState.Logout
+                    it.copy(isLoading = false, logout = true)
                 }
             } else {
                 _state.update {
-                    MainState.MainStateError
+                    it.copy(isLoading = false, error = RemoteConfigError.LogoutFailed)
                 }
             }
         }
+    }
+
+    fun filterTapa(filter: String) {
+        _state.update {
+            it.copy(
+                filteredTapas =
+                    if (filter == ALL_TAPAS) {
+                        state.value.tapas
+                    } else {
+                        state.value.tapas.filter { tapa -> tapa.local.province == filter }
+                    }
+            )
+        }
+    }
+
+    companion object {
+        const val ALL_TAPAS = "Todas"
     }
 }

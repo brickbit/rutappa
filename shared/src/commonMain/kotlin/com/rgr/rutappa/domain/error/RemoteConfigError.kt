@@ -5,4 +5,5 @@ sealed class RemoteConfigError: Error() {
     data object ItemNotFound: RemoteConfigError()
     data object NoActivityError: RemoteConfigError()
     data object RemoteConfigTaskFailed: RemoteConfigError()
+    data object LogoutFailed: RemoteConfigError()
 }

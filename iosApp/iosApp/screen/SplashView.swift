@@ -59,15 +59,16 @@ struct SplashScreen: View {
                     .resizable()
                     .frame(width: 450, height: 450)
                     .padding()
-                Image(.tierraSaborLogo)
+                Image(.legumbresTapas)
                     .resizable()
-                    .frame(width: 50, height: 50)
-                Text("#LEGUMBRES♡TAPAS")
-                    .foregroundStyle(Color("primaryColor"))
-                    .font(Font.custom("Berlin Sans FB Demi", size: 20))
-                Text("©2024 desTAPA las LEGUMBRES")
+                    .frame(width: 250, height: 25)
+                Text("©2025 desTAPA las LEGUMBRES")
                     .foregroundStyle(Color("primaryColor"))
                     .font(Font.custom("Montserrat", size: 16))
+                Image(.tierraSaborLogo)
+                    .resizable()
+                    .frame(width: 110, height: 110)
+
             }
         }
     }
@@ -94,9 +95,9 @@ extension SplashView {
         // Observes to state changes
         func startObserving() {
             handle = viewModel.state.subscribe(onCollect: { state in
-                if let state = state {
+                /*if let state = state {
                     self.state = SplashStateSwift(state) ?? .initialized
-                }
+                }*/
             })
         }
         

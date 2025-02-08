@@ -6,12 +6,12 @@
       "scale" : "1x"
     },
     {
-      "filename" : "header_onda 1.png",
+      "filename" : "header_onda@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "header_onda 2.png",
+      "filename" : "header_onda@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

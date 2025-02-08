@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "tierra_sabor_logo.png",
+      "filename" : "ic_menu.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "tierra_sabor_logo 1.png",
+      "filename" : "ic_menu@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "tierra_sabor_logo 2.png",
+      "filename" : "ic_menu@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

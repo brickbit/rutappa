@@ -332,7 +332,12 @@ extension DetailView {
             handle = viewModel.state.subscribe(onCollect: { state in
                 if let state = state {
                     self.state = DetailStateSwift(
-                        
+                        isLoading: state.isLoading,
+                        tapa: state.tapa,
+                        voted: state.voted,
+                        location: state.location,
+                        canVote: state.canVote,
+                        isWithinRadius: state.canVote
                     )
                 }
             })

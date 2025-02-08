@@ -15,13 +15,11 @@ struct LocalItemSwift: Codable {
     let province: String
     let instagram: String
     let facebook: String
-    let longitude: String
-    let latitude: String
 }
 
 
 extension LocalItemSwift {
     func toBo() -> LocalItemBo {
-        return LocalItemBo(id: id, name: name, province: province, instagram: instagram, facebook: facebook, longitude: longitude, latitude: latitude )
+        return LocalItemBo(id: id, name: name, province: province, instagram: instagram, facebook: facebook, longitude: "", latitude: "" )
     }
 }

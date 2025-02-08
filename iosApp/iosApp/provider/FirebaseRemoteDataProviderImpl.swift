@@ -46,6 +46,7 @@ class FirebaseRemoteDataProviderImpl: FirebaseRemoteDataProvider {
               let data = Data(remoteText.utf8)
               do {
                   let decoded = try decoder.decode([TapaITemSwift].self, from: data)
+                  print(decoded)
                   completionHandler(ResultKMMSuccess(data: decoded.map{$0.toBo()} as NSArray), nil)
               } catch {
                   print("Failed to decode JSON")

@@ -34,16 +34,23 @@ struct MainView: View {
     }
     
     func mainContent() -> AnyView {
-        print("########## mainContent")
         var navigated = false
-        
-        
-        switch viewModel.state {
-        case .loading: return AnyView(LoadingView())
-        case .loaded(let tapas):
+        if(viewModel.state.isLoading) {
+            return AnyView(LoadingView())
+        } else {
+            if(viewModel.state.logout) {
+                return AnyView(LoadingView().task {
+                    navigator.navigate(to: .login)
+                })
+            }
+            if(viewModel.state.error == "RemoteConfigError.LogoutFailed") {
+                return AnyView(LoadingView().task {
+                    navigator.navigate(to: .login)
+                })
+            }
             return AnyView(
                 MainScreen(
-                    tapas: tapas,
+                    tapas: viewModel.state.filteredTapas,
                     action: { tapa in
                         Task {
                             navigator.navigate(to: .detail(tapaId: tapa))
@@ -64,16 +71,7 @@ struct MainView: View {
                         .frame(height: 0)
                 }
             )
-        case .logout:
-            return AnyView(LoadingView().task {
-                navigator.navigate(to: .login)
-            })
-        case .error:
-            return AnyView(LoadingView().task {
-                navigator.navigate(to: .login)
-            })
         }
-    
     }
 }
 
@@ -213,7 +211,7 @@ extension MainView {
         private let loginProvider: LoginProvider = LoginProvideImpl.shared
         private let firestoreProvider: FirestoreProvider = FirestoreProviderImpl.shared
 
-        @Published var state: MainStateSwift = MainStateSwift.loading
+        @Published var state: MainStateSwift = MainStateSwift()
         
         private var handle: DisposableHandle?
 
@@ -226,7 +224,14 @@ extension MainView {
         func startObserving() {
             handle = viewModel.state.subscribe(onCollect: { state in
                 if let state = state {
-                    self.state = MainStateSwift(state) ?? .loading
+                    self.state = MainStateSwift(
+                        isLoading: state.isLoading,
+                        tapas: state.tapas,
+                        filteredTapas: state.filteredTapas,
+                        logout: state.logout,
+                        provinces: state.provinces,
+                        error: state.error?.message
+                    )
                 }
             })
         }
@@ -248,11 +253,11 @@ extension MainView {
                         try await localRepository.removeTapaVoted()
                         try await firestoreProvider.removeVote(user: user)
                         print("########## deleteAccount Result OK OK OK")
-                        self.state = .logout
+                        self.state = MainStateSwift(logout: true)
                     }
                 } catch {
                     print("Unable to delete account")
-                    self.state = .error
+                    self.state = MainStateSwift(error: "RemoteConfigError.LogoutFailed")
                 }
             }
         }

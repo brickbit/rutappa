@@ -60,6 +60,7 @@ import com.rgr.rutappa.android.screen.common.Header
 import com.rgr.rutappa.android.screen.common.LoadingScreen
 import com.rgr.rutappa.android.screen.common.SocialWall
 import com.rgr.rutappa.app.state.DetailState
+import com.rgr.rutappa.app.state.VoteStatus
 import com.rgr.rutappa.app.viewModel.DetailViewModel
 import com.rgr.rutappa.domain.error.FirestoreError
 import com.rgr.rutappa.domain.model.LocalItemBo
@@ -86,11 +87,13 @@ fun DetailRoute(
     if(state.isLoading) {
         LoadingScreen()
     } else {
-        if(state.voted) {
+        if(state.voteStatus == VoteStatus.VOTED) {
             state.tapa?.let {
                 DetailScreen(
                     tapa = it,
                     voted = true,
+                    voteStatus = state.voteStatus,
+                    getLocation = { viewModel.getLocation() },
                     onVoteClicked = { vote, tapa ->
                         viewModel.vote(vote = vote, tapa =  tapa)
                     }
@@ -100,7 +103,9 @@ fun DetailRoute(
             state.tapa?.let {
                 DetailScreen(
                     tapa = it,
-                    voted = state.voted,
+                    voted = false,
+                    voteStatus = state.voteStatus,
+                    getLocation = { viewModel.getLocation() },
                     onVoteClicked = { vote, tapa ->
                         viewModel.vote(vote = vote, tapa =  tapa)
                     }
@@ -134,8 +139,11 @@ fun DetailRoute(
 fun DetailScreen(
     tapa: TapaItemBo,
     voted: Boolean,
+    voteStatus: VoteStatus,
+    getLocation: () -> Unit,
     onVoteClicked: (Int, String) -> Unit
 ) {
+    val context = LocalContext.current
     Box(
         modifier = Modifier.fillMaxSize().background(Color.White)
     ) {
@@ -158,8 +166,123 @@ fun DetailScreen(
                 }
                 legumesSection(tapa.legumes)
                 item {
-                    Column {
-                        VoteSection(
+                    when(voteStatus) {
+                        VoteStatus.UNKNOWN -> {
+                            Button(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 136.dp, top = 16.dp, start = 16.dp, end = 16.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.secondary
+                                ),
+                                onClick = {
+                                    val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    val uri = Uri.fromParts("package", context.packageName, null)
+                                    intent.data = uri
+                                    context.startActivity(intent)
+                                    getLocation()
+                                }
+                            ) {
+                                Text(
+                                    text = "Pulse para solicitar permiso de ubicación y votar",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
+                        VoteStatus.LOCATION_INACTIVE -> {
+                            Button(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 136.dp, top = 16.dp, start = 16.dp, end = 16.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.secondary
+                                ),
+                                onClick = { getLocation() }
+                            ) {
+                                Text(
+                                    text = "Pulse para activar la ubicación",
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+                        }
+                        VoteStatus.LOCATION_ACTIVE -> { Box(modifier = Modifier) }
+                        VoteStatus.LOCATION_ALLOW -> { Box(modifier = Modifier) }
+                        VoteStatus.LOCATION_NOT_ALLOW -> {
+                            Button(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 136.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.secondary
+                                ),
+                                onClick = { getLocation() }
+                            ) {
+                                Text(
+                                    text = "Pulse para solicitar permiso de ubicación y votar",
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+                        }
+                        VoteStatus.UNABLE_OBTAIN_LOCATION -> {
+                            Column {
+                                Text(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp)
+                                        .padding(bottom = 8.dp),
+                                    text = "Se ha producido un error al obtener la ubicación",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    textAlign = TextAlign.Center
+                                )
+                                Button(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 136.dp, start = 16.dp, end = 16.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.secondary
+                                    ),
+                                    onClick = { getLocation() }
+                                ) {
+                                    Text(
+                                        text = "Reintentar",
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                }
+                            }
+                        }
+                        VoteStatus.OUT_OF_RANGE -> {
+                            Column {
+                                Text(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp)
+                                        .padding(bottom = 8.dp),
+                                    text ="Para poder votar ha de estar en las inmediaciones del local",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    textAlign = TextAlign.Center
+                                )
+                                Button(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 136.dp, start = 16.dp, end = 16.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.secondary
+                                    ),
+                                    onClick = { getLocation() }
+                                ) {
+                                    Text(
+                                        text = "Reintentar",
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                }
+                            }
+                        }
+                        VoteStatus.CAN_VOTE -> VoteSection(
+                            voted = voted,
+                            onVoteClicked = { onVoteClicked(it, tapa.id) }
+                        )
+                        VoteStatus.VOTED -> VoteSection(
                             voted = voted,
                             onVoteClicked = { onVoteClicked(it, tapa.id) }
                         )
@@ -175,7 +298,6 @@ fun DetailScreen(
 fun TapaCover(
     tapa: TapaItemBo
 ) {
-    val context = LocalContext.current
     Box(
         contentAlignment = Alignment.TopStart
     ) {
@@ -393,6 +515,8 @@ fun DetailScreenPreview() {
                     latitude = ""
                 )
             ),
+            voteStatus = VoteStatus.VOTED,
+            getLocation = {},
             onVoteClicked={_,_ ->},
             voted = false
         )

@@ -11,7 +11,7 @@ class IsWithinRadiusUseCase {
         if(lat1 == null || lon1 == null) {
             return false
         }
-        return isWithinRadius(lat1 = lat1, lat2 = lat2, lon1 = lon1, lon2 = lon2, radiusInMeters = 30.0)
+        return isWithinRadius(lat1 = lat1, lat2 = lat2, lon1 = lon1, lon2 = lon2, radiusInMeters = 300.0)
     }
 
     private fun isWithinRadius(

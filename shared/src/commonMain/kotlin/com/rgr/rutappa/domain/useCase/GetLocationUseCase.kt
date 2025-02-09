@@ -6,10 +6,7 @@ import com.rgr.rutappa.domain.provider.LocationProvider
 class GetLocationUseCase(
     private val repository: LocationProvider
 ) {
-    operator fun invoke(): ResultKMM<Pair<String, String>> {
-        if(!repository.hasPermission()) {
-            repository.requestPermission()
-        }
+    suspend operator fun invoke(): ResultKMM<Pair<String, String>> {
         return repository.getLocation()
     }
 }

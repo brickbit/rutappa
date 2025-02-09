@@ -2,15 +2,19 @@ package com.rgr.rutappa.app.viewModel
 
 import com.rgr.rutappa.app.flow.toCommonStateFlow
 import com.rgr.rutappa.app.state.DetailState
+import com.rgr.rutappa.app.state.VoteStatus
 import com.rgr.rutappa.domain.error.FirestoreError
 import com.rgr.rutappa.domain.model.ResultKMM
 import com.rgr.rutappa.domain.model.TapaItemBo
+import com.rgr.rutappa.domain.useCase.ActiveLocationUseCase
 import com.rgr.rutappa.domain.useCase.GetLocationUseCase
 import com.rgr.rutappa.domain.useCase.GetTapaDetailUseCase
+import com.rgr.rutappa.domain.useCase.HasLocationPermissionUseCase
+import com.rgr.rutappa.domain.useCase.IsLocationActiveUseCase
 import com.rgr.rutappa.domain.useCase.IsWithinRadiusUseCase
+import com.rgr.rutappa.domain.useCase.RequestLocationPermissionUseCase
 import com.rgr.rutappa.domain.useCase.TapaVotedUseCase
 import com.rgr.rutappa.domain.useCase.VoteUseCase
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -22,6 +26,10 @@ class DetailViewModel(
     private val voteUseCase: VoteUseCase,
     private val tapaVotedUseCase: TapaVotedUseCase,
     private val locationUseCase: GetLocationUseCase,
+    private val hasLocationPermissionUseCase: HasLocationPermissionUseCase,
+    private val requestLocationPermissionUseCase: RequestLocationPermissionUseCase,
+    private val isLocationActiveUseCase: IsLocationActiveUseCase,
+    private val activeLocationUseCase: ActiveLocationUseCase,
     private val isWithinRadiusUseCase: IsWithinRadiusUseCase
 ): BaseViewModel() {
     private val _state: MutableStateFlow<DetailState> = MutableStateFlow(DetailState())
@@ -38,6 +46,7 @@ class DetailViewModel(
     ).toCommonStateFlow()
 
     private var tapaDetail: TapaItemBo? = null
+
     fun getDetail(configuration: Int, id: String) {
         scope.launch {
             _state.update { it.copy(isLoading = true) }
@@ -47,14 +56,14 @@ class DetailViewModel(
                         tapaDetail = result.data
                         val voted = tapaVotedUseCase.invoke(id)
                         _state.update {
-                            it.copy(isLoading = false, tapa = result.data, voted = voted)
+                            it.copy(isLoading = false, tapa = result.data, voteStatus = if(state.value.voteStatus == VoteStatus.CAN_VOTE && voted) VoteStatus.VOTED else state.value.voteStatus)
                         }
                     }
                     is ResultKMM.Failure -> {
                         tapaDetail?.let { tapaDetail ->
                             val voted = tapaVotedUseCase.invoke(id)
                             _state.update {
-                                it.copy(isLoading = false, tapa = tapaDetail, voted = voted)
+                                it.copy(isLoading = false, tapa = tapaDetail, voteStatus = if(state.value.voteStatus == VoteStatus.CAN_VOTE && voted) VoteStatus.VOTED else state.value.voteStatus)
                             }
                         }
                     }
@@ -63,18 +72,42 @@ class DetailViewModel(
     }
 
     fun getLocation() {
-        _state.update { it.copy(isLoading = true) }
-        when(val location = locationUseCase.invoke()) {
-            is ResultKMM.Success -> {
-                _state.update {
-                    val localCoordinates = Pair(state.value.tapa!!.local.latitude,state.value.tapa!!.local.latitude)
-                    val isWithinRadius = isWithinRadiusUseCase(deviceCoordinates = location.data, localCoordinates = localCoordinates)
-                    it.copy(isLoading = false, location = location.data, isWithinRadius = isWithinRadius)
-                }
+        handleLocationPermission()
+        if(state.value.voteStatus == VoteStatus.LOCATION_ALLOW) {
+            if(isLocationActiveUseCase.invoke()) {
+                _state.update { it.copy(voteStatus = VoteStatus.LOCATION_ACTIVE) }
+                handleLocation()
+            } else {
+                _state.update { it.copy(voteStatus = VoteStatus.LOCATION_INACTIVE) }
+                activeLocationUseCase.invoke()
             }
-            is ResultKMM.Failure -> {
-                _state.update {
-                    it.copy(isLoading = false)
+        }
+    }
+
+    private fun handleLocationPermission() {
+        if(hasLocationPermissionUseCase.invoke()) {
+            _state.update { it.copy(voteStatus = VoteStatus.LOCATION_ALLOW) }
+        } else {
+            requestLocationPermissionUseCase.invoke()
+            _state.update { it.copy(voteStatus = VoteStatus.UNKNOWN) }
+        }
+    }
+
+    private fun handleLocation() {
+        scope.launch {
+            _state.update { it.copy(isLoading = true) }
+            when(val location = locationUseCase.invoke()) {
+                is ResultKMM.Success -> {
+                    _state.update {
+                        val localCoordinates = Pair(state.value.tapa!!.local.latitude,state.value.tapa!!.local.latitude)
+                        val isWithinRadius = isWithinRadiusUseCase(deviceCoordinates = location.data, localCoordinates = localCoordinates)
+                        it.copy(isLoading = false, location = location.data, voteStatus = if (isWithinRadius) VoteStatus.CAN_VOTE else VoteStatus.OUT_OF_RANGE)
+                    }
+                }
+                is ResultKMM.Failure -> {
+                    _state.update {
+                        it.copy(isLoading = false, voteStatus = VoteStatus.UNABLE_OBTAIN_LOCATION)
+                    }
                 }
             }
         }
@@ -87,19 +120,19 @@ class DetailViewModel(
             if (result.isSuccess) {
                 tapaDetail?.let { tapaDetail ->
                     _state.update {
-                        it.copy(isLoading = false, tapa = tapaDetail,voted = true)
+                        it.copy(isLoading = false, tapa = tapaDetail, voteStatus = if(state.value.voteStatus == VoteStatus.CAN_VOTE) VoteStatus.VOTED else state.value.voteStatus)
                     }
                 }
             } else {
                 tapaDetail?.let { tapaDetail ->
                     if(result.exceptionOrNull() is FirestoreError.TapaVotedYet) {
                         _state.update {
-                            it.copy(isLoading = false, tapa = tapaDetail, voted = true)
+                            it.copy(isLoading = false, tapa = tapaDetail, voteStatus = if(state.value.voteStatus == VoteStatus.CAN_VOTE) VoteStatus.VOTED else state.value.voteStatus)
                         }
                     } else {
                         val voted = tapaVotedUseCase.invoke(tapa)
                         _state.update {
-                            it.copy(isLoading = false, tapa = tapaDetail, voted = voted)
+                            it.copy(isLoading = false, tapa = tapaDetail, voteStatus = if(state.value.voteStatus == VoteStatus.CAN_VOTE && voted) VoteStatus.VOTED else state.value.voteStatus)
                         }
                     }
                 }

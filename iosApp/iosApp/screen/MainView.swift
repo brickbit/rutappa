@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import shared
+import Kingfisher
 
 struct MainView: View {
     @ObservedObject var viewModel: IOSMainViewModel
@@ -34,7 +35,6 @@ struct MainView: View {
     }
     
     func mainContent() -> AnyView {
-        var navigated = false
         if(viewModel.state.isLoading) {
             return AnyView(LoadingView())
         } else {
@@ -95,6 +95,7 @@ struct MainScreen: View {
     let navigateToPartnersAction: () -> ()
     let onFilterTapa: (String) -> ()
     var logout = UIImage(named: "logout")
+    
     @State private var showingLogout = false
     @State private var showingMenu = false
 
@@ -154,18 +155,15 @@ struct TapaItemList: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .center, spacing: 16) {
-                AsyncImage(
-                    url: URL(string: tapa.photo),
-                    content: { image in
-                        image.resizable()
-                            .aspectRatio(contentMode: .fill)
-                             .frame(maxWidth: 120, maxHeight: 120)
-                    },
-                    placeholder: {
+                KFImage(URL(string: tapa.photo))
+                    .cacheOriginalImage()
+                    .placeholder {
                         ProgressView()
-                            .frame(maxWidth: 120, maxHeight: 120)
                     }
-                )
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(maxWidth: 120, maxHeight: 120)
+                    
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 VStack(alignment: .leading) {
                     Text(tapa.name)

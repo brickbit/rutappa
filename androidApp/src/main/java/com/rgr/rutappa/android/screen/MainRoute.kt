@@ -287,11 +287,7 @@ fun TapaItemComposable(
             modifier = Modifier
                 .size(120.dp)
                 .clip(RoundedCornerShape(16.dp)),
-            model = ImageRequest.Builder(context)
-                .data(tapa.photo)
-                .memoryCachePolicy(CachePolicy.ENABLED) // Enables memory cache
-                .diskCachePolicy(CachePolicy.ENABLED) // Enables disk cache
-                .build(),
+            model = tapa.photo,
             contentDescription = null,
             contentScale = ContentScale.Crop
         )

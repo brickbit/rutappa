@@ -183,11 +183,7 @@ fun TapaCover(
             modifier = Modifier
                 .padding(top = 90.dp)
                 .height(350.dp),
-            model = ImageRequest.Builder(context)
-                .data(tapa.photo)
-                .memoryCachePolicy(CachePolicy.ENABLED) // Enables memory cache
-                .diskCachePolicy(CachePolicy.ENABLED) // Enables disk cache
-                .build(),
+            model = tapa.photo,
             contentDescription = null,
             contentScale = ContentScale.Crop
         )

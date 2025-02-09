@@ -1,9 +1,7 @@
 package com.rgr.rutappa.app.di
 
 import com.rgr.rutappa.data.local.LocalRepositoryImpl
-import com.rgr.rutappa.data.repository.TapaRepositoryImpl
 import com.rgr.rutappa.domain.repository.LocalRepository
-import com.rgr.rutappa.domain.repository.TapaRepository
 import com.rgr.rutappa.domain.useCase.DeleteAccountUseCase
 import com.rgr.rutappa.domain.useCase.GetLocationUseCase
 import com.rgr.rutappa.domain.useCase.GetTapaDetailUseCase
@@ -18,7 +16,6 @@ import com.rgr.rutappa.domain.useCase.VoteUseCase
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    factory<TapaRepository> { TapaRepositoryImpl() }
     factory<LocalRepository> { LocalRepositoryImpl(get()) }
 }
 

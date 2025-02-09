@@ -52,6 +52,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.rgr.rutappa.android.MainActivity
 import com.rgr.rutappa.android.MyApplicationTheme
 import com.rgr.rutappa.android.R
@@ -272,6 +274,7 @@ fun TapaItemComposable(
     tapa: TapaItemBo,
     onItemClicked: (String) -> Unit
 ) {
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -284,7 +287,11 @@ fun TapaItemComposable(
             modifier = Modifier
                 .size(120.dp)
                 .clip(RoundedCornerShape(16.dp)),
-            model = tapa.photo,
+            model = ImageRequest.Builder(context)
+                .data(tapa.photo)
+                .memoryCachePolicy(CachePolicy.ENABLED) // Enables memory cache
+                .diskCachePolicy(CachePolicy.ENABLED) // Enables disk cache
+                .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop
         )

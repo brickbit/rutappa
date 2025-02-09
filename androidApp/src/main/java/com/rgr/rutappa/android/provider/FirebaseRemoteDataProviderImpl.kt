@@ -28,7 +28,7 @@ class FirebaseRemoteDataProviderImpl(
         remoteConfig.setConfigSettingsAsync(configSettings)
         remoteConfig.addOnConfigUpdateListener(object : ConfigUpdateListener {
             override fun onUpdate(configUpdate: ConfigUpdate) {
-                if (configUpdate.updatedKeys.contains("Tapas")) {
+                if (configUpdate.updatedKeys.contains("TapasV2")) {
                     remoteConfig.activate().addOnCompleteListener {
                     }
                 }
@@ -47,7 +47,7 @@ class FirebaseRemoteDataProviderImpl(
             activity?.let {
                 remoteConfig.fetchAndActivate().addOnCompleteListener(it) { task ->
                     if (task.isSuccessful) {
-                        val structureString = remoteConfig.getString("Tapas")
+                        val structureString = remoteConfig.getString("TapasV2")
                         val tapas = Json.decodeFromString<List<TapaItemBo>>(structureString)
                         cont.resume(ResultKMM.Success(tapas))
                     } else {
@@ -66,7 +66,7 @@ class FirebaseRemoteDataProviderImpl(
             activity?.let {
                 remoteConfig.fetchAndActivate().addOnCompleteListener(it) { task ->
                     if (task.isSuccessful) {
-                        val structureString = remoteConfig.getString("Tapas")
+                        val structureString = remoteConfig.getString("TapasV2")
                         val tapas = Json.decodeFromString<List<TapaItemBo>>(structureString)
                         tapas.firstOrNull {tapa -> tapa.id == id }?.let { tapa ->
                             cont.resume(ResultKMM.Success(tapa))

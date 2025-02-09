@@ -2,7 +2,6 @@ package com.rgr.rutappa.app.viewModel
 
 import com.rgr.rutappa.app.flow.toCommonStateFlow
 import com.rgr.rutappa.app.state.MainState
-import com.rgr.rutappa.data.repository.tapas
 import com.rgr.rutappa.domain.error.RemoteConfigError
 import com.rgr.rutappa.domain.model.ResultKMM
 import com.rgr.rutappa.domain.repository.LocalRepository

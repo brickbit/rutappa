@@ -15,7 +15,7 @@ data class LocalItemBo(
     @SerialName("facebook")
     val facebook: String,
     @SerialName("longitude")
-    val longitude: String = "",
+    val longitude: String?,
     @SerialName("latitude")
-    val latitude: String = "",
+    val latitude: String?,
 )

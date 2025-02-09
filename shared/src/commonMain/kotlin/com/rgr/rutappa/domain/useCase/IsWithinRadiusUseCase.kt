@@ -3,11 +3,14 @@ import kotlin.math.*
 
 class IsWithinRadiusUseCase {
 
-    operator fun invoke(deviceCoordinates: Pair<String,String>, localCoordinates: Pair<String,String>): Boolean {
-        val lat1 = localCoordinates.first.toDouble()
-        val lon1 = localCoordinates.second.toDouble()
+    operator fun invoke(deviceCoordinates: Pair<String,String>, localCoordinates: Pair<String?,String?>): Boolean {
+        val lat1 = localCoordinates.first?.toDouble()
+        val lon1 = localCoordinates.second?.toDouble()
         val lat2 = deviceCoordinates.first.toDouble()
         val lon2 = deviceCoordinates.second.toDouble()
+        if(lat1 == null || lon1 == null) {
+            return false
+        }
         return isWithinRadius(lat1 = lat1, lat2 = lat2, lon1 = lon1, lon2 = lon2, radiusInMeters = 30.0)
     }
 

@@ -50,6 +50,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.rgr.rutappa.android.MyApplicationTheme
 import com.rgr.rutappa.android.R
 import com.rgr.rutappa.android.backgroundColor
@@ -173,6 +175,7 @@ fun DetailScreen(
 fun TapaCover(
     tapa: TapaItemBo
 ) {
+    val context = LocalContext.current
     Box(
         contentAlignment = Alignment.TopStart
     ) {
@@ -180,7 +183,11 @@ fun TapaCover(
             modifier = Modifier
                 .padding(top = 90.dp)
                 .height(350.dp),
-            model = tapa.photo,
+            model = ImageRequest.Builder(context)
+                .data(tapa.photo)
+                .memoryCachePolicy(CachePolicy.ENABLED) // Enables memory cache
+                .diskCachePolicy(CachePolicy.ENABLED) // Enables disk cache
+                .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop
         )

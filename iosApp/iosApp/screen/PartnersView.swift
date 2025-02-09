@@ -47,6 +47,12 @@ struct PartnersView: View {
                     }
                 }
             )
+            .overlay(alignment: .top) {
+                Color("secondaryColor")
+                    .background(Color("secondaryColor"))
+                    .ignoresSafeArea(edges: .top)
+                    .frame(height: 0)
+            }
         )
     }
 }

@@ -28,6 +28,7 @@ struct DetailView: View {
         }
         .onAppear {
             viewModel.startObserving()
+            viewModel.getLocation()
         }
         .onDisappear {
             viewModel.dispose()
@@ -41,6 +42,7 @@ struct DetailView: View {
             if(viewModel.state.voted) {
                 return AnyView(
                     DetailScreen(
+                        location: (viewModel.state.location?.first ?? "0.0") as String,
                         tapa: viewModel.state.tapa!,
                         voted: true,
                         voteTapa: { vote, tapa in
@@ -67,6 +69,7 @@ struct DetailView: View {
             } else {
                 return AnyView(
                     DetailScreen(
+                        location: (viewModel.state.location?.first ?? "0.0") as String,
                         tapa: viewModel.state.tapa!,
                         voted: viewModel.state.voted,
                         voteTapa: { vote, tapa in
@@ -128,6 +131,7 @@ struct DetailView: View {
 }
 
 struct DetailScreen: View {
+    let location: String
     let tapa: TapaItemBo
     let voted: Bool
     let voteTapa: (Int32, String) -> ()
@@ -144,6 +148,7 @@ struct DetailScreen: View {
                 ZStack(alignment: .top) {
                     ZStack {
                         GradientBackground()
+                        Text(location)
                         DetailScreenContent(
                             tapa: tapa,
                             voted: voted,
@@ -381,6 +386,10 @@ extension DetailView {
                     )
                 }
             })
+        }
+        
+        func getLocation() {
+            viewModel.getLocation()
         }
         
         func voteTapa(vote: Int32, tapa: String) {

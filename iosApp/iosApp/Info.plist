@@ -52,5 +52,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need permission to make sure you are at the restaurant you are voting for.</string>
 </dict>
 </plist>

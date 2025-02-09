@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import shared
+import Kingfisher
 
 struct DetailView: View {
     let id: String
@@ -46,6 +47,15 @@ struct DetailView: View {
                             Task {
                                 viewModel.voteTapa(vote: vote, tapa: tapa)
                             }
+                        },
+                        logoutAction: {
+                            
+                        },
+                        deleteAccountAction: {
+                            
+                        },
+                        navigateToPartnersAction: {
+                            
                         }
                     ).overlay(alignment: .top) {
                         Color("secondaryColor")
@@ -63,6 +73,15 @@ struct DetailView: View {
                             Task {
                                 viewModel.voteTapa(vote: vote, tapa: tapa)
                             }
+                        },
+                        logoutAction: {
+                            
+                        },
+                        deleteAccountAction: {
+                            
+                        },
+                        navigateToPartnersAction: {
+                            
                         }
                     ).overlay(alignment: .top) {
                         Color("secondaryColor")
@@ -112,90 +131,114 @@ struct DetailScreen: View {
     let tapa: TapaItemBo
     let voted: Bool
     let voteTapa: (Int32, String) -> ()
-
+    let logoutAction: () -> ()
+    let deleteAccountAction: () -> ()
+    let navigateToPartnersAction: () -> ()
+    
+    @State private var showingLogout = false
+    @State private var showingMenu = false
+    
     var body: some View {
         ZStack {
-            Rectangle().fill(
-              LinearGradient(
-                  gradient: Gradient(
-                      colors: [
-                          Color.white,
-                          Color("primaryColor").opacity(0.6),
-                          Color("primaryColor")
-                      ]
-                  ),
-                  startPoint: .top,
-                  endPoint: .bottom
-              )
-            ).frame(maxWidth: .infinity, maxHeight: .infinity)
-                .edgesIgnoringSafeArea(.all)
-            ZStack {
-                
-                ScrollView {}
-                .safeAreaInset(edge: .bottom) {
-                    VStack{
-                        SocialWallView()
+            ZStack(alignment: .bottom) {
+                ZStack(alignment: .top) {
+                    ZStack {
+                        GradientBackground()
+                        DetailScreenContent(
+                            tapa: tapa,
+                            voted: voted,
+                            voteTapa: voteTapa
+                        )
+                    }
+                    HeaderView(
+                        hasMenu: true,
+                        onItemClicked: {
+                            showingMenu.toggle()
+                        }
+                    )
+                    .padding(.top,1)
+                    .confirmationDialog("Change background", isPresented: $showingLogout) {
+                        Button("Eliminar cuenta") { deleteAccountAction() }
+                        Button("Cerrar sesión") { logoutAction() }
+                        Button("Continuar logado", role: .cancel) { }
+                    } message: {
+                        Text("¿Desea cerrar la sesión o eliminar su cuenta?")
                     }
                 }
-                GeometryReader { geometry in
-                    ScrollView {
-                        VStack(alignment: .leading) {
-                            TapaCover(tapa: tapa)
-                            VStack(alignment: .leading) {
-                                VStack(alignment: .leading) {
-                                    Text(tapa.name.uppercased())
-                                        .foregroundStyle(Color("secondaryColor"))
-                                        .font(Font.custom("Berlin Sans FB Demi", size: 20))
-                                    Text("\(tapa.local.name) \(tapa.local.province)")
-                                        .foregroundStyle(Color("secondaryColor"))
-                                        .font(Font.custom("Montserrat", size: 14))
-                                    HStack {
-                                        if(!tapa.local.instagram.isEmpty) {
-                                            Image("instagram")
-                                                .resizable()
-                                                .frame(width: 24, height: 24)
-                                                .onTapGesture {
-                                                    if let url = URL(string: tapa.local.instagram), UIApplication.shared.canOpenURL(url) {
-                                                        UIApplication.shared.open(url)
-                                                    }
-                                                }
-                                        }
-                                        if(!tapa.local.facebook.isEmpty) {
-                                            Image("facebook")
-                                                .resizable()
-                                                .frame(width: 24, height: 24)
-                                                .onTapGesture {
-                                                    if let url = URL(string: tapa.local.facebook), UIApplication.shared.canOpenURL(url) {
-                                                        UIApplication.shared.open(url)
-                                                    }
-                                                }
+                SocialWallView()
+            }
+        }
+        if(showingMenu) {
+            MenuRutapa(
+                onCloseClicked: {
+                    showingMenu.toggle()
+                },
+                onTapasClicked: {
+                    showingMenu.toggle()
+                },
+                onPartnersClicked: {
+                    showingMenu.toggle()
+                    navigateToPartnersAction()
+                },
+                onLogoutClicked: {
+                    showingMenu.toggle()
+                    showingLogout.toggle()
+                }
+            )
+        }
+    }
+}
+
+struct DetailScreenContent: View {
+    let tapa: TapaItemBo
+    let voted: Bool
+    let voteTapa: (Int32, String) -> ()
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading) {
+                TapaCover(tapa: tapa)
+                VStack(alignment: .leading) {
+                    VStack(alignment: .leading) {
+                        Text(tapa.name.uppercased())
+                            .foregroundStyle(Color("secondaryColor"))
+                            .font(Font.custom("Berlin Sans FB Demi", size: 20))
+                        Text("\(tapa.local.name) \(tapa.local.province)")
+                            .foregroundStyle(Color("secondaryColor"))
+                            .font(Font.custom("Montserrat", size: 14))
+                        HStack {
+                            if(!tapa.local.instagram.isEmpty) {
+                                Image("instagram")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                    .onTapGesture {
+                                        if let url = URL(string: tapa.local.instagram), UIApplication.shared.canOpenURL(url) {
+                                            UIApplication.shared.open(url)
                                         }
                                     }
-                                }.padding(.bottom)
-                                
-                                Text(tapa.shortDescription)
-                                    .foregroundStyle(Color("secondaryColor"))
-                                    .font(Font.custom("Montserrat", size: 16))
-                                LegumesSection(tapa: tapa)
-                                VoteSection(tapa: tapa, voted: voted, voteTapa: { vote,tapa in
-                                    voteTapa(vote,tapa)
-                                })
                             }
-                            .padding(.horizontal,24)
+                            if(!tapa.local.facebook.isEmpty) {
+                                Image("facebook")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                    .onTapGesture {
+                                        if let url = URL(string: tapa.local.facebook), UIApplication.shared.canOpenURL(url) {
+                                            UIApplication.shared.open(url)
+                                        }
+                                    }
+                            }
                         }
-                    }
-                    .frame(maxWidth: .infinity,
-                                               minHeight: geometry.size.height - 100,
-                                               alignment: .top)
-                    .padding(.bottom, 100)
-                    .zIndex(1)
-                    .safeAreaInset(edge: .top) {
-                        VStack {
-                            HeaderView(hasMenu: false, onItemClicked: {}).padding(.top,1)
-                        }.zIndex(2)
-                    }
+                    }.padding(.bottom)
                     
+                    Text(tapa.shortDescription)
+                        .foregroundStyle(Color("secondaryColor"))
+                        .font(Font.custom("Montserrat", size: 16))
+                    LegumesSection(tapa: tapa)
+                    VoteSection(tapa: tapa, voted: voted, voteTapa: { vote,tapa in
+                        voteTapa(vote,tapa)
+                    })
                 }
+                .padding(.horizontal,24)
             }
         }
     }
@@ -206,21 +249,17 @@ struct TapaCover: View {
     
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            AsyncImage(
-                url: URL(string: tapa.photo),
-                content: { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaledToFill()
-                        .frame(maxWidth: .infinity, maxHeight: 300)
-                        .clipped()
-                },
-                placeholder: {
-                    Rectangle()
-                        .frame(maxWidth: .infinity, maxHeight: 300)
-                    
+            KFImage(URL(string: tapa.photo))
+                .cacheOriginalImage()
+                .placeholder {
+                    ProgressView()
                 }
-            ).padding(.top,80)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .scaledToFill()
+                .frame(maxWidth: .infinity, maxHeight: 300)
+                .clipped()
+                .padding(.top,100)
         }
     }
 }
@@ -302,6 +341,7 @@ struct VoteSection: View {
                     .font(Font.custom("Berlin Sans FB Demi", size: 20))
                     .padding()
             }
+            Spacer(minLength: 100)
         }
     }
 }
@@ -359,9 +399,9 @@ extension DetailView {
 }
 
 func getLegumeImage(legume: String)-> UIImage {
-    var bean = UIImage(named: "alubias")
-    var lentil = UIImage(named: "lentejas")
-    var chickpea = UIImage(named: "garbanzos")
+    let bean = UIImage(named: "alubias")
+    let lentil = UIImage(named: "lentejas")
+    let chickpea = UIImage(named: "garbanzos")
     
     switch(legume.split(separator: " ")[0]) {
     case "Lenteja": return lentil!

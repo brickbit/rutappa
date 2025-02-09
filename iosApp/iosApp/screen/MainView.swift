@@ -51,6 +51,7 @@ struct MainView: View {
             return AnyView(
                 MainScreen(
                     tapas: viewModel.state.filteredTapas,
+                    provinces: viewModel.state.provinces,
                     action: { tapa in
                         Task {
                             navigator.navigate(to: .detail(tapaId: tapa))
@@ -68,6 +69,10 @@ struct MainView: View {
                         Task {
                             navigator.navigate(to: .partners)
                         }
+                    }, onFilterTapa: { filter in
+                        Task {
+                            viewModel.filterTapa(filter: filter)
+                        }
                     }
                 ).overlay(alignment: .top) {
                     Color("secondaryColor")
@@ -83,10 +88,12 @@ struct MainView: View {
 
 struct MainScreen: View {
     let tapas: [TapaItemBo]
+    let provinces: [String]
     let action: (String) -> ()
     let logoutAction: () -> ()
     let deleteAccountAction: () -> ()
     let navigateToPartnersAction: () -> ()
+    let onFilterTapa: (String) -> ()
     var logout = UIImage(named: "logout")
     @State private var showingLogout = false
     @State private var showingMenu = false
@@ -99,7 +106,9 @@ struct MainScreen: View {
                         GradientBackground()
                         TapaListScrollable(
                             action: action,
-                            tapas: tapas
+                            onFilterTapa: onFilterTapa,
+                            tapas: tapas,
+                            provinces: provinces
                         )
                     }
                     HeaderView(
@@ -119,7 +128,7 @@ struct MainScreen: View {
                 SocialWallView()
             }
             if(showingMenu) {
-                Menu(
+                MenuRutapa(
                     onCloseClicked: {
                         showingMenu.toggle()
                     },
@@ -246,6 +255,10 @@ extension MainView {
             }
         }
         
+        func filterTapa(filter: String) {
+            viewModel.filterTapa(filter: filter)
+        }
+        
         // Removes the listener
         func dispose() {
             handle?.dispose()
@@ -256,18 +269,55 @@ extension MainView {
 
 struct TapaListScrollable: View {
     var action: (String) -> ()
+    var onFilterTapa: (String) -> ()
     var tapas: [TapaItemBo]
-    
+    var provinces: [String]
+
+    @State private var selection = "Todas"
+
     var body: some View {
         ScrollView {
             Spacer(minLength: 140)
             VStack(alignment: .leading) {
-                Text("Las tapas del concurso")
+                Text("LAS TAPAS")
                     .foregroundStyle(Color("secondaryColor"))
                     .font(Font.custom("Berlin Sans FB Demi", size: 18))
                     .padding(.horizontal,24)
                     .padding(.top, 16)
-                    .padding(.bottom,16)
+                ZStack(alignment: .topLeading) {
+                    HStack {
+                        Spacer()
+                        Picker("Filtrar por provincia", selection: $selection) {
+                            ForEach(provinces, id: \.self) { option in
+                                Text(option)
+                                    .font(.headline)
+                                    .padding()
+                                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.2)))
+                                    .foregroundColor(.black)
+                            }
+                        }
+                        .onChange(of: selection) { oldValue, newValue in
+                            onFilterTapa(newValue)
+                        }
+                        .pickerStyle(.menu)
+                        .accentColor(Color(.dropdownForeground))
+                    }
+                    
+                    Text("Filtrar por provincia")
+                        .font(Font.custom("Montserrat", size: 12))
+                        .foregroundColor(Color(.dropdownForeground))
+                        .padding(.top, 4)
+                        .padding(.leading, 8)
+
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 44)
+                .background(Color(.dropdownBackground))
+                .cornerRadius(12)
+                .padding(.horizontal, 24)
+                .padding(.bottom, 8)
+
+
                 VStack(alignment: .leading, spacing: 8) {
                     ForEach(tapas, id: \.self) { tapa in
                         TapaItemList(

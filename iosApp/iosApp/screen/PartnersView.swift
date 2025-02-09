@@ -83,7 +83,7 @@ struct PartnersScreen: View {
                 SocialWallView()
             }
             if(showingMenu) {
-                Menu(
+                MenuRutapa(
                     onCloseClicked: {
                         showingMenu.toggle()
                     },

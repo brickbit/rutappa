@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct Menu: View {
+struct MenuRutapa: View {
     var onCloseClicked: () -> Void
     var onTapasClicked: () -> Void
     var onPartnersClicked: () -> Void
@@ -56,5 +56,5 @@ struct Menu: View {
 }
 
 #Preview {
-    Menu(onCloseClicked: {}, onTapasClicked: {}, onPartnersClicked: {}, onLogoutClicked: {})
+    MenuRutapa(onCloseClicked: {}, onTapasClicked: {}, onPartnersClicked: {}, onLogoutClicked: {})
 }

@@ -39,7 +39,7 @@ struct DetailView: View {
         if(viewModel.state.isLoading) {
             return AnyView(LoadingView())
         } else {
-            if(viewModel.state.voted) {
+            if(true/*viewModel.state.voted*/) {
                 return AnyView(
                     DetailScreen(
                         location: (viewModel.state.location?.first ?? "0.0") as String,
@@ -71,7 +71,7 @@ struct DetailView: View {
                     DetailScreen(
                         location: (viewModel.state.location?.first ?? "0.0") as String,
                         tapa: viewModel.state.tapa!,
-                        voted: viewModel.state.voted,
+                        voted: true,//viewModel.state.voted,
                         voteTapa: { vote, tapa in
                             Task {
                                 viewModel.voteTapa(vote: vote, tapa: tapa)
@@ -379,10 +379,11 @@ extension DetailView {
                     self.state = DetailStateSwift(
                         isLoading: state.isLoading,
                         tapa: state.tapa,
-                        voted: state.voted,
+                        //state.voted,
                         location: state.location,
-                        canVote: state.canVote,
-                        isWithinRadius: state.canVote
+                        voteStatus: state.voteStatus
+                        //state.canVote,
+                        //state.canVote
                     )
                 }
             })

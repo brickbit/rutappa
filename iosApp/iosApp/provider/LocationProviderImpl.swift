@@ -11,6 +11,7 @@ import shared
 import CoreLocation
 
 class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLocationManagerDelegate {
+    
     private var locationManager: CLLocationManager?
     
     @Published var userLocation: CLLocation?
@@ -23,7 +24,11 @@ class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLoca
         locationManager?.requestAlwaysAuthorization()
     }
     
-    func getLocation() -> ResultKMM<KotlinPair<NSString, NSString>> {
+    /*func getLocation(completionHandler: @escaping (ResultKMM<KotlinPair<NSString, NSString>>?, (any Error)?) -> Void) {
+        <#code#>
+    }*/
+    
+    func getLocation() async throws -> ResultKMM<KotlinPair<NSString, NSString>> {
         if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
             if CLLocationManager.isMonitoringAvailable(for: CLBeaconRegion.self) {
                 if CLLocationManager.isRangingAvailable() {
@@ -32,8 +37,9 @@ class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLoca
                 }
             }
         }
-        return ResultKMMSuccess(data: KotlinPair(first: "0" as NSString, second: "0" as NSString))  
+        return ResultKMMSuccess(data: KotlinPair(first: "0.0" as NSString, second: "0.0" as NSString))
     }
+    
     
     func hasPermission() -> Bool {
         let status = locationManager?.authorizationStatus
@@ -76,6 +82,17 @@ class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLoca
                 }
             }
         }
+    }
+    
+    func isLocationActive() -> Bool {
+        return false
+    }
+    
+    func activeLocation() {
+    }
+    
+    func areCoordinatesWithinDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double, maxDistance: Float) -> Bool {
+        return false
     }
     
 }

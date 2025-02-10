@@ -79,15 +79,39 @@ extension GetLocationUseCase {
 }
 
 extension IsWithinRadiusUseCase {
-    static let shared = IsWithinRadiusUseCase()
+    static let shared = IsWithinRadiusUseCase(repository: LocationProviderImpl.shared)
 }
+
+extension HasLocationPermissionUseCase {
+    static let shared = HasLocationPermissionUseCase(repository: LocationProviderImpl.shared)
+}
+
+extension RequestLocationPermissionUseCase {
+    static let shared = RequestLocationPermissionUseCase(repository: LocationProviderImpl.shared)
+}
+
+extension IsLocationActiveUseCase {
+    static let shared = IsLocationActiveUseCase(repository: LocationProviderImpl.shared)
+}
+
+extension ActiveLocationUseCase {
+    static let shared = ActiveLocationUseCase(repository: LocationProviderImpl.shared)
+}
+
 extension DetailViewModel {
     static let shared = DetailViewModel(
         detailUseCase: GetTapaDetailUseCase.shared,
         voteUseCase: VoteUseCase.shared,
         tapaVotedUseCase: TapaVotedUseCase.shared,
         locationUseCase: GetLocationUseCase.shared,
-        isWithinRadiusUseCase: IsWithinRadiusUseCase.shared
+        hasLocationPermissionUseCase: HasLocationPermissionUseCase.shared,
+        requestLocationPermissionUseCase: RequestLocationPermissionUseCase.shared,
+        isLocationActiveUseCase: IsLocationActiveUseCase.shared,
+        activeLocationUseCase: ActiveLocationUseCase.shared,
+        isWithinRadiusUseCase: IsWithinRadiusUseCase.shared,
+        logoutUseCase: LogoutUseCase.shared,
+        deleteAccountUseCase: DeleteAccountUseCase.shared,
+        localRepository: LocalRepositoryImpl.shared
     )
 }
 

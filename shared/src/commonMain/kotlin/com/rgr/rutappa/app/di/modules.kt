@@ -39,5 +39,5 @@ val useCaseModule = module {
     single { IsLocationActiveUseCase(get()) }
     single { HasLocationPermissionUseCase(get()) }
     single { ActiveLocationUseCase(get()) }
-    single { IsWithinRadiusUseCase() }
+    single { IsWithinRadiusUseCase(get()) }
 }

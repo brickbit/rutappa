@@ -72,4 +72,23 @@ class LocationProviderImpl(
     override fun activeLocation() {
         activityProvider.getActivity()?.startActivity(Intent(ACTION_LOCATION_SOURCE_SETTINGS))
     }
+
+    override fun areCoordinatesWithinDistance(
+        lat1: Double, lon1: Double,
+        lat2: Double, lon2: Double,
+        maxDistance: Float
+    ): Boolean {
+        val loc1 = Location("").apply {
+            latitude = lat1
+            longitude = lon1
+        }
+
+        val loc2 = Location("").apply {
+            latitude = lat2
+            longitude = lon2
+        }
+
+        val distance = loc1.distanceTo(loc2) // Distance in meters
+        return distance < maxDistance
+    }
 }

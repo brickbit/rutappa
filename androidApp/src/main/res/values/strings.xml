@@ -46,4 +46,10 @@
     <string name="main_collaborator">COLABORADOR PRINCIPAL</string>
     <string name="technical_organization">ORGANIZACIÓN TÉCNICA</string>
     <string name="filter_by_province">Filtrar por provincia</string>
+    <string name="active_location_vote">Pulse para activar la ubicación y poder votar</string>
+    <string name="request_permission_vote">Pulse para solicitar permiso de ubicación y votar</string>
+    <string name="error_getting_location">Se ha producido un error al obtener la ubicación</string>
+    <string name="can_not_vote">Para poder votar ha de estar en las inmediaciones del local</string>
+    <string name="retry">Reintentar</string>
+    <string name="denied_permission">Permiso de ubicación denegado</string>
 </resources>

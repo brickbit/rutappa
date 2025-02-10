@@ -72,26 +72,27 @@ class DetailViewModel(
     }
 
     fun getLocation() {
-        handleLocationPermission()
-        if(state.value.voteStatus == VoteStatus.LOCATION_ALLOW) {
-            if(isLocationActiveUseCase.invoke()) {
-                _state.update { it.copy(voteStatus = VoteStatus.LOCATION_ACTIVE) }
-                handleLocation()
-            } else {
-                _state.update { it.copy(voteStatus = VoteStatus.LOCATION_INACTIVE) }
-                activeLocationUseCase.invoke()
+        scope.launch {
+            handleLocationPermission()
+            if (state.value.voteStatus != VoteStatus.UNKNOWN && state.value.voteStatus != VoteStatus.LOCATION_INACTIVE) {
+                if (isLocationActiveUseCase.invoke()) {
+                    handleLocation()
+                } else {
+                    _state.update { it.copy(voteStatus = VoteStatus.LOCATION_INACTIVE) }
+                    activeLocationUseCase.invoke()
+                }
             }
         }
     }
 
     private fun handleLocationPermission() {
         if(hasLocationPermissionUseCase.invoke()) {
-            _state.update { it.copy(voteStatus = VoteStatus.LOCATION_ALLOW) }
+            handleLocation()
         } else {
             requestLocationPermissionUseCase.invoke()
-            _state.update { it.copy(voteStatus = VoteStatus.UNKNOWN) }
         }
     }
+
 
     private fun handleLocation() {
         scope.launch {
@@ -99,8 +100,12 @@ class DetailViewModel(
             when(val location = locationUseCase.invoke()) {
                 is ResultKMM.Success -> {
                     _state.update {
-                        val localCoordinates = Pair(state.value.tapa!!.local.latitude,state.value.tapa!!.local.latitude)
-                        val isWithinRadius = isWithinRadiusUseCase(deviceCoordinates = location.data, localCoordinates = localCoordinates)
+                        val isWithinRadius = isWithinRadiusUseCase(
+                            deviceLat = location.data.first,
+                            deviceLon = location.data.second,
+                            localLat = state.value.tapa!!.local.latitude,
+                            localLon = state.value.tapa!!.local.longitude
+                        )
                         it.copy(isLoading = false, location = location.data, voteStatus = if (isWithinRadius) VoteStatus.CAN_VOTE else VoteStatus.OUT_OF_RANGE)
                     }
                 }

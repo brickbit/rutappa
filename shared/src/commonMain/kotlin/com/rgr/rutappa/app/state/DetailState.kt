@@ -12,8 +12,6 @@ data class DetailState (
 enum class VoteStatus {
     UNKNOWN,
     LOCATION_INACTIVE,
-    LOCATION_ACTIVE,
-    LOCATION_ALLOW,
     LOCATION_NOT_ALLOW,
     UNABLE_OBTAIN_LOCATION,
     OUT_OF_RANGE,

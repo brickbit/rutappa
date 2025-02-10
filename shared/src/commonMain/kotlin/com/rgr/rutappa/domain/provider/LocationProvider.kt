@@ -8,4 +8,9 @@ interface LocationProvider {
     suspend fun getLocation(): ResultKMM<Pair<String, String>>
     fun isLocationActive(): Boolean
     fun activeLocation()
+    fun areCoordinatesWithinDistance(
+        lat1: Double, lon1: Double,
+        lat2: Double, lon2: Double,
+        maxDistance: Float
+    ): Boolean
 }

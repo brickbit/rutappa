@@ -4,6 +4,8 @@ import com.rgr.rutappa.domain.model.TapaItemBo
 
 data class DetailState (
     val isLoading: Boolean = true,
+    val logout: Boolean = false,
+    val error: Boolean = false,
     val tapa: TapaItemBo? = null,
     val location: Pair<String,String>? = null,
     val voteStatus: VoteStatus = VoteStatus.UNKNOWN

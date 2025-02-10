@@ -4,14 +4,18 @@ import com.rgr.rutappa.app.flow.toCommonStateFlow
 import com.rgr.rutappa.app.state.DetailState
 import com.rgr.rutappa.app.state.VoteStatus
 import com.rgr.rutappa.domain.error.FirestoreError
+import com.rgr.rutappa.domain.error.RemoteConfigError
 import com.rgr.rutappa.domain.model.ResultKMM
 import com.rgr.rutappa.domain.model.TapaItemBo
+import com.rgr.rutappa.domain.repository.LocalRepository
 import com.rgr.rutappa.domain.useCase.ActiveLocationUseCase
+import com.rgr.rutappa.domain.useCase.DeleteAccountUseCase
 import com.rgr.rutappa.domain.useCase.GetLocationUseCase
 import com.rgr.rutappa.domain.useCase.GetTapaDetailUseCase
 import com.rgr.rutappa.domain.useCase.HasLocationPermissionUseCase
 import com.rgr.rutappa.domain.useCase.IsLocationActiveUseCase
 import com.rgr.rutappa.domain.useCase.IsWithinRadiusUseCase
+import com.rgr.rutappa.domain.useCase.LogoutUseCase
 import com.rgr.rutappa.domain.useCase.RequestLocationPermissionUseCase
 import com.rgr.rutappa.domain.useCase.TapaVotedUseCase
 import com.rgr.rutappa.domain.useCase.VoteUseCase
@@ -30,7 +34,10 @@ class DetailViewModel(
     private val requestLocationPermissionUseCase: RequestLocationPermissionUseCase,
     private val isLocationActiveUseCase: IsLocationActiveUseCase,
     private val activeLocationUseCase: ActiveLocationUseCase,
-    private val isWithinRadiusUseCase: IsWithinRadiusUseCase
+    private val isWithinRadiusUseCase: IsWithinRadiusUseCase,
+    private val logoutUseCase: LogoutUseCase,
+    private val deleteAccountUseCase: DeleteAccountUseCase,
+    private val localRepository: LocalRepository,
 ): BaseViewModel() {
     private val _state: MutableStateFlow<DetailState> = MutableStateFlow(DetailState())
     val state = _state.stateIn(
@@ -143,6 +150,40 @@ class DetailViewModel(
                 }
                 result.exceptionOrNull()?.let {
                     processError(it)
+                }
+            }
+        }
+    }
+
+    fun deleteAccount() {
+        scope.launch {
+            _state.update {
+                it.copy(isLoading = true)
+            }
+            val result = deleteAccountUseCase.invoke()
+            if(result.isSuccess) {
+                _state.update {
+                    it.copy(isLoading = false, logout = true)
+                }
+            } else {
+                _state.update {
+                    it.copy(isLoading = false, error = true)
+                }
+            }
+        }
+    }
+
+    fun logout() {
+        scope.launch {
+            localRepository.removeUid()
+            val result = logoutUseCase.invoke()
+            if(result.isSuccess) {
+                _state.update {
+                    it.copy(isLoading = false, logout = true)
+                }
+            } else {
+                _state.update {
+                    it.copy(isLoading = false, error = true)
                 }
             }
         }

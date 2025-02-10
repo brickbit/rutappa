@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -40,7 +41,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -48,9 +48,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.AsyncImage
 import com.rgr.rutappa.android.MyApplicationTheme
 import com.rgr.rutappa.android.R
@@ -58,6 +57,7 @@ import com.rgr.rutappa.android.backgroundColor
 import com.rgr.rutappa.android.screen.common.AlertDialogError
 import com.rgr.rutappa.android.screen.common.Header
 import com.rgr.rutappa.android.screen.common.LoadingScreen
+import com.rgr.rutappa.android.screen.common.Menu
 import com.rgr.rutappa.android.screen.common.SocialWall
 import com.rgr.rutappa.app.state.VoteStatus
 import com.rgr.rutappa.app.viewModel.DetailViewModel
@@ -71,6 +71,8 @@ import kotlin.math.roundToInt
 fun DetailRoute(
     viewModel: DetailViewModel = koinViewModel(),
     tapaId: String,
+    navigateToTapas: () -> Unit,
+    navigateToPartners: () -> Unit
 ) {
     val state = viewModel.state.collectAsState().value
     val errorState = viewModel.errorState.collectAsState().value
@@ -92,7 +94,11 @@ fun DetailRoute(
                 getLocation = { viewModel.getLocation() },
                 onVoteClicked = { vote, tapa ->
                     viewModel.vote(vote = vote, tapa =  tapa)
-                }
+                },
+                navigateToTapas = navigateToTapas,
+                navigateToPartners = navigateToPartners,
+                deleteAccount = { viewModel.deleteAccount() },
+                logout = { viewModel.logout() }
             )
         }
     }
@@ -123,8 +129,15 @@ fun DetailScreen(
     tapa: TapaItemBo,
     voteStatus: VoteStatus,
     getLocation: () -> Unit,
-    onVoteClicked: (Int, String) -> Unit
+    onVoteClicked: (Int, String) -> Unit,
+    navigateToTapas: () -> Unit,
+    navigateToPartners: () -> Unit,
+    deleteAccount: () -> Unit,
+    logout: () -> Unit
 ) {
+    val openLogoutDialog = remember { mutableStateOf(false) }
+    val showMenu = remember { mutableStateOf(false) }
+    
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -142,7 +155,22 @@ fun DetailScreen(
                     .fillMaxSize()
             ) {
                 item {
-                    TapaCover(tapa = tapa)
+                    Box(
+                        contentAlignment = Alignment.TopStart
+                    ) {
+                        AsyncImage(
+                            modifier = Modifier
+                                .padding(top = 90.dp)
+                                .height(350.dp),
+                            model = tapa.photo,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop
+                        )
+                        Header(
+                            hasLogout = true,
+                            onShowMenu = { showMenu.value = true }
+                        )
+                    }
                     Column {
                         TapaInfo(tapa)
                     }
@@ -158,6 +186,86 @@ fun DetailScreen(
                 }
             }
             SocialWall()
+        }
+    }
+    if(showMenu.value) {
+        Menu(
+            onTapaClicked = {
+                showMenu.value = false
+                navigateToTapas()
+            },
+            onPartnersClicked = {
+                showMenu.value = false
+                navigateToPartners()
+            },
+            onCloseClicked = { showMenu.value = false },
+            onLogoutClicked = {
+                showMenu.value = false
+                openLogoutDialog.value = true
+            }
+        )
+    }
+    if(openLogoutDialog.value) {
+        Dialog(
+            onDismissRequest = { openLogoutDialog.value = false }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .padding(16.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.primary,
+                        shape = RoundedCornerShape(16.dp)
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    modifier = Modifier.padding(bottom = 36.dp, top = 16.dp),
+                    text = stringResource(R.string.main_logout_text_dialog),
+                    textAlign = TextAlign.Center,
+                )
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .padding(bottom = 8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Red
+                    ),
+                    onClick = { deleteAccount() }) {
+                    Text(
+                        text = stringResource(R.string.main_delete_account),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .padding(bottom = 8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    ),
+                    onClick = { logout() }) {
+                    Text(
+                        text = stringResource(R.string.main_logout),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .padding(bottom = 16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    ),
+                    onClick = { openLogoutDialog.value = false }) {
+                    Text(
+                        text = stringResource(R.string.main_stay_logged),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+            }
         }
     }
 }
@@ -294,28 +402,6 @@ fun ErrorRequestLocationContent(
                 style = MaterialTheme.typography.bodyLarge
             )
         }
-    }
-}
-
-@Composable
-fun TapaCover(
-    tapa: TapaItemBo
-) {
-    Box(
-        contentAlignment = Alignment.TopStart
-    ) {
-        AsyncImage(
-            modifier = Modifier
-                .padding(top = 90.dp)
-                .height(350.dp),
-            model = tapa.photo,
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
-        Header(
-            hasLogout = false,
-            onShowMenu = {}
-        )
     }
 }
 
@@ -523,6 +609,10 @@ fun DetailScreenPreview() {
             voteStatus = VoteStatus.VOTED,
             getLocation = {},
             onVoteClicked={_,_ ->},
+            deleteAccount = {},
+            logout = {},
+            navigateToPartners = {},
+            navigateToTapas = {}
         )
     }
 }

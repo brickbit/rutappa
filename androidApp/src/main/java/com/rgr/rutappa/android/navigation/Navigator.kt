@@ -50,7 +50,15 @@ fun Navigator(
             arguments = listOf(navArgument("tapa") { type = NavType.StringType })
         ) { backStackEntry ->
             val tapaId = backStackEntry.arguments?.getString("tapa") ?: ""
-            DetailRoute(tapaId = tapaId)
+            DetailRoute(
+                tapaId = tapaId,
+                navigateToTapas = {
+                    navController.navigate(Routes.Main.name)
+                },
+                navigateToPartners = {
+                    navController.navigate(Routes.Partners.name)
+                }
+            )
         }
         composable(
             route = Routes.Partners.name

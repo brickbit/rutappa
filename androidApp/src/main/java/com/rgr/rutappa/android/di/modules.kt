@@ -52,6 +52,6 @@ val viewModelModules = module {
     viewModel { SplashViewModel(get(), get()) }
     viewModel { LoginViewModel(get(), get(), get()) }
     viewModel { MainViewModel(get(), get(), get(), get()) }
-    viewModel { DetailViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { DetailViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { PartnerViewModel(get(), get(), get()) }
 }

@@ -34,7 +34,8 @@ fun Menu(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xEE473829)),
+            .background(Color(0xEE473829))
+            .clickable {  },
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Row(

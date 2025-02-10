@@ -12,6 +12,7 @@ import CoreLocation
 
 class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLocationManagerDelegate {
     
+    
     private var locationManager: CLLocationManager?
     
     @Published var userLocation: CLLocation?
@@ -24,20 +25,16 @@ class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLoca
         locationManager?.requestAlwaysAuthorization()
     }
     
-    /*func getLocation(completionHandler: @escaping (ResultKMM<KotlinPair<NSString, NSString>>?, (any Error)?) -> Void) {
-        <#code#>
-    }*/
-    
-    func getLocation() async throws -> ResultKMM<KotlinPair<NSString, NSString>> {
+    func getLocation(callback: @escaping (String?, String?) -> Void) {
         if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
             if CLLocationManager.isMonitoringAvailable(for: CLBeaconRegion.self) {
                 if CLLocationManager.isRangingAvailable() {
                     locationManager?.requestLocation()
-                    return ResultKMMSuccess(data: KotlinPair(first: "\(userLocation?.coordinate.latitude ?? 0.0)" as NSString, second: "\(userLocation?.coordinate.longitude ?? 0.0)" as NSString))
+                    callback("\(userLocation?.coordinate.latitude ?? 0.0)", "\(userLocation?.coordinate.longitude ?? 0.0)")
                 }
             }
         }
-        return ResultKMMSuccess(data: KotlinPair(first: "0.0" as NSString, second: "0.0" as NSString))
+        callback(nil, nil)
     }
     
     

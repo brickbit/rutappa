@@ -104,19 +104,18 @@ class DetailViewModel(
     private fun handleLocation() {
         scope.launch {
             _state.update { it.copy(isLoading = true) }
-            when(val location = locationUseCase.invoke()) {
-                is ResultKMM.Success -> {
+            locationUseCase.invoke { latitude, longitude ->
+                if (latitude != null && longitude != null) {
                     _state.update {
                         val isWithinRadius = isWithinRadiusUseCase(
-                            deviceLat = location.data.first,
-                            deviceLon = location.data.second,
+                            deviceLat = latitude,
+                            deviceLon = longitude,
                             localLat = state.value.tapa!!.local.latitude,
                             localLon = state.value.tapa!!.local.longitude
                         )
-                        it.copy(isLoading = false, location = location.data, voteStatus = if (isWithinRadius) VoteStatus.CAN_VOTE else VoteStatus.OUT_OF_RANGE)
+                        it.copy(isLoading = false, location = Pair(latitude,longitude), voteStatus = if (isWithinRadius) VoteStatus.CAN_VOTE else VoteStatus.OUT_OF_RANGE)
                     }
-                }
-                is ResultKMM.Failure -> {
+                } else {
                     _state.update {
                         it.copy(isLoading = false, voteStatus = VoteStatus.UNABLE_OBTAIN_LOCATION)
                     }

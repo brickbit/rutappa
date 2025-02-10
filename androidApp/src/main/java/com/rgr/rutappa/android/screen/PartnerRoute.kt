@@ -42,6 +42,7 @@ import com.rgr.rutappa.android.screen.common.Header
 import com.rgr.rutappa.android.screen.common.Menu
 import com.rgr.rutappa.android.screen.common.SocialWall
 import com.rgr.rutappa.app.viewModel.PartnerViewModel
+import com.rgr.rutappa.domain.error.RemoteConfigError
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -51,10 +52,12 @@ fun PartnerRoute(
     viewModel: PartnerViewModel = koinViewModel()
 ) {
     val state = viewModel.state.collectAsState().value
-
+    if(state.logout || state.error) {
+        navigateToLogout()
+    }
     PartnersView(
         logout = state.logout,
-        navigateToLogout = navigateToLogout,
+        navigateToLogout = { viewModel.logout() },
         deleteAccount = { viewModel.deleteAccount() },
         navigateToTapa = navigateToTapa
     )

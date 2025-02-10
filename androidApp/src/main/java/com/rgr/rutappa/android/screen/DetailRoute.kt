@@ -72,7 +72,8 @@ fun DetailRoute(
     viewModel: DetailViewModel = koinViewModel(),
     tapaId: String,
     navigateToTapas: () -> Unit,
-    navigateToPartners: () -> Unit
+    navigateToPartners: () -> Unit,
+    navigateToLogout: () -> Unit
 ) {
     val state = viewModel.state.collectAsState().value
     val errorState = viewModel.errorState.collectAsState().value
@@ -83,6 +84,9 @@ fun DetailRoute(
             configuration = R.xml.remote_config_defaults,
             id = tapaId
         )
+    }
+    if(state.logout || state.error) {
+        navigateToLogout()
     }
     if(state.isLoading) {
         LoadingScreen()
@@ -137,7 +141,7 @@ fun DetailScreen(
 ) {
     val openLogoutDialog = remember { mutableStateOf(false) }
     val showMenu = remember { mutableStateOf(false) }
-    
+
     Box(
         modifier = Modifier
             .fillMaxSize()

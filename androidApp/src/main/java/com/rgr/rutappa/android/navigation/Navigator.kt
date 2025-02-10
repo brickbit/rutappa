@@ -57,6 +57,9 @@ fun Navigator(
                 },
                 navigateToPartners = {
                     navController.navigate(Routes.Partners.name)
+                },
+                navigateToLogout = {
+                    navController.navigate(Routes.Login.name)
                 }
             )
         }

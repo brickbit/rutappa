@@ -7,6 +7,6 @@ class LogoutUseCase(
     private val loginProvider: LoginProvider
 ) {
     suspend operator fun invoke(): KmmResult<Unit> {
-        return loginProvider.signIn()
+        return loginProvider.logout()
     }
 }

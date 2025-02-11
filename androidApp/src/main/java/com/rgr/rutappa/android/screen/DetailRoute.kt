@@ -102,7 +102,8 @@ fun DetailRoute(
                 navigateToTapas = navigateToTapas,
                 navigateToPartners = navigateToPartners,
                 deleteAccount = { viewModel.deleteAccount() },
-                logout = { viewModel.logout() }
+                logout = { viewModel.logout() },
+                checkRadius = { viewModel.checkRadius() }
             )
         }
     }
@@ -137,7 +138,8 @@ fun DetailScreen(
     navigateToTapas: () -> Unit,
     navigateToPartners: () -> Unit,
     deleteAccount: () -> Unit,
-    logout: () -> Unit
+    logout: () -> Unit,
+    checkRadius: () -> Unit
 ) {
     val openLogoutDialog = remember { mutableStateOf(false) }
     val showMenu = remember { mutableStateOf(false) }
@@ -185,7 +187,8 @@ fun DetailScreen(
                         tapa = tapa,
                         voteStatus = voteStatus,
                         getLocation = getLocation,
-                        onVoteClicked = onVoteClicked
+                        onVoteClicked = onVoteClicked,
+                        checkRadius = checkRadius
                     )
                 }
             }
@@ -279,7 +282,8 @@ fun VoteSectionContent(
     tapa: TapaItemBo,
     voteStatus: VoteStatus,
     getLocation: () -> Unit,
-    onVoteClicked: (Int, String) -> Unit
+    onVoteClicked: (Int, String) -> Unit,
+    checkRadius: () -> Unit
 ) {
     val count = remember { mutableStateOf(0) }
     val context = LocalContext.current
@@ -292,6 +296,7 @@ fun VoteSectionContent(
                     count.value += 1
                     if(count.value < 2) {
                         getLocation()
+                        checkRadius()
                     } else {
                         count.value = 0
                         val intent = Intent(
@@ -307,7 +312,10 @@ fun VoteSectionContent(
         VoteStatus.LOCATION_INACTIVE -> {
             RequestLocationButton(
                 text = stringResource(R.string.active_location_vote),
-                onClickAction = { getLocation() }
+                onClickAction = {
+                    getLocation()
+                    checkRadius()
+                }
             )
         }
         VoteStatus.LOCATION_NOT_ALLOW -> {
@@ -317,6 +325,7 @@ fun VoteSectionContent(
                     count.value += 1
                     if(count.value < 2) {
                         getLocation()
+                        checkRadius()
                     } else{
                         count.value = 0
                         val intent = Intent(
@@ -333,14 +342,20 @@ fun VoteSectionContent(
             ErrorRequestLocationContent(
                 text = stringResource(R.string.error_getting_location),
                 buttonText = stringResource(R.string.retry),
-                onClickAction = { getLocation() }
+                onClickAction = {
+                    getLocation()
+                    checkRadius()
+                }
             )
         }
         VoteStatus.OUT_OF_RANGE -> {
             ErrorRequestLocationContent(
                 text = stringResource(R.string.can_not_vote),
                 buttonText = stringResource(R.string.retry),
-                onClickAction = { getLocation() }
+                onClickAction = {
+                    getLocation()
+                    checkRadius()
+                }
             )
         }
         VoteStatus.CAN_VOTE -> VoteSection(
@@ -616,7 +631,8 @@ fun DetailScreenPreview() {
             deleteAccount = {},
             logout = {},
             navigateToPartners = {},
-            navigateToTapas = {}
+            navigateToTapas = {},
+            checkRadius = {}
         )
     }
 }

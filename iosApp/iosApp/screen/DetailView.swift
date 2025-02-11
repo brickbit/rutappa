@@ -14,6 +14,7 @@ import Kingfisher
 struct DetailView: View {
     let id: String
     @ObservedObject var viewModel: IOSDetailViewModel
+    @EnvironmentObject var navigator: Navigator
 
     init(id: String) {
         self.id = id
@@ -28,7 +29,6 @@ struct DetailView: View {
         }
         .onAppear {
             viewModel.startObserving()
-            viewModel.getLocation()
         }
         .onDisappear {
             viewModel.dispose()
@@ -39,61 +39,46 @@ struct DetailView: View {
         if(viewModel.state.isLoading) {
             return AnyView(LoadingView())
         } else {
-            if(true/*viewModel.state.voted*/) {
-                return AnyView(
-                    DetailScreen(
-                        location: (viewModel.state.location?.first ?? "0.0") as String,
-                        tapa: viewModel.state.tapa!,
-                        voted: true,
-                        voteTapa: { vote, tapa in
-                            Task {
-                                viewModel.voteTapa(vote: vote, tapa: tapa)
-                            }
-                        },
-                        logoutAction: {
-                            
-                        },
-                        deleteAccountAction: {
-                            
-                        },
-                        navigateToPartnersAction: {
-                            
+            return AnyView(
+                DetailScreen(
+                    location: (viewModel.state.location?.first ?? "0.0") as String,
+                    tapa: viewModel.state.tapa!,
+                    voteStatus: viewModel.state.voteStatus,
+                    getLocation: {
+                        Task {
+                            viewModel.getLocation()
                         }
-                    ).overlay(alignment: .top) {
-                        Color("secondaryColor")
-                            .background(Color("secondaryColor"))
-                            .ignoresSafeArea(edges: .top)
-                            .frame(height: 0)
-                    }
-                )
-            } else {
-                return AnyView(
-                    DetailScreen(
-                        location: (viewModel.state.location?.first ?? "0.0") as String,
-                        tapa: viewModel.state.tapa!,
-                        voted: true,//viewModel.state.voted,
-                        voteTapa: { vote, tapa in
-                            Task {
-                                viewModel.voteTapa(vote: vote, tapa: tapa)
-                            }
-                        },
-                        logoutAction: {
-                            
-                        },
-                        deleteAccountAction: {
-                            
-                        },
-                        navigateToPartnersAction: {
-                            
+                    },
+                    voteTapa: { vote, tapa in
+                        Task {
+                            viewModel.voteTapa(vote: vote, tapa: tapa)
                         }
-                    ).overlay(alignment: .top) {
-                        Color("secondaryColor")
-                            .background(Color("secondaryColor"))
-                            .ignoresSafeArea(edges: .top)
-                            .frame(height: 0)
+                    },
+                    logoutAction: {
+                        Task {
+                            viewModel.logout()
+                        }
+                    },
+                    deleteAccountAction: {
+                        Task {
+                            viewModel.deleteAccount()
+                        }
+                    },
+                    navigateToPartnersAction: {
+                        Task {
+                            navigator.navigate(to: .partners)
+                        }
+                    },
+                    checkLocation: {
+                        viewModel.checkLocation()
                     }
-                )
-            }
+                ).overlay(alignment: .top) {
+                    Color("secondaryColor")
+                        .background(Color("secondaryColor"))
+                        .ignoresSafeArea(edges: .top)
+                        .frame(height: 0)
+                }
+            )
         }
     }
     
@@ -133,12 +118,13 @@ struct DetailView: View {
 struct DetailScreen: View {
     let location: String
     let tapa: TapaItemBo
-    let voted: Bool
+    let voteStatus: VoteStatus
+    let getLocation: () -> ()
     let voteTapa: (Int32, String) -> ()
     let logoutAction: () -> ()
     let deleteAccountAction: () -> ()
     let navigateToPartnersAction: () -> ()
-    
+    let checkLocation: () -> ()
     @State private var showingLogout = false
     @State private var showingMenu = false
     
@@ -151,8 +137,10 @@ struct DetailScreen: View {
                         Text(location)
                         DetailScreenContent(
                             tapa: tapa,
-                            voted: voted,
-                            voteTapa: voteTapa
+                            voteStatus: voteStatus,
+                            voteTapa: voteTapa,
+                            getLocation: getLocation,
+                            checkLocation: checkLocation
                         )
                     }
                     HeaderView(
@@ -196,9 +184,11 @@ struct DetailScreen: View {
 
 struct DetailScreenContent: View {
     let tapa: TapaItemBo
-    let voted: Bool
+    let voteStatus: VoteStatus
     let voteTapa: (Int32, String) -> ()
-
+    let getLocation: () -> ()
+    let checkLocation: () -> ()
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
@@ -239,13 +229,122 @@ struct DetailScreenContent: View {
                         .foregroundStyle(Color("secondaryColor"))
                         .font(Font.custom("Montserrat", size: 16))
                     LegumesSection(tapa: tapa)
-                    VoteSection(tapa: tapa, voted: voted, voteTapa: { vote,tapa in
-                        voteTapa(vote,tapa)
-                    })
+                    if(voteStatus == .unknown) {
+                        AnyView(
+                            RequestLocationButton(
+                                text: "Pulse para activar la ubicación y poder votar",
+                                onClickAction: {
+                                    getLocation()
+                                }
+                            )
+                        )
+                    } else if(voteStatus == .locationInactive) {
+                        AnyView(
+                            RequestLocationButton(
+                                text: "Pulse para activar la ubicación y poder votar",
+                                onClickAction: {
+                                    getLocation()
+                                }
+                            )
+                        )
+                    } else if(voteStatus == .locationNotAllow) {
+                        AnyView(
+                            RequestLocationButton(
+                                text: "Pulse para solicitar permiso de ubicación y votar",
+                                onClickAction: {
+                                    getLocation()
+                                }
+                            )
+                        )
+                    } else if(voteStatus == .unableObtainLocation) {
+                        AnyView(
+                            ErrorRequestLocationContent(
+                                text: "Se ha producido un error al obtener la ubicación",
+                                buttonText: "Reintentar",
+                                onClickAction: {
+                                    getLocation()
+                                    checkLocation()
+                                }
+                            )
+                        )
+                    } else if(voteStatus == .outOfRange) {
+                        AnyView(
+                            AnyView(
+                                ErrorRequestLocationContent(
+                                    text: "Para poder votar ha de estar en las inmediaciones del local",
+                                    buttonText: "Reintentar",
+                                    onClickAction: {
+                                        getLocation()
+                                        checkLocation()
+                                    }
+                                )
+                            )
+                        )
+                    } else if(voteStatus == .canVote) {
+                        VoteSection(tapa: tapa, voted: false, voteTapa: { vote,tapa in
+                            voteTapa(vote,tapa)
+                        })
+                    } else if (voteStatus == .voted) {
+                        VoteSection(tapa: tapa, voted: true, voteTapa: { vote,tapa in
+                            voteTapa(vote,tapa)
+                        })
+                    } else {
+                        AnyView(EmptyView())
+                    }
                 }
                 .padding(.horizontal,24)
             }
         }
+    }
+}
+
+struct ErrorRequestLocationContent: View {
+    let text: String
+    let buttonText: String
+    let onClickAction: () -> Void
+    
+    var body: some View {
+        Text(text)
+            .foregroundStyle(Color("secondaryColor"))
+            .font(Font.custom("Berlin Sans FB Demi", size: 20))
+        VStack {
+            Button(action: {
+                onClickAction()
+            }, label: {
+                HStack {
+                    Text(buttonText)
+                        .foregroundStyle(Color("primaryColor"))
+                        .font(Font.custom("Berlin Sans FB Demi", size: 20))
+                }
+            })
+            .frame(maxWidth: .infinity)
+            .padding(16)
+            .background(Color("secondaryColor"))
+            .clipShape(RoundedRectangle(cornerRadius: 35, style: .continuous))
+            .padding(.bottom,96)
+        }
+    }
+}
+
+struct RequestLocationButton: View {
+    let text: String
+    let onClickAction: () -> Void
+    
+    var body: some View {
+        Button(action: {
+            onClickAction()
+        }, label: {
+            HStack {
+                Text(text)
+                    .foregroundStyle(Color("primaryColor"))
+                    .font(Font.custom("Berlin Sans FB Demi", size: 20))
+            }
+        })
+        .frame(maxWidth: .infinity)
+        .padding(16)
+        .background(Color("secondaryColor"))
+        .clipShape(RoundedRectangle(cornerRadius: 35, style: .continuous))
+        .padding(.bottom,96)
     }
 }
 
@@ -379,11 +478,8 @@ extension DetailView {
                     self.state = DetailStateSwift(
                         isLoading: state.isLoading,
                         tapa: state.tapa,
-                        //state.voted,
                         location: state.location,
                         voteStatus: state.voteStatus
-                        //state.canVote,
-                        //state.canVote
                     )
                 }
             })
@@ -399,6 +495,18 @@ extension DetailView {
         
         func clearError() {
             viewModel.clearError()
+        }
+        
+        func deleteAccount() {
+            viewModel.deleteAccount()
+        }
+        
+        func logout() {
+            viewModel.logout()
+        }
+        
+        func checkLocation() {
+            viewModel.checkRadius()
         }
         
         // Removes the listener

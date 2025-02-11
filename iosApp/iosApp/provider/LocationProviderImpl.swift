@@ -12,7 +12,6 @@ import CoreLocation
 
 class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLocationManagerDelegate {
     
-    
     private var locationManager: CLLocationManager?
     
     @Published var userLocation: CLLocation?
@@ -25,18 +24,6 @@ class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLoca
         locationManager?.requestAlwaysAuthorization()
     }
     
-    func getLocation(callback: @escaping (String?, String?) -> Void) {
-        if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
-            if CLLocationManager.isMonitoringAvailable(for: CLBeaconRegion.self) {
-                if CLLocationManager.isRangingAvailable() {
-                    locationManager?.requestLocation()
-                    callback("\(userLocation?.coordinate.latitude ?? 0.0)", "\(userLocation?.coordinate.longitude ?? 0.0)")
-                }
-            }
-        }
-        callback(nil, nil)
-    }
-    
     
     func hasPermission() -> Bool {
         let status = locationManager?.authorizationStatus
@@ -47,6 +34,8 @@ class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLoca
             return false
         case .authorizedWhenInUse, .authorizedAlways:
             return true
+        case .none:
+            return false
         @unknown default:
            return false
         }
@@ -54,6 +43,19 @@ class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLoca
     
     func requestPermission() {
         locationManager?.requestWhenInUseAuthorization()
+    }
+    
+    func getLocation(completionHandler: @escaping (ResultKMM<KotlinPair<NSString, NSString>>?, (any Error)?) -> Void) {
+        Task {
+            if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
+                if CLLocationManager.isMonitoringAvailable(for: CLBeaconRegion.self) {
+                    if CLLocationManager.isRangingAvailable() {
+                        locationManager?.requestLocation()
+                        completionHandler(ResultKMMSuccess(data: KotlinPair(first: "\(userLocation?.coordinate.latitude)" as NSString, second: "\(userLocation?.coordinate.longitude)" as NSString)), FirestoreError.TapaVotedYet() as? Error)
+                    }
+                }
+            }
+        }
     }
     
     // Delegate method - called when location updates
@@ -81,6 +83,10 @@ class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLoca
         }
     }
     
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Location request failed with error: \(error.localizedDescription)")
+    }
+    
     func isLocationActive() -> Bool {
         return false
     }
@@ -89,7 +95,11 @@ class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLoca
     }
     
     func areCoordinatesWithinDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double, maxDistance: Float) -> Bool {
-        return false
+        let location1 = CLLocation(latitude: lat1, longitude: lon1)
+        let location2 = CLLocation(latitude: lat2, longitude: lon2)
+
+        let distance = Float(location1.distance(from: location2)) // Distance in meters
+        return distance < maxDistance
     }
     
 }

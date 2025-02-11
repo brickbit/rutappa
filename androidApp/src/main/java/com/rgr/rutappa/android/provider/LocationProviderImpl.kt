@@ -39,20 +39,22 @@ class LocationProviderImpl(
         }
     }
     @SuppressLint("MissingPermission")
-    override fun getLocation(callback: (String?, String?) -> Unit) {
-        val activity = activityProvider.getActivity()
-        val fusedLocationClient = activity?.let { LocationServices.getFusedLocationProviderClient(it) }
-        val cancellationTokenSource = CancellationTokenSource()
-        val currentTask: Task<Location>? = fusedLocationClient?.getCurrentLocation(
-            PRIORITY_HIGH_ACCURACY,
-            cancellationTokenSource.token
-        )
-        currentTask?.addOnCompleteListener { task ->
-            if (task.isSuccessful && task.result != null) {
-                val coordinates = task.result
-                callback(coordinates.latitude.toString(),coordinates.longitude.toString())
-            } else {
-                callback(null,null)
+    override suspend fun getLocation(): ResultKMM<Pair<String, String>> {
+        return suspendCancellableCoroutine { continuation ->
+            val activity = activityProvider.getActivity()
+            val fusedLocationClient = activity?.let { LocationServices.getFusedLocationProviderClient(it) }
+            val cancellationTokenSource = CancellationTokenSource()
+            val currentTask: Task<Location>? = fusedLocationClient?.getCurrentLocation(
+                PRIORITY_HIGH_ACCURACY,
+                cancellationTokenSource.token
+            )
+            currentTask?.addOnCompleteListener { task ->
+                if (task.isSuccessful && task.result != null) {
+                    val coordinates = task.result
+                    continuation.resume(ResultKMM.Success(Pair(coordinates.latitude.toString(),coordinates.longitude.toString())))
+                } else {
+                    continuation.resume(ResultKMM.Failure(Error()))
+                }
             }
         }
     }

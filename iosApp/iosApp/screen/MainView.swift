@@ -40,7 +40,7 @@ struct MainView: View {
         } else {
             if(viewModel.state.logout) {
                 return AnyView(LoadingView().task {
-                    navigator.navigate(to: .login)
+                    navigator.logoutAndNavigate(to: .login)
                 })
             }
             if(viewModel.state.error == "RemoteConfigError.LogoutFailed") {

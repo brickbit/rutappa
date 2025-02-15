@@ -79,6 +79,11 @@ struct DetailView: View {
                             navigator.navigate(to: .partners)
                         }
                     },
+                    navigateToTapasAction: {
+                        Task {
+                            navigator.navigate(to: .main)
+                        }
+                    },
                     checkLocation: {
                         viewModel.checkLocation()
                     }
@@ -136,6 +141,7 @@ struct DetailScreen: View {
     let logoutAction: () -> ()
     let deleteAccountAction: () -> ()
     let navigateToPartnersAction: () -> ()
+    let navigateToTapasAction: () -> ()
     let checkLocation: () -> ()
     @State private var showingLogout = false
     @State private var showingMenu = false
@@ -181,6 +187,7 @@ struct DetailScreen: View {
                         showingMenu.toggle()
                     },
                     onTapasClicked: {
+                        navigateToTapasAction()
                         showingMenu.toggle()
                     },
                     onPartnersClicked: {

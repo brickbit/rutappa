@@ -15,7 +15,6 @@ import _AuthenticationServices_SwiftUI
 struct LoginView: View {
     @ObservedObject var viewModel: IOSLoginViewModel
     @EnvironmentObject var navigator: Navigator
-    @State var navigated = false
 
     init() {
         self.viewModel = IOSLoginViewModel()
@@ -33,41 +32,37 @@ struct LoginView: View {
     }
     
     func loginContent() -> AnyView {
-        switch viewModel.state {
-        case .loading: return AnyView(
-            LoginScreen(
-                signIn: {},
-                logIn: {}
-            )
-        )
-        case .logged(let mail):
-            Task{
-                if(!navigated) {
-                    navigated = true
-                    navigator.navigate(to: .main)
-                }
-            }
+        if(viewModel.state.isLoading) {
             return AnyView(
                 LoginScreen(
                     signIn: {},
                     logIn: {}
                 )
             )
-        case .notLogged:
-            return AnyView(
-                LoginScreen(
-                    signIn: {
-                        Task {
-                            viewModel.signIn()
+        } else {
+            if(viewModel.state.logged) {
+                return AnyView(LoginScreen(
+                    signIn: {},
+                    logIn: {}
+                ).task {
+                    navigator.navigate(to: .main)
+                })
+            } else {
+                return AnyView(
+                    LoginScreen(
+                        signIn: {
+                            Task {
+                                viewModel.signIn()
+                            }
+                        },
+                        logIn: {
+                            Task {
+                                viewModel.signInWithIntent()
+                            }
                         }
-                    },
-                    logIn: {
-                        Task {
-                            viewModel.signInWithIntent()
-                        }
-                    }
+                    )
                 )
-            )
+            }
         }
     }
 }
@@ -171,7 +166,7 @@ extension LoginView {
             
         private let viewModel: LoginViewModel
                 
-        @Published var state: LoginStateSwift = LoginStateSwift.notLogged
+        @Published var state: LoginStateSwift = LoginStateSwift()
         
         private var handle: DisposableHandle?
 
@@ -183,7 +178,7 @@ extension LoginView {
         func startObserving() {
             handle = viewModel.state.subscribe(onCollect: { state in
                 if let state = state {
-                    self.state = LoginStateSwift(state) ?? .notLogged
+                    self.state = LoginStateSwift(isLoading: state.isLoading, logged: state.logged, mail: state.mail)
                 }
             })
         }
@@ -200,5 +195,6 @@ extension LoginView {
         func dispose() {
             handle?.dispose()
         }
+    
     }
 }

@@ -31,8 +31,6 @@ struct DetailView: View {
             if(viewModel.state.logout) {
                 LoadingView().task {
                     navigator.navigate(to: .login)
-                }.onDisappear {
-                    //viewModel.clearState()
                 }
             }
             
@@ -645,16 +643,6 @@ extension DetailView {
         // Removes the listener
         func dispose() {
             handle?.dispose()
-        }
-        
-        func clearState() {
-            self.state = DetailStateSwift(
-                isLoading: false,
-                logout: false,
-                tapa: nil,
-                location: nil,
-                voteStatus: VoteStatus.unknown
-            )
         }
     }
 }

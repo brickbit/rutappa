@@ -19,11 +19,11 @@ class LoginViewModel(
     private val localRepository: LocalRepository,
 
 ): BaseViewModel() {
-    private val _state: MutableStateFlow<LoginState> = MutableStateFlow(LoginState.NotLogged)
+    private val _state: MutableStateFlow<LoginState> = MutableStateFlow(LoginState())
     val state = _state.stateIn(
         scope = scope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = LoginState.NotLogged
+        initialValue = LoginState()
     ).toCommonStateFlow()
 
     private val _errorState: MutableStateFlow<LoginError> = MutableStateFlow(LoginError.NoError)
@@ -35,15 +35,12 @@ class LoginViewModel(
 
     fun signIn() {
         scope.launch {
+            _state.update { it.copy(isLoading = true) }
             val result = signInUseCase.invoke()
             if (result.isSuccess) {
-                _state.update {
-                    LoginState.Loading
-                }
+                _state.update { it.copy(isLoading = false, logged = true) }
             } else {
-                _state.update {
-                    LoginState.NotLogged
-                }
+                _state.update { it.copy(isLoading = false, logged = false) }
                 result.exceptionOrNull()?.let {
                     processError(it)
                 }
@@ -53,10 +50,8 @@ class LoginViewModel(
 
     fun signInWithDevice(uuid: String) {
         scope.launch {
-            _state.update {
-                localRepository.saveUid(uuid)
-                LoginState.Logged(uuid)
-            }
+            localRepository.saveUid(uuid)
+            _state.update { it.copy(isLoading = false, logged = true, mail = uuid) }
         }
     }
 
@@ -65,14 +60,10 @@ class LoginViewModel(
             val result = signInWithIntentUseCase.invoke()
             if (result.isSuccess) {
                 result.getOrNull()?.let { signData ->
-                    _state.update {
-                        LoginState.Logged(signData)
-                    }
+                    _state.update { it.copy(isLoading = false, logged = true, mail = signData) }
                 }
             } else {
-                _state.update {
-                    LoginState.NotLogged
-                }
+                _state.update { it.copy(isLoading = false, logged = false) }
                 result.exceptionOrNull()?.let {
                     processError(it)
                 }

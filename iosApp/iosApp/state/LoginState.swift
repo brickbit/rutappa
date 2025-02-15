@@ -9,24 +9,8 @@
 import Foundation
 import shared
 
-enum LoginStateSwift {
-    case notLogged
-    case loading
-    case logged(mail: String)
+struct LoginStateSwift {
+    var isLoading: Bool = false
+    var logged: Bool = false
+    var mail: String = ""
 }
-
-extension LoginStateSwift {
-    init?(_ value: LoginState) {
-        switch value {
-        case is LoginState.NotLogged:
-            self = .notLogged
-        case is LoginState.Loading:
-            self = .loading
-        case let loaded as LoginState.Logged:
-            self = .logged(mail: "")
-        default:
-            return nil
-        }
-    }
-}
-

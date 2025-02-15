@@ -132,14 +132,29 @@ fun LoginRoute(
         (context as MainActivity).finish()
     }
 
-    when (state) {
-        LoginState.Loading -> {
+    if(state.isLoading) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(
+                16.dp,
+                alignment = Alignment.CenterHorizontally
+            )
+        ) {
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
+            Text(
+                modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 8.dp),
+                text = stringResource(R.string.login_login),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center
+            )
+        }
+    } else {
+        if(state.logged) {
+            navigateToMain()
+        } else {
             LoginScreen(
                 state = state,
-                loading = true,
-                signIn = {
-                    viewModel.signIn()
-                },
+                loading = false,
                 signInWithDevice = {
                     viewModel.signInWithDevice(it)
                 },
@@ -152,19 +167,6 @@ fun LoginRoute(
                             ).build()
                         )
                     }
-                }
-            )
-        }
-        is LoginState.Logged -> {
-            navigateToMain()
-        }
-
-        LoginState.NotLogged -> {
-            LoginScreen(
-                state = state,
-                loading = false,
-                signInWithDevice = {
-                    viewModel.signInWithDevice(it)
                 },
                 signIn = {
                     val signInIntent = mGoogleSignInClient.signInIntent
@@ -284,21 +286,7 @@ fun LoginScreen(
                     textAlign = TextAlign.Center
                 )
                 if (loading) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(
-                            16.dp,
-                            alignment = Alignment.CenterHorizontally
-                        )
-                    ) {
-                        CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
-                        Text(
-                            modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 8.dp),
-                            text = stringResource(R.string.login_login),
-                            style = MaterialTheme.typography.bodyLarge,
-                            textAlign = TextAlign.Center
-                        )
-                    }
+
                 } else {
                     /*
                     Button(
@@ -355,7 +343,7 @@ fun LoginScreen(
 fun LoginScreenPreview() {
     MyApplicationTheme {
         LoginScreen(
-            state = LoginState.NotLogged,
+            state = LoginState(),
             signIn = {},
             signInWithDevice = {} ,
             login = {},

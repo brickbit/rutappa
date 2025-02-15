@@ -7,6 +7,7 @@ import com.rgr.rutappa.domain.model.ResultKMM
 import com.rgr.rutappa.domain.repository.LocalRepository
 import com.rgr.rutappa.domain.useCase.SignInUseCase
 import com.rgr.rutappa.domain.useCase.SignInWithIntentUseCase
+import io.ktor.util.PlatformUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -38,7 +39,7 @@ class LoginViewModel(
             _state.update { it.copy(isLoading = true) }
             val result = signInUseCase.invoke()
             if (result.isSuccess) {
-                _state.update { it.copy(isLoading = false, logged = true) }
+                _state.update { it.copy(isLoading = false, logged = PlatformUtils.IS_JVM) }
             } else {
                 _state.update { it.copy(isLoading = false, logged = false) }
                 result.exceptionOrNull()?.let {

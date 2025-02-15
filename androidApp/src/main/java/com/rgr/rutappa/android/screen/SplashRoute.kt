@@ -37,11 +37,13 @@ fun SplashRoute(
     navigateTo: (Routes) -> Unit
 ) {
     val state = viewModel.state.collectAsState().value
-    when(state) {
-        is SplashState.Finished -> SplashScreen(
-            navigateTo = { navigateTo(state.route) }
-        )
-        SplashState.Init -> SplashScreen()
+    when(state.route) {
+        Routes.Splash -> SplashScreen()
+        else -> {
+            SplashScreen(
+                navigateTo = { navigateTo(state.route) }
+            )
+        }
     }
 }
 

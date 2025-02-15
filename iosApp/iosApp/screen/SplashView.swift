@@ -99,7 +99,7 @@ extension SplashView {
     @MainActor class IOSSplashViewModel: ObservableObject {
         private let viewModel: SplashViewModel
                 
-        @Published var state: SplashStateSwift = SplashStateSwift.initialized
+        @Published var state: SplashStateSwift = SplashStateSwift()
         
         private var handle: DisposableHandle?
 
@@ -111,7 +111,7 @@ extension SplashView {
         func startObserving() {
             handle = viewModel.state.subscribe(onCollect: { state in
                 if let state = state {
-                    self.state = SplashStateSwift(state) ?? .initialized
+                    self.state = SplashStateSwift(route: RouteSwift(state.route) ?? RouteSwift.splash)
                 }
             })
         }

@@ -61,7 +61,7 @@ struct SplashScreen: View {
                     .padding()
                 Image(.legumbresTapas)
                     .resizable()
-                    .frame(width: 250, height: 25)
+                    .frame(width: 250, height: 20)
                 Text("©2025 desTAPA las LEGUMBRES")
                     .foregroundStyle(Color("primaryColor"))
                     .font(Font.custom("Montserrat", size: 16))

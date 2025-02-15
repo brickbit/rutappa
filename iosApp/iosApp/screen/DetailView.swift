@@ -44,6 +44,8 @@ struct DetailView: View {
                     location: (viewModel.state.location?.first ?? "0.0") as String,
                     tapa: viewModel.state.tapa!,
                     voteStatus: viewModel.state.voteStatus,
+                    longitude: (viewModel.state.location?.second ?? "0.0") as String,
+                    latitude: (viewModel.state.location?.first ?? "0.0") as String,
                     getLocation: {
                         Task {
                             viewModel.getLocation()
@@ -119,6 +121,8 @@ struct DetailScreen: View {
     let location: String
     let tapa: TapaItemBo
     let voteStatus: VoteStatus
+    let longitude: String?
+    let latitude: String?
     let getLocation: () -> ()
     let voteTapa: (Int32, String) -> ()
     let logoutAction: () -> ()
@@ -134,10 +138,11 @@ struct DetailScreen: View {
                 ZStack(alignment: .top) {
                     ZStack {
                         GradientBackground()
-                        Text(location)
                         DetailScreenContent(
                             tapa: tapa,
                             voteStatus: voteStatus,
+                            longitude: longitude,
+                            latitude: latitude,
                             voteTapa: voteTapa,
                             getLocation: getLocation,
                             checkLocation: checkLocation
@@ -185,6 +190,8 @@ struct DetailScreen: View {
 struct DetailScreenContent: View {
     let tapa: TapaItemBo
     let voteStatus: VoteStatus
+    let longitude: String?
+    let latitude: String?
     let voteTapa: (Int32, String) -> ()
     let getLocation: () -> ()
     let checkLocation: () -> ()
@@ -229,71 +236,164 @@ struct DetailScreenContent: View {
                         .foregroundStyle(Color("secondaryColor"))
                         .font(Font.custom("Montserrat", size: 16))
                     LegumesSection(tapa: tapa)
-                    if(voteStatus == .unknown) {
-                        AnyView(
-                            RequestLocationButton(
-                                text: "Pulse para activar la ubicación y poder votar",
-                                onClickAction: {
-                                    getLocation()
-                                }
-                            )
+                    if (latitude != "0.0" && latitude != "0.0") {
+                        VoteOptionLocation(
+                            tapa: tapa,
+                            voteStatus: voteStatus,
+                            checkLocation: checkLocation,
+                            voteTapa: voteTapa
                         )
-                    } else if(voteStatus == .locationInactive) {
-                        AnyView(
-                            RequestLocationButton(
-                                text: "Pulse para activar la ubicación y poder votar",
-                                onClickAction: {
-                                    getLocation()
-                                }
-                            )
-                        )
-                    } else if(voteStatus == .locationNotAllow) {
-                        AnyView(
-                            RequestLocationButton(
-                                text: "Pulse para solicitar permiso de ubicación y votar",
-                                onClickAction: {
-                                    getLocation()
-                                }
-                            )
-                        )
-                    } else if(voteStatus == .unableObtainLocation) {
-                        AnyView(
-                            ErrorRequestLocationContent(
-                                text: "Se ha producido un error al obtener la ubicación",
-                                buttonText: "Reintentar",
-                                onClickAction: {
-                                    getLocation()
-                                    checkLocation()
-                                }
-                            )
-                        )
-                    } else if(voteStatus == .outOfRange) {
-                        AnyView(
-                            AnyView(
-                                ErrorRequestLocationContent(
-                                    text: "Para poder votar ha de estar en las inmediaciones del local",
-                                    buttonText: "Reintentar",
-                                    onClickAction: {
-                                        getLocation()
-                                        checkLocation()
-                                    }
-                                )
-                            )
-                        )
-                    } else if(voteStatus == .canVote) {
-                        VoteSection(tapa: tapa, voted: false, voteTapa: { vote,tapa in
-                            voteTapa(vote,tapa)
-                        })
-                    } else if (voteStatus == .voted) {
-                        VoteSection(tapa: tapa, voted: true, voteTapa: { vote,tapa in
-                            voteTapa(vote,tapa)
-                        })
                     } else {
-                        AnyView(EmptyView())
+                        VoteOptionNoLocation(
+                            tapa: tapa,
+                            voteStatus: voteStatus,
+                            getLocation: getLocation,
+                            voteTapa: voteTapa
+                        )
                     }
                 }
                 .padding(.horizontal,24)
             }
+        }
+    }
+}
+
+struct VoteOptionLocation: View {
+    let tapa: TapaItemBo
+    let voteStatus: VoteStatus
+    let checkLocation: () -> Void
+    let voteTapa: (Int32, String) -> ()
+
+    var body: some View {
+        if(voteStatus == .unknown) {
+            AnyView(
+                RequestLocationButton(
+                    text: "Pulse para activar la ubicación y poder votar",
+                    onClickAction: {
+                        checkLocation()
+                    }
+                )
+            )
+        } else if(voteStatus == .locationInactive) {
+            AnyView(
+                RequestLocationButton(
+                    text: "Pulse para activar la ubicación y poder votar",
+                    onClickAction: {
+                        checkLocation()
+                    }
+                )
+            )
+        } else if(voteStatus == .locationNotAllow) {
+            AnyView(
+                RequestLocationButton(
+                    text: "Pulse para solicitar permiso de ubicación y votar",
+                    onClickAction: {
+                        checkLocation()
+                    }
+                )
+            )
+        } else if(voteStatus == .unableObtainLocation) {
+            AnyView(
+                ErrorRequestLocationContent(
+                    text: "Se ha producido un error al obtener la ubicación",
+                    buttonText: "Reintentar",
+                    onClickAction: {
+                        checkLocation()
+                    }
+                )
+            )
+        } else if(voteStatus == .outOfRange) {
+            AnyView(
+                AnyView(
+                    ErrorRequestLocationContent(
+                        text: "Para poder votar ha de estar en las inmediaciones del local",
+                        buttonText: "Reintentar",
+                        onClickAction: {
+                            checkLocation()
+                        }
+                    )
+                )
+            )
+        } else if(voteStatus == .canVote) {
+            VoteSection(tapa: tapa, voted: false, voteTapa: { vote,tapa in
+                voteTapa(vote,tapa)
+            })
+        } else if (voteStatus == .voted) {
+            VoteSection(tapa: tapa, voted: true, voteTapa: { vote,tapa in
+                voteTapa(vote,tapa)
+            })
+        } else {
+            AnyView(EmptyView())
+        }
+    }
+}
+
+struct VoteOptionNoLocation: View {
+    let tapa: TapaItemBo
+    let voteStatus: VoteStatus
+    let getLocation: () -> Void
+    let voteTapa: (Int32, String) -> ()
+
+    var body: some View {
+        if(voteStatus == .unknown) {
+            AnyView(
+                RequestLocationButton(
+                    text: "Pulse para activar la ubicación y poder votar",
+                    onClickAction: {
+                        getLocation()
+                    }
+                )
+            )
+        } else if(voteStatus == .locationInactive) {
+            AnyView(
+                RequestLocationButton(
+                    text: "Pulse para activar la ubicación y poder votar",
+                    onClickAction: {
+                        getLocation()
+                    }
+                )
+            )
+        } else if(voteStatus == .locationNotAllow) {
+            AnyView(
+                RequestLocationButton(
+                    text: "Pulse para solicitar permiso de ubicación y votar",
+                    onClickAction: {
+                        getLocation()
+                    }
+                )
+            )
+        } else if(voteStatus == .unableObtainLocation) {
+            AnyView(
+                ErrorRequestLocationContent(
+                    text: "Se ha producido un error al obtener la ubicación",
+                    buttonText: "Reintentar",
+                    onClickAction: {
+                        getLocation()
+                    }
+                )
+            )
+        } else if(voteStatus == .outOfRange) {
+            AnyView(
+                AnyView(
+                    ErrorRequestLocationContent(
+                        text: "Para poder votar ha de estar en las inmediaciones del local",
+                        buttonText: "Reintentar",
+                        onClickAction: {
+                            getLocation()
+                        }
+                    )
+                )
+            )
+        } else if(voteStatus == .canVote) {
+            VoteSection(tapa: tapa, voted: false, voteTapa: { vote,tapa in
+                voteTapa(vote,tapa)
+            })
+        } else if (voteStatus == .voted) {
+            VoteSection(tapa: tapa, voted: true, voteTapa: { vote,tapa in
+                voteTapa(vote,tapa)
+            })
+        } else {
+            AnyView(EmptyView())
         }
     }
 }
@@ -506,7 +606,26 @@ extension DetailView {
         }
         
         func checkLocation() {
-            viewModel.checkRadius()
+            let provider = LocationProviderImpl.shared
+            let isWithinRadius = provider.areCoordinatesWithinDistance(
+                lat1: Double((state.location?.first ?? "0.0") as Substring) ?? 0.0,
+                lon1: Double((state.location?.second ?? "0.0") as Substring) ?? 0.0,
+                lat2: Double(state.tapa?.local.latitude ?? "0.0") ?? 0.0,
+                lon2: Double(state.tapa?.local.longitude ?? "0.0") ?? 0.0,
+                maxDistance: 300
+            )
+            
+            viewModel.state.subscribe(onCollect: { state in
+                if let state = state {
+                    self.state = DetailStateSwift(
+                        isLoading: state.isLoading,
+                        tapa: state.tapa,
+                        location: state.location,
+                        voteStatus: isWithinRadius ? VoteStatus.canVote : VoteStatus.outOfRange
+                    )
+                }
+            })
+            
         }
         
         // Removes the listener

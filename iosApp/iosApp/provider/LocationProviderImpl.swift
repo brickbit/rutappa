@@ -47,14 +47,10 @@ class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLoca
     
     func getLocation(completionHandler: @escaping (ResultKMM<KotlinPair<NSString, NSString>>?, (any Error)?) -> Void) {
         Task {
-            if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
-                if CLLocationManager.isMonitoringAvailable(for: CLBeaconRegion.self) {
-                    if CLLocationManager.isRangingAvailable() {
-                        locationManager?.requestLocation()
-                        completionHandler(ResultKMMSuccess(data: KotlinPair(first: "\(userLocation?.coordinate.latitude)" as NSString, second: "\(userLocation?.coordinate.longitude)" as NSString)), FirestoreError.TapaVotedYet() as? Error)
-                    }
-                }
-            }
+            locationManager?.requestLocation()
+            let latitude = userLocation?.coordinate.latitude ?? 0.0
+            let longitude = userLocation?.coordinate.longitude ?? 0.0
+            completionHandler(ResultKMMSuccess(data: KotlinPair(first: "\(latitude)" as NSString, second: "\(longitude)" as NSString)), FirestoreError.TapaVotedYet() as? Error)
         }
     }
     

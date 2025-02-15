@@ -41,7 +41,7 @@ class FirebaseRemoteDataProviderImpl: FirebaseRemoteDataProvider {
         remoteConfig.fetch { (status, error) -> Void in
           if status == .success {
               self.remoteConfig.activate()
-              let remoteText = self.remoteConfig.configValue(forKey: "Tapas").stringValue ?? ""
+              let remoteText = self.remoteConfig.configValue(forKey: "TapasV2").stringValue ?? ""
               let decoder = JSONDecoder()
               let data = Data(remoteText.utf8)
               do {
@@ -61,7 +61,7 @@ class FirebaseRemoteDataProviderImpl: FirebaseRemoteDataProvider {
         remoteConfig.fetch { (status, error) -> Void in
           if status == .success {
               self.remoteConfig.activate()
-              let remoteText = self.remoteConfig.configValue(forKey: "Tapas").stringValue ?? ""
+              let remoteText = self.remoteConfig.configValue(forKey: "TapasV2").stringValue ?? ""
               let decoder = JSONDecoder()
               let data = Data(remoteText.utf8)
               do {

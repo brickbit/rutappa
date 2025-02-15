@@ -30,7 +30,7 @@ struct DetailView: View {
             }
             if(viewModel.state.logout) {
                 LoadingView().task {
-                    navigator.navigate(to: .login)
+                    navigator.logoutAndNavigate(to: .login)
                 }
             }
             

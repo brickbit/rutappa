@@ -259,6 +259,14 @@ extension MainView {
         
         // Removes the listener
         func dispose() {
+            self.state = MainStateSwift(
+                isLoading: false,
+                tapas: [],
+                filteredTapas: [],
+                logout: false,
+                provinces: [],
+                error: nil
+            )
             handle?.dispose()
         }
     }

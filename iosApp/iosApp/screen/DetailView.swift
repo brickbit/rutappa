@@ -134,55 +134,57 @@ struct DetailScreen: View {
     
     var body: some View {
         ZStack {
-            ZStack(alignment: .bottom) {
-                ZStack(alignment: .top) {
-                    ZStack {
-                        GradientBackground()
-                        DetailScreenContent(
-                            tapa: tapa,
-                            voteStatus: voteStatus,
-                            longitude: longitude,
-                            latitude: latitude,
-                            voteTapa: voteTapa,
-                            getLocation: getLocation,
-                            checkLocation: checkLocation
-                        )
-                    }
-                    HeaderView(
-                        hasMenu: true,
-                        onItemClicked: {
-                            showingMenu.toggle()
+            ZStack {
+                ZStack(alignment: .bottom) {
+                    ZStack(alignment: .top) {
+                        ZStack {
+                            GradientBackground()
+                            DetailScreenContent(
+                                tapa: tapa,
+                                voteStatus: voteStatus,
+                                longitude: longitude,
+                                latitude: latitude,
+                                voteTapa: voteTapa,
+                                getLocation: getLocation,
+                                checkLocation: checkLocation
+                            )
                         }
-                    )
-                    .padding(.top,1)
-                    .confirmationDialog("Change background", isPresented: $showingLogout) {
-                        Button("Eliminar cuenta") { deleteAccountAction() }
-                        Button("Cerrar sesión") { logoutAction() }
-                        Button("Continuar logado", role: .cancel) { }
-                    } message: {
-                        Text("¿Desea cerrar la sesión o eliminar su cuenta?")
+                        HeaderView(
+                            hasMenu: true,
+                            onItemClicked: {
+                                showingMenu.toggle()
+                            }
+                        )
+                        .padding(.top,1)
+                        .confirmationDialog("Change background", isPresented: $showingLogout) {
+                            Button("Eliminar cuenta") { deleteAccountAction() }
+                            Button("Cerrar sesión") { logoutAction() }
+                            Button("Continuar logado", role: .cancel) { }
+                        } message: {
+                            Text("¿Desea cerrar la sesión o eliminar su cuenta?")
+                        }
                     }
+                    SocialWallView()
                 }
-                SocialWallView()
             }
-        }
-        if(showingMenu) {
-            MenuRutapa(
-                onCloseClicked: {
-                    showingMenu.toggle()
-                },
-                onTapasClicked: {
-                    showingMenu.toggle()
-                },
-                onPartnersClicked: {
-                    showingMenu.toggle()
-                    navigateToPartnersAction()
-                },
-                onLogoutClicked: {
-                    showingMenu.toggle()
-                    showingLogout.toggle()
-                }
-            )
+            if(showingMenu) {
+                MenuRutapa(
+                    onCloseClicked: {
+                        showingMenu.toggle()
+                    },
+                    onTapasClicked: {
+                        showingMenu.toggle()
+                    },
+                    onPartnersClicked: {
+                        showingMenu.toggle()
+                        navigateToPartnersAction()
+                    },
+                    onLogoutClicked: {
+                        showingMenu.toggle()
+                        showingLogout.toggle()
+                    }
+                )
+            }
         }
     }
 }

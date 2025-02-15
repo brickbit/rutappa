@@ -31,11 +31,26 @@ struct SplashView: View {
     }
     
     func splashContent() -> AnyView {
-        switch viewModel.state {
-        case .initialized: return AnyView(SplashScreen())
-        case .finished(let route):
+        switch viewModel.state.route {
+        case .splash: return AnyView(SplashScreen())
+        case .login:
             Task{
-                navigator.navigate(to: route)
+                navigator.navigate(to: .login)
+            }
+            return AnyView(SplashScreen())
+        case .main:
+            Task{
+                navigator.navigate(to: .main)
+            }
+            return AnyView(SplashScreen())
+        case .detail(tapaId: let tapaId):
+            Task{
+                navigator.navigate(to: .detail(tapaId: tapaId))
+            }
+            return AnyView(SplashScreen())
+        case .partners:
+            Task{
+                navigator.navigate(to: .partners)
             }
             return AnyView(SplashScreen())
         }

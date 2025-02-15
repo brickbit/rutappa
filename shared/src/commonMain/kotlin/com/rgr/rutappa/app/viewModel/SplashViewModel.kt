@@ -16,11 +16,11 @@ class SplashViewModel(
     private val isUserLoggedUseCase: IsUserLoggedUseCase,
     private val localRepository: LocalRepository,
 ): BaseViewModel() {
-    private val _state: MutableStateFlow<SplashState> = MutableStateFlow(SplashState.Init)
+    private val _state: MutableStateFlow<SplashState> = MutableStateFlow(SplashState())
     val state = _state.stateIn(
         scope = scope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = SplashState.Init
+        initialValue = SplashState()
     ).toCommonStateFlow()
 
     init {
@@ -28,24 +28,22 @@ class SplashViewModel(
     }
 
     private fun initializeSplash() {
-
         scope.launch {
-            delay(3000)
+            delay(2000)
             if(localRepository.getUid().isNotEmpty()) {
                 _state.update {
-                    SplashState.Finished(Routes.Main)
+                    it.copy(route = Routes.Main)
                 }
             } else {
-
                 isUserLoggedUseCase.invoke()
                     .onSuccess {
                         _state.update {
-                            SplashState.Finished(Routes.Main)
+                            it.copy(route = Routes.Main)
                         }
                     }
                     .onFailure {
                         _state.update {
-                            SplashState.Finished(Routes.Login)
+                            it.copy(route = Routes.Login)
                         }
                     }
             }

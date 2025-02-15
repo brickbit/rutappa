@@ -13,7 +13,7 @@ import com.rgr.rutappa.app.di.repositoryModule
 import com.rgr.rutappa.app.di.useCaseModule
 import org.koin.core.context.startKoin
 
-class Rutappa: Application(), ImageLoaderFactory {
+class Rutappa: Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin {
@@ -24,25 +24,5 @@ class Rutappa: Application(), ImageLoaderFactory {
                 viewModelModules
             )
         }
-    }
-
-    override fun newImageLoader(): ImageLoader {
-        return ImageLoader(this).newBuilder()
-            .memoryCachePolicy(CachePolicy.ENABLED)
-            .memoryCache {
-                MemoryCache.Builder(this)
-                    .maxSizePercent(0.1)
-                    .strongReferencesEnabled(true)
-                    .build()
-            }
-            .diskCachePolicy(CachePolicy.ENABLED)
-            .diskCache {
-                DiskCache.Builder()
-                    .maxSizePercent(0.03)
-                    .directory(filesDir)
-                    .build()
-            }
-            .logger(DebugLogger())
-            .build()
     }
 }

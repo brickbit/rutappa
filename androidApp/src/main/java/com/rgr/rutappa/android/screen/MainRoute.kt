@@ -51,6 +51,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ErrorResult
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.rgr.rutappa.android.MainActivity
 import com.rgr.rutappa.android.MyApplicationTheme
 import com.rgr.rutappa.android.R
@@ -63,6 +67,7 @@ import com.rgr.rutappa.app.viewModel.MainViewModel
 import com.rgr.rutappa.domain.error.RemoteConfigError
 import com.rgr.rutappa.domain.model.LocalItemBo
 import com.rgr.rutappa.domain.model.TapaItemBo
+import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -279,11 +284,22 @@ fun TapaItemComposable(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        val context = LocalContext.current
+        val listener = object : ImageRequest.Listener {}
+        val imageRequest = ImageRequest.Builder(context)
+            .data(tapa.photo)
+            .listener(listener)
+            .dispatcher(Dispatchers.IO)
+            .memoryCacheKey(tapa.photo)
+            .diskCacheKey(tapa.photo)
+            .diskCachePolicy(CachePolicy.ENABLED)
+            .memoryCachePolicy(CachePolicy.ENABLED)
+            .build()
         AsyncImage(
             modifier = Modifier
                 .size(120.dp)
                 .clip(RoundedCornerShape(16.dp)),
-            model = tapa.photo,
+            model = imageRequest,
             contentDescription = null,
             contentScale = ContentScale.Crop
         )

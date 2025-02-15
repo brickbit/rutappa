@@ -20,7 +20,13 @@ struct PartnersView: View {
     
     var body: some View {
         VStack {
-            partnersContent()
+            if(viewModel.state.logout) {
+                return AnyView(LoadingView().task {
+                    navigator.navigate(to: .login)
+                })
+            } else {
+                return AnyView(partnersContent())
+            }
         }
         .onAppear {
             viewModel.startObserving()
@@ -31,6 +37,8 @@ struct PartnersView: View {
     }
     
     func partnersContent() -> AnyView {
+        @State var shouldNavigateLogout = viewModel.state.logout
+
         return AnyView(
             PartnersScreen(
                 logoutAction: {
@@ -52,6 +60,7 @@ struct PartnersView: View {
                     .background(Color("secondaryColor"))
                     .ignoresSafeArea(edges: .top)
                     .frame(height: 0)
+                    
             }
         )
     }

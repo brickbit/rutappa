@@ -11,6 +11,7 @@ import shared
 
 struct DetailStateSwift {
     var isLoading: Bool = true
+    var logout: Bool = false
     var tapa: TapaItemBo? = nil
     var location: KotlinPair<NSString, NSString>? = nil
     var voteStatus: VoteStatus = VoteStatus.unknown

@@ -21,11 +21,21 @@ struct DetailView: View {
         self.viewModel = IOSDetailViewModel(id: id)
     }
     var body: some View {
-        VStack {
-            detailContent()
-            errorContent(clearError: {
-                viewModel.clearError()
-            })
+        ZStack {
+            VStack {
+                detailContent()
+                errorContent(clearError: {
+                    viewModel.clearError()
+                })
+            }
+            if(viewModel.state.logout) {
+                LoadingView().task {
+                    navigator.navigate(to: .login)
+                }.onDisappear {
+                    //viewModel.clearState()
+                }
+            }
+            
         }
         .onAppear {
             viewModel.startObserving()
@@ -579,6 +589,7 @@ extension DetailView {
                 if let state = state {
                     self.state = DetailStateSwift(
                         isLoading: state.isLoading,
+                        logout: state.logout,
                         tapa: state.tapa,
                         location: state.location,
                         voteStatus: state.voteStatus
@@ -621,6 +632,7 @@ extension DetailView {
                 if let state = state {
                     self.state = DetailStateSwift(
                         isLoading: state.isLoading,
+                        logout: state.logout,
                         tapa: state.tapa,
                         location: state.location,
                         voteStatus: isWithinRadius ? VoteStatus.canVote : VoteStatus.outOfRange
@@ -633,6 +645,16 @@ extension DetailView {
         // Removes the listener
         func dispose() {
             handle?.dispose()
+        }
+        
+        func clearState() {
+            self.state = DetailStateSwift(
+                isLoading: false,
+                logout: false,
+                tapa: nil,
+                location: nil,
+                voteStatus: VoteStatus.unknown
+            )
         }
     }
 }

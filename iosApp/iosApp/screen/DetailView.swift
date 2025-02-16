@@ -28,12 +28,6 @@ struct DetailView: View {
                     viewModel.clearError()
                 })
             }
-            if(viewModel.state.logout) {
-                LoadingView().task {
-                    navigator.logoutAndNavigate(to: .login)
-                }
-            }
-            
         }
         .onAppear {
             viewModel.startObserving()
@@ -67,11 +61,13 @@ struct DetailView: View {
                     logoutAction: {
                         Task {
                             viewModel.logout()
+                            navigator.logout()
                         }
                     },
                     deleteAccountAction: {
                         Task {
                             viewModel.deleteAccount()
+                            navigator.logout()
                         }
                     },
                     navigateToPartnersAction: {

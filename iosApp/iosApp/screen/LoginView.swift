@@ -40,29 +40,21 @@ struct LoginView: View {
                 )
             )
         } else {
-            if(viewModel.state.logged) {
-                return AnyView(LoginScreen(
-                    signIn: {},
-                    logIn: {}
-                ).task {
-                    navigator.navigate(to: .main)
-                })
-            } else {
-                return AnyView(
-                    LoginScreen(
-                        signIn: {
-                            Task {
-                                viewModel.signIn()
-                            }
-                        },
-                        logIn: {
-                            Task {
-                                viewModel.signInWithIntent()
-                            }
+            return AnyView(
+                LoginScreen(
+                    signIn: {
+                        Task {
+                            viewModel.signIn()
                         }
-                    )
+                    },
+                    logIn: {
+                        Task {
+                            viewModel.signInWithIntent()
+                            navigator.navigate(to: .main)
+                        }
+                    }
                 )
-            }
+            )
         }
     }
 }
@@ -193,6 +185,7 @@ extension LoginView {
         
         // Removes the listener
         func dispose() {
+            self.state = LoginStateSwift(isLoading: state.isLoading, logged: false, mail: state.mail)
             handle?.dispose()
         }
     

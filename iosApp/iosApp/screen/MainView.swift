@@ -38,16 +38,6 @@ struct MainView: View {
         if(viewModel.state.isLoading) {
             return AnyView(LoadingView())
         } else {
-            if(viewModel.state.logout) {
-                return AnyView(LoadingView().task {
-                    navigator.logoutAndNavigate(to: .login)
-                })
-            }
-            if(viewModel.state.error == "RemoteConfigError.LogoutFailed") {
-                return AnyView(LoadingView().task {
-                    navigator.navigate(to: .login)
-                })
-            }
             return AnyView(
                 MainScreen(
                     tapas: viewModel.state.filteredTapas,
@@ -58,11 +48,16 @@ struct MainView: View {
                         }
                     },
                     logoutAction:  {
-                        viewModel.logout()
+                        Task {
+                            viewModel.logout()
+                            navigator.logout()
+                        }
                     },
                     deleteAccountAction:  {
                         Task {
                             viewModel.deleteAccount()
+                            navigator.logout()
+
                         }
                     },
                     navigateToPartnersAction: {

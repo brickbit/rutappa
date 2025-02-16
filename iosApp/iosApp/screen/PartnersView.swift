@@ -19,15 +19,7 @@ struct PartnersView: View {
     }
     
     var body: some View {
-        VStack {
-            if(viewModel.state.logout) {
-                return AnyView(LoadingView().task {
-                    navigator.logoutAndNavigate(to: .login)
-                })
-            } else {
-                return AnyView(partnersContent())
-            }
-        }
+        return AnyView(partnersContent())
         .onAppear {
             viewModel.startObserving()
         }
@@ -42,7 +34,10 @@ struct PartnersView: View {
         return AnyView(
             PartnersScreen(
                 logoutAction: {
-                    viewModel.logout()
+                    Task {
+                        viewModel.logout()
+                        navigator.logout()
+                    }
                 },
                 navigateToTapas: {
                     Task {
@@ -52,6 +47,7 @@ struct PartnersView: View {
                 deleteAccountAction: {
                     Task {
                         viewModel.deleteAccount()
+                        navigator.logout()
                     }
                 }
             )

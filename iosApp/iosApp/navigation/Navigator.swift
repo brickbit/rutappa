@@ -31,12 +31,24 @@ final class Navigator: ObservableObject {
         routeHistory.removeAll()
     }
     
-    func logoutAndNavigate(to route: RouteSwift) {
+    func popToView(view: RouteSwift) {
+        if(routeHistory.contains(view)) {
+            while(view != routeHistory.last) {
+                if(routeHistory.contains(view)) {
+                    navPath.removeLast()
+                    routeHistory.removeLast()
+                }
+            }
+            routeHistory.append(view)
+        } else {
+            logout()
+        }
+    }
+    
+    func logout() {
         navPath = NavigationPath() // Reset stack
         routeHistory.removeAll()
-        DispatchQueue.main.async {
-            self.navPath.append(route) // Navigate to the login or desired screen
-            self.routeHistory.append(route)
-        }
+        self.navPath.append(RouteSwift.login) // Navigate to the login or desired screen
+        self.routeHistory.append(.login)
     }
 }

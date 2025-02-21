@@ -201,8 +201,8 @@ struct PartnersContent: View {
     var body: some View {
         ScrollView {
             Spacer(minLength: 140)
-            VStack(alignment: .center) {
-                VStack(alignment: .center) {
+            VStack(alignment: .center, spacing: 0) {
+                VStack(alignment: .center, spacing: 0) {
                     Text("Gracias a todos aquellos que han hecho posible que el Campeonato desTAPA las LEGUMBRES Tierra de Sabor sea hoy una realidad.")
                         .multilineTextAlignment(.center)
                         .foregroundStyle(Color("secondaryColor"))
@@ -214,52 +214,75 @@ struct PartnersContent: View {
                         .font(Font.custom("Montserrat", size: 14))
                         .padding(.top, 8)
                     if let partners = partners {
-                        VStack {
-                            ForEach(partners.categories, id: \.self) { category in
-                                VStack {
-                                    Text(category.name)
-                                        .foregroundStyle(Color("secondaryColor"))
-                                        .font(Font.custom("Berlin Sans FB Demi", size: 20))
-                                        .padding(.top, 16)
-                                    ForEach(category.partners, id: \.self) { partner in
-                                        KFImage(URL(string: partner.image))
-                                            .cacheOriginalImage()
-                                            .placeholder {
-                                                ProgressView()
-                                            }
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(maxWidth: .infinity)
-                                            .padding(.vertical, 8)
-                                    }
-                                }.padding(16)
-                            }
-                        }.padding(.bottom, 80)
+                        var lastindex = partners.categories.count - 1
+                        ForEach(partners.categories, id: \.self) { category in
+                            var last = category == partners.categories[lastindex]
+                            CategoryItemView(
+                                category: category,
+                                first: category == partners.categories[0],
+                                last: last
+                            )
+                        }
                     } else {
                         EmptyView()
                     }
                     
-                }.padding(.horizontal, 20)
+                }
                
             }
         }
     }
 }
 
+
+struct CategoryItemView: View {
+    var category: CategoryPartnerBO
+    let first: Bool
+    let last: Bool
+    var body: some View {
+        var color: Color = Color(UIColor(oxHex: "0x\(category.background)") ?? UIColor.blue)
+        var padding: CGFloat = last ? 100 : first ? 24 : 0
+        VStack (spacing: 0){
+            Text(category.name)
+                .foregroundStyle(Color("secondaryColor"))
+                .font(Font.custom("Berlin Sans FB Demi", size: 20))
+                .padding(.top, 16)
+            ForEach(category.partners, id: \.self) { partner in
+                KFImage(URL(string: partner.image))
+                    .cacheOriginalImage()
+                    .placeholder {
+                        ProgressView()
+                    }
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
+            }
+        }
+        .padding(.horizontal,16)
+        .padding(.bottom, padding)
+        .background(category.background == "000000" ? color.opacity(0.0) : color)
+    }
+}
+
 extension UIColor {
-   convenience init(red: Int, green: Int, blue: Int) {
-       assert(red >= 0 && red <= 255, "Invalid red component")
-       assert(green >= 0 && green <= 255, "Invalid green component")
-       assert(blue >= 0 && blue <= 255, "Invalid blue component")
+    convenience init?(oxHex: String) {
+        // Ensure the string starts with "OX" and is 8 characters long
+        guard oxHex.hasPrefix("0x"), oxHex.count == 8 else { return nil }
 
-       self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
-   }
+        // Remove "OX" prefix
+        let hexString = String(oxHex.dropFirst(2))
 
-   convenience init(rgb: Int) {
-       self.init(
-           red: (rgb >> 16) & 0xFF,
-           green: (rgb >> 8) & 0xFF,
-           blue: rgb & 0xFF
-       )
-   }
+        // Convert hex to integer
+        var hexInt: UInt64 = 0
+        Scanner(string: hexString).scanHexInt64(&hexInt)
+
+        // Extract RGB components
+        let red = CGFloat((hexInt >> 16) & 0xFF) / 255.0
+        let green = CGFloat((hexInt >> 8) & 0xFF) / 255.0
+        let blue = CGFloat(hexInt & 0xFF) / 255.0
+
+        // Initialize UIColor
+        self.init(red: red, green: green, blue: blue, alpha: 1.0)
+    }
 }

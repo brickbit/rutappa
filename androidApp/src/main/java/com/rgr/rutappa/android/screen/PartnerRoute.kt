@@ -240,7 +240,7 @@ fun PartnerListView(
                 AsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 36.dp, vertical = 8.dp)
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
                         .clickable {
                             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(partner.link))
                             context.startActivity(browserIntent)

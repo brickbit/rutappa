@@ -620,27 +620,36 @@ extension DetailView {
         }
         
         func checkLocation() {
-            let provider = LocationProviderImpl.shared
-            let isWithinRadius = provider.areCoordinatesWithinDistance(
-                lat1: Double((state.location?.first ?? "0.0") as Substring) ?? 0.0,
-                lon1: Double((state.location?.second ?? "0.0") as Substring) ?? 0.0,
-                lat2: Double(state.tapa?.local.latitude ?? "0.0") ?? 0.0,
-                lon2: Double(state.tapa?.local.longitude ?? "0.0") ?? 0.0,
-                maxDistance: 300
+            self.state = DetailStateSwift(
+                isLoading: true,
+                logout: state.logout,
+                tapa: state.tapa,
+                location: state.location,
+                voteStatus: state.voteStatus
             )
-            
-            viewModel.state.subscribe(onCollect: { state in
-                if let state = state {
-                    self.state = DetailStateSwift(
-                        isLoading: state.isLoading,
-                        logout: state.logout,
-                        tapa: state.tapa,
-                        location: state.location,
-                        voteStatus: isWithinRadius ? VoteStatus.canVote : VoteStatus.outOfRange
-                    )
-                }
-            })
-            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                print("Executed after 2 seconds")
+                let provider = LocationProviderImpl.shared
+                let isWithinRadius = provider.areCoordinatesWithinDistance(
+                    lat1: Double((self.state.location?.first ?? "0.0") as Substring) ?? 0.0,
+                    lon1: Double((self.state.location?.second ?? "0.0") as Substring) ?? 0.0,
+                    lat2: Double(self.state.tapa?.local.latitude ?? "0.0") ?? 0.0,
+                    lon2: Double(self.state.tapa?.local.longitude ?? "0.0") ?? 0.0,
+                    maxDistance: 300
+                )
+                
+                self.viewModel.state.subscribe(onCollect: { state in
+                    if let state = state {
+                        self.state = DetailStateSwift(
+                            isLoading: state.isLoading,
+                            logout: state.logout,
+                            tapa: state.tapa,
+                            location: state.location,
+                            voteStatus: isWithinRadius ? VoteStatus.canVote : VoteStatus.outOfRange
+                        )
+                    }
+                })
+            }
         }
         
         // Removes the listener

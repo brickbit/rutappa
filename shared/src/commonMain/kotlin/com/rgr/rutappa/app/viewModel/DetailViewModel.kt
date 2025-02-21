@@ -19,6 +19,7 @@ import com.rgr.rutappa.domain.useCase.LogoutUseCase
 import com.rgr.rutappa.domain.useCase.RequestLocationPermissionUseCase
 import com.rgr.rutappa.domain.useCase.TapaVotedUseCase
 import com.rgr.rutappa.domain.useCase.VoteUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -107,11 +108,13 @@ class DetailViewModel(
             when(val location = locationUseCase.invoke()) {
                 is ResultKMM.Success -> {
                     _state.update {
+                        delay(1000)
                         it.copy(isLoading = false, location = location.data)
                     }
                 }
                 is ResultKMM.Failure -> {
                     _state.update {
+                        delay(1000)
                         it.copy(isLoading = false, voteStatus = VoteStatus.UNABLE_OBTAIN_LOCATION)
                     }
                 }
@@ -127,7 +130,7 @@ class DetailViewModel(
                 localLat = state.value.tapa!!.local.latitude,
                 localLon = state.value.tapa!!.local.longitude
             )
-            it.copy(isLoading = false, voteStatus = if (isWithinRadius) VoteStatus.CAN_VOTE else VoteStatus.OUT_OF_RANGE)
+            it.copy(voteStatus = if (isWithinRadius) VoteStatus.CAN_VOTE else VoteStatus.OUT_OF_RANGE)
         }
     }
 

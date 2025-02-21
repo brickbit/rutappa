@@ -1,7 +1,10 @@
 package com.rgr.rutappa.android.screen
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,9 +28,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -35,14 +40,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.core.graphics.toColor
+import androidx.core.graphics.toColorInt
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.rgr.rutappa.android.MyApplicationTheme
 import com.rgr.rutappa.android.R
 import com.rgr.rutappa.android.screen.common.Header
 import com.rgr.rutappa.android.screen.common.Menu
 import com.rgr.rutappa.android.screen.common.SocialWall
 import com.rgr.rutappa.app.viewModel.PartnerViewModel
-import com.rgr.rutappa.domain.error.RemoteConfigError
+import com.rgr.rutappa.domain.model.PartnersListBO
+import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -55,7 +65,12 @@ fun PartnerRoute(
     if(state.logout || state.error) {
         navigateToLogout()
     }
+    LaunchedEffect(Unit) {
+        viewModel.getPartners(R.xml.remote_config_defaults)
+    }
+
     PartnersView(
+        partners = state.partners,
         logout = state.logout,
         navigateToLogout = { viewModel.logout() },
         deleteAccount = { viewModel.deleteAccount() },
@@ -65,6 +80,7 @@ fun PartnerRoute(
 
 @Composable
 fun PartnersView(
+    partners: PartnersListBO?,
     logout: Boolean,
     navigateToLogout: () -> Unit,
     deleteAccount: () -> Unit,
@@ -78,17 +94,26 @@ fun PartnersView(
     }
     Box(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFCFBFA4)),
+            .fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
+                .background(
+                    Brush.verticalGradient(
+                        colorStops = arrayOf(
+                            0.05f to Color(0xFFFFFFFF),
+                            0.5f to Color(0xFFf3e7cd)
+                        )
+                    )
+                )
         ) {
             PartnerGreetings( onShowMenu = { showMenu.value = true } )
-            PartnerListView()
+            partners?.let {
+                PartnerListView(it)
+            }
         }
         SocialWall()
     }
@@ -184,47 +209,49 @@ fun LogoutDialog(
 }
 
 @Composable
-fun PartnerListView() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFCFBFA4)),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            modifier = Modifier.padding(vertical = 20.dp),
-            text = stringResource(R.string.partners)
-        )
-        Image(
-            modifier = Modifier.width(200.dp).height(100.dp),
-            painter = painterResource(id = R.drawable.caja_rural),
-            contentDescription = "Logo Caja Rural"
-        )
-        Image(
-            modifier = Modifier.width(200.dp).height(100.dp),
-            painter = painterResource(id = R.drawable.fertinagro_biotech),
-            contentDescription = "Logo Fertinagro"
-        )
-        AsyncImage(
-            modifier = Modifier.width(200.dp).height(100.dp),
-            model = "https://www.agrorenedo.com/wp-content/uploads/2020/08/Triticum-agro-1.png",
-            contentDescription = "Logo Triticum Agro"
-        )
-        Image(
-            modifier = Modifier.width(200.dp).height(100.dp),
-            painter = painterResource(id = R.drawable.vizar),
-            contentDescription = "Logo Bodegas Vizar"
-        )
-        Text(
-            modifier = Modifier.padding(vertical = 20.dp),
-            text = stringResource(R.string.technical_organization)
-        )
-        Image(
-            modifier = Modifier.width(200.dp).height(100.dp),
-            painter = painterResource(id = R.drawable.gastronomicom),
-            contentDescription = "Gastronomicom"
-        )
-        Box(modifier = Modifier.size(100.dp))
+fun PartnerListView(
+    partners: PartnersListBO
+) {
+    val context = LocalContext.current
+
+    partners.categories.map { categories ->
+        Column(modifier = Modifier.background(
+            if(categories.background == "000000") {
+                Color.Transparent
+            } else {
+                Color(android.graphics.Color.parseColor("#${categories.background}"))
+            })) {
+            Text(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
+                text = categories.name,
+                textAlign = TextAlign.Center
+            )
+            categories.partners.map { partner ->
+                val listener = object : ImageRequest.Listener {}
+                val imageRequest = ImageRequest.Builder(context)
+                    .data(partner.image)
+                    .listener(listener)
+                    .dispatcher(Dispatchers.IO)
+                    .memoryCacheKey(partner.image)
+                    .diskCacheKey(partner.image)
+                    .diskCachePolicy(CachePolicy.ENABLED)
+                    .memoryCachePolicy(CachePolicy.ENABLED)
+                    .build()
+                AsyncImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 36.dp, vertical = 8.dp)
+                        .clickable {
+                            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(partner.link))
+                            context.startActivity(browserIntent)
+                        }
+                        .padding(bottom = if(categories == partners.categories[partners.categories.size -1]) 100.dp else if(categories == partners.categories[0]) 24.dp else 0.dp),
+                    model = imageRequest,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
+            }
+        }
     }
 }
 
@@ -234,15 +261,7 @@ fun PartnerGreetings(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                Brush.verticalGradient(
-                    colorStops = arrayOf(
-                        0.2f to Color(0xFFFFFFFF),
-                        1f to Color(0xFFf3e7cd)
-                    )
-                )
-            ),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Header(
@@ -269,15 +288,6 @@ fun PartnerGreetings(
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center
             )
-            Text(
-                modifier = Modifier.padding(vertical = 16.dp),
-                text = stringResource(R.string.main_collaborator)
-            )
-            Image(
-                modifier = Modifier.size(220.dp),
-                painter = painterResource(R.drawable.tierra_sabor_negro),
-                contentDescription = null
-            )
         }
     }
 }
@@ -290,7 +300,8 @@ fun PartnersPreview() {
             logout = false,
             navigateToLogout = {},
             deleteAccount = {},
-            navigateToTapa = {}
+            navigateToTapa = {},
+            partners = null
         )
     }
 }

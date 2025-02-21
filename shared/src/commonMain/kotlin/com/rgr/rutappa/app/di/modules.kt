@@ -6,6 +6,7 @@ import com.rgr.rutappa.domain.useCase.ActiveLocationUseCase
 import com.rgr.rutappa.domain.useCase.DeleteAccountUseCase
 import com.rgr.rutappa.domain.useCase.RequestLocationPermissionUseCase
 import com.rgr.rutappa.domain.useCase.GetLocationUseCase
+import com.rgr.rutappa.domain.useCase.GetPartnersUseCase
 import com.rgr.rutappa.domain.useCase.GetTapaDetailUseCase
 import com.rgr.rutappa.domain.useCase.GetTapaListUseCase
 import com.rgr.rutappa.domain.useCase.HasLocationPermissionUseCase
@@ -35,6 +36,7 @@ val useCaseModule = module {
     single { LogoutUseCase(get()) }
     single { GetLocationUseCase(get()) }
     single { GetLocationUseCase(get()) }
+    single { GetPartnersUseCase(get()) }
     single { RequestLocationPermissionUseCase(get()) }
     single { IsLocationActiveUseCase(get()) }
     single { HasLocationPermissionUseCase(get()) }

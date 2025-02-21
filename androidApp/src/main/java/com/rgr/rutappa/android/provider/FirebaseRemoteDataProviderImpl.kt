@@ -8,6 +8,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigException
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.rgr.rutappa.domain.error.RemoteConfigError
+import com.rgr.rutappa.domain.model.PartnersListBO
 import com.rgr.rutappa.domain.model.ResultKMM
 import com.rgr.rutappa.domain.model.TapaItemBo
 import com.rgr.rutappa.domain.provider.FirebaseRemoteDataProvider
@@ -72,6 +73,25 @@ class FirebaseRemoteDataProviderImpl(
                             cont.resume(ResultKMM.Success(tapa))
                         } ?: cont.resume(ResultKMM.Failure(RemoteConfigError.ItemNotFound))
 
+                    } else {
+                        cont.resume(ResultKMM.Failure(RemoteConfigError.RemoteConfigTaskFailed))
+                    }
+                }
+            } ?: cont.resume(ResultKMM.Failure(RemoteConfigError.NoActivityError))
+        }
+        return result
+    }
+
+    override suspend fun getPartners(configuration: Int): ResultKMM<PartnersListBO> {
+        remoteConfig.setDefaultsAsync(configuration)
+        val activity = activityProvider.getActivity()
+        val result = suspendCoroutine { cont ->
+            activity?.let {
+                remoteConfig.fetchAndActivate().addOnCompleteListener(it) { task ->
+                    if (task.isSuccessful) {
+                        val structureString = remoteConfig.getString("Patrocinadores")
+                        val tapas = Json.decodeFromString<PartnersListBO>(structureString)
+                        cont.resume(ResultKMM.Success(tapas))
                     } else {
                         cont.resume(ResultKMM.Failure(RemoteConfigError.RemoteConfigTaskFailed))
                     }

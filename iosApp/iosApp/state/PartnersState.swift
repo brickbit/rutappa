@@ -13,6 +13,7 @@ struct PartnersStateSwift {
     var isLoading: Bool = true
     var error: Bool = false
     var logout: Bool = false
+    var partners: PartnersListBO? = nil
 }
 
 

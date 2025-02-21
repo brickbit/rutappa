@@ -79,4 +79,33 @@ class FirebaseRemoteDataProviderImpl: FirebaseRemoteDataProvider {
           }
         }
     }
+    
+    func getPartners(configuration: Int32, completionHandler: @escaping (ResultKMM<PartnersListBO>?, Error?) -> Void) {
+        remoteConfig.fetch(withExpirationDuration: 0) { (status, error) in
+            if status == .success {
+                self.remoteConfig.activate()
+                let remoteText = self.remoteConfig.configValue(forKey: "Patrocinadores").stringValue ?? ""
+                let decoder = JSONDecoder()
+                let data = Data(remoteText.utf8)
+                do {
+                    let decoded = try decoder.decode(PartnerListSwift.self, from: data)
+                    let partners = decoded.toBo()
+                    completionHandler(ResultKMMSuccess(data: partners), nil)
+                } catch {
+                    print("Failed to decode JSON")
+                }
+                //completionHandler(ResultKMM<NSArray>?, nil)
+            } else {
+              print("Error: \(error?.localizedDescription ?? "No error available.")")
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
 }
+
+

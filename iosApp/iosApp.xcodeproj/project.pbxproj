@@ -17,6 +17,7 @@
 		62DF130C2D578A400068D92E /* PartnersState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DF130B2D578A400068D92E /* PartnersState.swift */; };
 		62DF130E2D57B8710068D92E /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DF130D2D57B8710068D92E /* Menu.swift */; };
 		62DF13102D57FED80068D92E /* GradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DF130F2D57FED80068D92E /* GradientBackground.swift */; };
+		A3C1F6E22D6716D500C60884 /* PartnerListSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1F6E12D6716D500C60884 /* PartnerListSwift.swift */; };
 		CE128BE12B78EAC300EDDE15 /* LoginProviderImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE128BE02B78EAC300EDDE15 /* LoginProviderImpl.swift */; };
 		CE1477122B7A78160084C8EB /* SocialWallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1477112B7A78160084C8EB /* SocialWallView.swift */; };
 		CE20BAD52B717BBD001ED257 /* RoutesSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE20BAD42B717BBD001ED257 /* RoutesSwift.swift */; };
@@ -96,6 +97,7 @@
 		62DF130F2D57FED80068D92E /* GradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBackground.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* Rutappa dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rutappa dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A3C1F6E12D6716D500C60884 /* PartnerListSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartnerListSwift.swift; sourceTree = "<group>"; };
 		CE128BE02B78EAC300EDDE15 /* LoginProviderImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginProviderImpl.swift; sourceTree = "<group>"; };
 		CE1477112B7A78160084C8EB /* SocialWallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialWallView.swift; sourceTree = "<group>"; };
 		CE20BAD42B717BBD001ED257 /* RoutesSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutesSwift.swift; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 			children = (
 				CE25180E2B7810140053261E /* TapaItemSwift.swift */,
 				CE2518102B78111C0053261E /* LocalItemSwift.swift */,
+				A3C1F6E12D6716D500C60884 /* PartnerListSwift.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -512,6 +515,7 @@
 				CEBBB11C2B7845C00084996D /* FirestoreProviderImpl.swift in Sources */,
 				CEDB9AE52B86DA9B00771F1E /* HeaderView.swift in Sources */,
 				CE7D73E02B792D350033C521 /* injection.swift in Sources */,
+				A3C1F6E22D6716D500C60884 /* PartnerListSwift.swift in Sources */,
 				CE20BAEA2B72C782001ED257 /* LoadingView.swift in Sources */,
 				CE2518112B78111C0053261E /* LocalItemSwift.swift in Sources */,
 				62DF130A2D5789120068D92E /* PartnersView.swift in Sources */,

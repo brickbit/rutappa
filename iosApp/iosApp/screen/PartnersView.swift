@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import shared
+import Kingfisher
 
 struct PartnersView: View {
     @ObservedObject var viewModel: IOSPartnersViewModel
@@ -33,6 +34,7 @@ struct PartnersView: View {
 
         return AnyView(
             PartnersScreen(
+                partners: viewModel.state.partners,
                 logoutAction: {
                     Task {
                         viewModel.logout()
@@ -63,6 +65,7 @@ struct PartnersView: View {
 }
 
 struct PartnersScreen: View {
+    var partners: PartnersListBO?
     let logoutAction: () -> ()
     let navigateToTapas: () -> ()
     let deleteAccountAction: () -> ()
@@ -75,7 +78,9 @@ struct PartnersScreen: View {
                 ZStack(alignment: .top) {
                     ZStack {
                         GradientBackground()
-                        PartnersContent()
+                        PartnersContent(
+                            partners: partners
+                        )
                     }
                     HeaderView(
                         hasMenu: true,
@@ -136,6 +141,7 @@ extension PartnersView {
 
         init() {
             self.viewModel = PartnerViewModel.shared
+            self.viewModel.getPartners(configuration: 0)
         }
         
         // Observes to state changes
@@ -145,7 +151,8 @@ extension PartnersView {
                     self.state = PartnersStateSwift(
                         isLoading: state.isLoading,
                         error: state.error,
-                        logout: state.logout
+                        logout: state.logout,
+                        partners: state.partners
                     )
                 }
             })
@@ -190,6 +197,7 @@ extension PartnersView {
 
 
 struct PartnersContent: View {
+    var partners:  PartnersListBO?
     var body: some View {
         ScrollView {
             Spacer(minLength: 140)
@@ -205,49 +213,53 @@ struct PartnersContent: View {
                         .foregroundStyle(Color("secondaryColor"))
                         .font(Font.custom("Montserrat", size: 14))
                         .padding(.top, 8)
-                    Text("COLABORADOR PRINCIPAL")
-                        .foregroundStyle(Color("secondaryColor"))
-                        .font(Font.custom("Berlin Sans FB Demi", size: 20))
-                        .padding(.top, 16)
-                    Image(.tierraSaborBlack)
-                        .resizable()
-                        .frame(width: 220, height: 220)
-                }.padding(.horizontal, 20)
-                VStack(alignment: .center, spacing: 16) {
-                    Text("PATROCINADORES")
-                        .foregroundStyle(Color("secondaryColor"))
-                        .font(Font.custom("Berlin Sans FB Demi", size: 20))
-                        .padding(.top, 16)
-                    Image(.cajaRural)
-                        .resizable()
-                        .frame(width: 200, height: 95)
-                    Image(.fertinagro)
-                        .resizable()
-                        .frame(width: 200, height: 85)
-                    AsyncImage(url: URL(string: "https://www.agrorenedo.com/wp-content/uploads/2020/08/Triticum-agro-1.png"),
-                               content: { image in
-                        image.resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(maxWidth: 200, maxHeight: 90)
-                    },
-                               placeholder: {
-                        ProgressView()
-                            .frame(maxWidth: 200, maxHeight: 90)
+                    if let partners = partners {
+                        VStack {
+                            ForEach(partners.categories, id: \.self) { category in
+                                VStack {
+                                    Text(category.name)
+                                        .foregroundStyle(Color("secondaryColor"))
+                                        .font(Font.custom("Berlin Sans FB Demi", size: 20))
+                                        .padding(.top, 16)
+                                    ForEach(category.partners, id: \.self) { partner in
+                                        KFImage(URL(string: partner.image))
+                                            .cacheOriginalImage()
+                                            .placeholder {
+                                                ProgressView()
+                                            }
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(maxWidth: .infinity)
+                                            .padding(.vertical, 8)
+                                    }
+                                }.padding(16)
+                            }
+                        }.padding(.bottom, 80)
+                    } else {
+                        EmptyView()
                     }
-                    )
-                    Image(.vizarLogo)
-                        .resizable()
-                        .frame(width: 200, height: 70)
-                    Text("ORGANIZACIÓN TÉCNICA")
-                        .foregroundStyle(Color("secondaryColor"))
-                        .font(Font.custom("Berlin Sans FB Demi", size: 20))
-                        .padding(.top, 16)
-                    Image(.gastronomicon)
-                        .resizable()
-                        .frame(width: 180, height: 120)
-                    Spacer(minLength: 100)
-                }.frame(maxWidth: .infinity).background(Color("partnerBackground"))
+                    
+                }.padding(.horizontal, 20)
+               
             }
         }
     }
+}
+
+extension UIColor {
+   convenience init(red: Int, green: Int, blue: Int) {
+       assert(red >= 0 && red <= 255, "Invalid red component")
+       assert(green >= 0 && green <= 255, "Invalid green component")
+       assert(blue >= 0 && blue <= 255, "Invalid blue component")
+
+       self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+   }
+
+   convenience init(rgb: Int) {
+       self.init(
+           red: (rgb >> 16) & 0xFF,
+           green: (rgb >> 8) & 0xFF,
+           blue: rgb & 0xFF
+       )
+   }
 }

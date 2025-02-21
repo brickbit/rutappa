@@ -74,6 +74,10 @@ extension TapaVotedUseCase {
     static let shared = TapaVotedUseCase(localRepository: LocalRepositoryImpl.shared)
 }
 
+extension GetPartnersUseCase {
+    static let shared = GetPartnersUseCase(remoteConfig: FirebaseRemoteDataProviderImpl.shared)
+}
+
 extension GetLocationUseCase {
     static let shared = GetLocationUseCase(repository: LocationProviderImpl.shared)
 }
@@ -118,5 +122,5 @@ extension DetailViewModel {
 //PARTNERS
 
 extension PartnerViewModel {
-    static let shared = PartnerViewModel(deleteAccountUseCase: DeleteAccountUseCase.shared, localRepository: LocalRepositoryImpl.shared, logoutUseCase: LogoutUseCase.shared)
+    static let shared = PartnerViewModel(deleteAccountUseCase: DeleteAccountUseCase.shared, localRepository: LocalRepositoryImpl.shared, logoutUseCase: LogoutUseCase.shared, getPartnersUseCase: GetPartnersUseCase.shared)
 }

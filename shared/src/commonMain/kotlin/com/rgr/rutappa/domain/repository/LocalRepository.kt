@@ -11,4 +11,7 @@ interface LocalRepository {
     suspend fun getTapaVoted(): Set<String>
     suspend fun removeTapaVoted(): Preferences
 
+    suspend fun savePermissionStatus(status: Boolean?)
+    suspend fun getPermissionStatus(): Boolean?
+
 }

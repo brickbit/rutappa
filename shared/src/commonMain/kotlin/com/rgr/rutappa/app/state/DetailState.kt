@@ -7,16 +7,20 @@ data class DetailState (
     val logout: Boolean = false,
     val error: Boolean = false,
     val tapa: TapaItemBo? = null,
-    val location: Pair<String,String>? = null,
+    val location: TapaLocation? = null,
+    val hasLocationPermission: Boolean? = null,
+    val isGPSActive: Boolean = false,
+    val isInRadius: Boolean? = null,
     val voteStatus: VoteStatus = VoteStatus.UNKNOWN
 )
 
 enum class VoteStatus {
     UNKNOWN,
-    LOCATION_INACTIVE,
-    LOCATION_NOT_ALLOW,
-    UNABLE_OBTAIN_LOCATION,
-    OUT_OF_RANGE,
     CAN_VOTE,
     VOTED
 }
+
+data class TapaLocation(
+    val latitude: String,
+    val longitude: String
+)

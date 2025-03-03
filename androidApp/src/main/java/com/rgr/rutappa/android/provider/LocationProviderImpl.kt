@@ -13,14 +13,17 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
+import com.rgr.rutappa.app.state.TapaLocation
 import com.rgr.rutappa.domain.model.ResultKMM
 import com.rgr.rutappa.domain.provider.LocationProvider
+import com.rgr.rutappa.domain.repository.LocalRepository
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 class LocationProviderImpl(
     private val activityProvider: ActivityProvider,
-    private val permissionLauncherProvider: ActivityResultLauncherProvider
+    private val permissionLauncherProvider: ActivityResultLauncherProvider,
+    private val localRepository: LocalRepository
 ) : LocationProvider {
 
     private val permissions = arrayOf(
@@ -32,14 +35,21 @@ class LocationProviderImpl(
         val permissionLauncher = permissionLauncherProvider.getActivityResultLauncher()
         permissionLauncher?.launch(permissions)
     }
-    override fun hasPermission(): Boolean {
+    override suspend fun hasPermission(): Boolean? {
         val activity = activityProvider.getActivity()
-        return permissions.all {
-            activity?.let { it1 -> ContextCompat.checkSelfPermission(it1, it) } == PackageManager.PERMISSION_GRANTED
+        if (activity == null ) {
+            localRepository.savePermissionStatus(null)
+            return null
         }
+        val result = permissions.all {
+            val currentStatus = ContextCompat.checkSelfPermission(activity.baseContext, it)
+            currentStatus == PackageManager.PERMISSION_GRANTED
+        }
+        localRepository.savePermissionStatus(result)
+        return result
     }
     @SuppressLint("MissingPermission")
-    override suspend fun getLocation(): ResultKMM<Pair<String, String>> {
+    override suspend fun getLocation(): ResultKMM<TapaLocation> {
         return suspendCancellableCoroutine { continuation ->
             val activity = activityProvider.getActivity()
             val fusedLocationClient = activity?.let { LocationServices.getFusedLocationProviderClient(it) }
@@ -51,7 +61,7 @@ class LocationProviderImpl(
             currentTask?.addOnCompleteListener { task ->
                 if (task.isSuccessful && task.result != null) {
                     val coordinates = task.result
-                    continuation.resume(ResultKMM.Success(Pair(coordinates.latitude.toString(),coordinates.longitude.toString())))
+                    continuation.resume(ResultKMM.Success(TapaLocation(latitude = coordinates.latitude.toString(), longitude = coordinates.longitude.toString())))
                 } else {
                     continuation.resume(ResultKMM.Failure(Error()))
                 }

@@ -1,6 +1,9 @@
 package com.rgr.rutappa.android.screen
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import androidx.compose.foundation.Image
@@ -28,6 +31,7 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -41,6 +45,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -50,7 +55,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import coil.compose.AsyncImage
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.accompanist.permissions.rememberPermissionState
 import com.rgr.rutappa.android.MyApplicationTheme
 import com.rgr.rutappa.android.R
 import com.rgr.rutappa.android.backgroundColor
@@ -67,6 +77,7 @@ import com.rgr.rutappa.domain.model.TapaItemBo
 import org.koin.androidx.compose.koinViewModel
 import kotlin.math.roundToInt
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun DetailRoute(
     viewModel: DetailViewModel = koinViewModel(),
@@ -78,8 +89,25 @@ fun DetailRoute(
     val state = viewModel.state.collectAsState().value
     val errorState = viewModel.errorState.collectAsState().value
     val openAlertDialog = remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val locationPermissionState: MutableState<Boolean?> = remember { mutableStateOf(null) }
+    val permissions = listOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.ACCESS_FINE_LOCATION
+    )
+
+    val multiPermissionState = rememberMultiplePermissionsState(permissions)
+    val lifecycleOwner = LocalLifecycleOwner.current
+
 
     LaunchedEffect(Unit) {
+        lifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onResume(owner: LifecycleOwner) {
+                viewModel.checkPermission()
+                viewModel.checkGPSEnabled()
+            }
+        })
+        multiPermissionState.launchMultiplePermissionRequest()
         viewModel.getDetail(
             configuration = R.xml.remote_config_defaults,
             id = tapaId
@@ -94,8 +122,18 @@ fun DetailRoute(
         state.tapa?.let {
             DetailScreen(
                 tapa = it,
+                hasLocationPermission = state.hasLocationPermission,
+                isGPSActive = state.isGPSActive,
+                isInRadius = state.isInRadius,
                 voteStatus = state.voteStatus,
-                getLocation = { viewModel.getLocation() },
+                getLocation = { viewModel.manageLocation(updateLocationStatus = {
+                    locationPermissionState.value = it
+                }, onDeniedPermission = {
+                    val intent = Intent(ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.fromParts("package", context.packageName, null)
+                    }
+                    context.startActivity(intent)
+                } )},
                 onVoteClicked = { vote, tapa ->
                     viewModel.vote(vote = vote, tapa =  tapa)
                 },
@@ -103,7 +141,6 @@ fun DetailRoute(
                 navigateToPartners = navigateToPartners,
                 deleteAccount = { viewModel.deleteAccount() },
                 logout = { viewModel.logout() },
-                checkRadius = { viewModel.checkRadius() }
             )
         }
     }
@@ -132,6 +169,9 @@ fun DetailRoute(
 @Composable
 fun DetailScreen(
     tapa: TapaItemBo,
+    hasLocationPermission: Boolean?,
+    isGPSActive: Boolean,
+    isInRadius: Boolean?,
     voteStatus: VoteStatus,
     getLocation: () -> Unit,
     onVoteClicked: (Int, String) -> Unit,
@@ -139,7 +179,6 @@ fun DetailScreen(
     navigateToPartners: () -> Unit,
     deleteAccount: () -> Unit,
     logout: () -> Unit,
-    checkRadius: () -> Unit
 ) {
     val openLogoutDialog = remember { mutableStateOf(false) }
     val showMenu = remember { mutableStateOf(false) }
@@ -185,10 +224,12 @@ fun DetailScreen(
                 item {
                     VoteSectionContent(
                         tapa = tapa,
+                        hasLocationPermission = hasLocationPermission,
+                        isGPSActive = isGPSActive,
+                        isInRadius = isInRadius,
                         voteStatus = voteStatus,
                         getLocation = getLocation,
                         onVoteClicked = onVoteClicked,
-                        checkRadius = checkRadius
                     )
                 }
             }
@@ -280,81 +321,21 @@ fun DetailScreen(
 @Composable
 fun VoteSectionContent(
     tapa: TapaItemBo,
+    hasLocationPermission: Boolean?,
+    isGPSActive: Boolean,
+    isInRadius: Boolean?,
     voteStatus: VoteStatus,
     getLocation: () -> Unit,
     onVoteClicked: (Int, String) -> Unit,
-    checkRadius: () -> Unit
 ) {
-    val count = remember { mutableStateOf(0) }
     val context = LocalContext.current
 
     when(voteStatus) {
         VoteStatus.UNKNOWN -> {
             RequestLocationButton(
-                text = stringResource(R.string.active_location_vote),
-                onClickAction = {
-                    count.value += 1
-                    if(count.value < 2) {
-                        getLocation()
-                        checkRadius()
-                    } else {
-                        count.value = 0
-                        val intent = Intent(
-                            ACTION_APPLICATION_DETAILS_SETTINGS,
-                            Uri.fromParts("package", context.packageName, null)
-                        )
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        context.startActivity(intent)
-                    }
-                }
-            )
-        }
-        VoteStatus.LOCATION_INACTIVE -> {
-            RequestLocationButton(
-                text = stringResource(R.string.active_location_vote),
+                text = getLocationButtonText(hasLocationPermission = hasLocationPermission, isGPSActive = isGPSActive, isInRadius = isInRadius, context = context),
                 onClickAction = {
                     getLocation()
-                    checkRadius()
-                }
-            )
-        }
-        VoteStatus.LOCATION_NOT_ALLOW -> {
-            RequestLocationButton(
-                text = stringResource(R.string.request_permission_vote),
-                onClickAction = {
-                    count.value += 1
-                    if(count.value < 2) {
-                        getLocation()
-                        checkRadius()
-                    } else{
-                        count.value = 0
-                        val intent = Intent(
-                            ACTION_APPLICATION_DETAILS_SETTINGS,
-                            Uri.fromParts("package", context.packageName, null)
-                        )
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        context.startActivity(intent)
-                    }
-                }
-            )
-        }
-        VoteStatus.UNABLE_OBTAIN_LOCATION -> {
-            ErrorRequestLocationContent(
-                text = stringResource(R.string.error_getting_location),
-                buttonText = stringResource(R.string.retry),
-                onClickAction = {
-                    getLocation()
-                    checkRadius()
-                }
-            )
-        }
-        VoteStatus.OUT_OF_RANGE -> {
-            ErrorRequestLocationContent(
-                text = stringResource(R.string.can_not_vote),
-                buttonText = stringResource(R.string.retry),
-                onClickAction = {
-                    getLocation()
-                    checkRadius()
                 }
             )
         }
@@ -366,6 +347,28 @@ fun VoteSectionContent(
             voted = true,
             onVoteClicked = { onVoteClicked(it, tapa.id) }
         )
+    }
+}
+
+fun getLocationButtonText(
+    hasLocationPermission: Boolean?,
+    isGPSActive: Boolean,
+    isInRadius: Boolean?,
+    context: Context
+): String {
+    when(hasLocationPermission) {
+        true -> {
+            if(!isGPSActive) {
+                return "Pulse aquí para activar el GPS"
+            }
+            return when(isInRadius) {
+                true -> "Pulse aquí para votar"
+                false -> context.getString(R.string.can_not_vote)
+                null -> "Pulse aquí para obtener la ubicación"
+            }
+        }
+        false -> return "Permiso denegado vaya a ajustes para activar el permiso"
+        null -> return "Pulse aquí para solicitar permiso de ubicación"
     }
 }
 
@@ -625,6 +628,9 @@ fun DetailScreenPreview() {
                     latitude = ""
                 )
             ),
+            hasLocationPermission = false,
+            isGPSActive = false,
+            isInRadius = false,
             voteStatus = VoteStatus.VOTED,
             getLocation = {},
             onVoteClicked={_,_ ->},
@@ -632,7 +638,6 @@ fun DetailScreenPreview() {
             logout = {},
             navigateToPartners = {},
             navigateToTapas = {},
-            checkRadius = {}
         )
     }
 }

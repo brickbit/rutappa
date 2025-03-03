@@ -4,7 +4,6 @@ import com.rgr.rutappa.app.flow.toCommonStateFlow
 import com.rgr.rutappa.app.state.DetailState
 import com.rgr.rutappa.app.state.VoteStatus
 import com.rgr.rutappa.domain.error.FirestoreError
-import com.rgr.rutappa.domain.error.RemoteConfigError
 import com.rgr.rutappa.domain.model.ResultKMM
 import com.rgr.rutappa.domain.model.TapaItemBo
 import com.rgr.rutappa.domain.repository.LocalRepository
@@ -64,14 +63,14 @@ class DetailViewModel(
                         tapaDetail = result.data
                         val voted = tapaVotedUseCase.invoke(id)
                         _state.update {
-                            it.copy(isLoading = false, tapa = result.data, voteStatus = if(state.value.voteStatus == VoteStatus.CAN_VOTE && voted) VoteStatus.VOTED else state.value.voteStatus)
+                            it.copy(isLoading = false, tapa = result.data, voteStatus = if(state.value.voteStatus == VoteStatus.CAN_VOTE && voted) VoteStatus.VOTED else if(voted) VoteStatus.VOTED else state.value.voteStatus)
                         }
                     }
                     is ResultKMM.Failure -> {
                         tapaDetail?.let { tapaDetail ->
                             val voted = tapaVotedUseCase.invoke(id)
                             _state.update {
-                                it.copy(isLoading = false, tapa = tapaDetail, voteStatus = if(state.value.voteStatus == VoteStatus.CAN_VOTE && voted) VoteStatus.VOTED else state.value.voteStatus)
+                                it.copy(isLoading = false, tapa = tapaDetail, voteStatus = if(state.value.voteStatus == VoteStatus.CAN_VOTE && voted) VoteStatus.VOTED else if(voted) VoteStatus.VOTED else state.value.voteStatus)
                             }
                         }
                     }
@@ -79,58 +78,75 @@ class DetailViewModel(
         }
     }
 
-    fun getLocation() {
+    fun checkPermission() {
         scope.launch {
-            handleLocationPermission()
-            if (state.value.voteStatus != VoteStatus.UNKNOWN && state.value.voteStatus != VoteStatus.LOCATION_INACTIVE) {
-                if (isLocationActiveUseCase.invoke()) {
-                    handleLocation()
+            hasLocationPermissionUseCase.invoke()
+            _state.update { it.copy(hasLocationPermission = localRepository.getPermissionStatus()) }
+        }
+    }
+
+    fun manageLocation(updateLocationStatus: (Boolean?) -> Unit, onDeniedPermission: () -> Unit) {
+        when(state.value.hasLocationPermission) {
+            true -> {
+                updateLocationStatus(true)
+                _state.update { it.copy(hasLocationPermission = true) }
+                if(checkGPSEnabled()) {
+                    obtainLocation()
                 } else {
-                    _state.update { it.copy(voteStatus = VoteStatus.LOCATION_INACTIVE) }
                     activeLocationUseCase.invoke()
                 }
             }
-        }
-    }
-
-    private fun handleLocationPermission() {
-        if(hasLocationPermissionUseCase.invoke()) {
-            handleLocation()
-        } else {
-            requestLocationPermissionUseCase.invoke()
-        }
-    }
-
-
-    private fun handleLocation() {
-        scope.launch {
-            _state.update { it.copy(isLoading = true) }
-            when(val location = locationUseCase.invoke()) {
-                is ResultKMM.Success -> {
-                    _state.update {
-                        delay(1000)
-                        it.copy(isLoading = false, location = location.data)
-                    }
-                }
-                is ResultKMM.Failure -> {
-                    _state.update {
-                        delay(1000)
-                        it.copy(isLoading = false, voteStatus = VoteStatus.UNABLE_OBTAIN_LOCATION)
+            false -> {
+                updateLocationStatus(false)
+                onDeniedPermission()
+            }
+            null -> {
+                updateLocationStatus(null)
+                _state.update { it.copy(hasLocationPermission = false, location = null) }
+                scope.launch {
+                    val permission = hasLocationPermissionUseCase.invoke()
+                    requestLocationPermissionUseCase.invoke {
+                        _state.update { it.copy(hasLocationPermission = permission) }
                     }
                 }
             }
         }
     }
 
-    fun checkRadius() {
+    fun checkGPSEnabled(): Boolean {
+        val enabled = isLocationActiveUseCase.invoke()
+        _state.update { it.copy(isGPSActive = enabled, location = if(enabled) state.value.location else null) }
+        return enabled
+    }
+
+    private fun obtainLocation() {
+        scope.launch {
+            _state.update { it.copy(isLoading = true) }
+            when (val location = locationUseCase.invoke()) {
+                is ResultKMM.Success -> {
+                    _state.update {
+                        it.copy(isLoading = false, location = location.data)
+                    }
+                    checkRadius(latitude = location.data.latitude, longitude = location.data.longitude)
+                }
+                is ResultKMM.Failure -> {
+                    _state.update {
+                        it.copy(isLoading = false)
+                    }
+                }
+            }
+        }
+    }
+
+    fun checkRadius(latitude: String, longitude: String) {
+        val isWithinRadius = isWithinRadiusUseCase(
+            deviceLat = latitude,
+            deviceLon = longitude,
+            localLat = state.value.tapa!!.local.latitude,
+            localLon = state.value.tapa!!.local.longitude
+        )
         _state.update {
-            val isWithinRadius = isWithinRadiusUseCase(
-                deviceLat = state.value.location?.first ?: "0.0",
-                deviceLon = state.value.location?.second ?: "0.0",
-                localLat = state.value.tapa!!.local.latitude,
-                localLon = state.value.tapa!!.local.longitude
-            )
-            it.copy(voteStatus = if (isWithinRadius) VoteStatus.CAN_VOTE else VoteStatus.OUT_OF_RANGE)
+            it.copy(isInRadius = isWithinRadius, voteStatus = if(isWithinRadius && state.value.voteStatus == VoteStatus.UNKNOWN) VoteStatus.CAN_VOTE else state.value.voteStatus)
         }
     }
 

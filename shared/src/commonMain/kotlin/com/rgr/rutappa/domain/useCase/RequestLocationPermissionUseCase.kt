@@ -5,7 +5,8 @@ import com.rgr.rutappa.domain.provider.LocationProvider
 class RequestLocationPermissionUseCase(
     private val repository: LocationProvider
 )  {
-    operator fun invoke() {
+    operator fun invoke(onFinish: () -> Unit) {
         repository.requestPermission()
+        onFinish()
     }
 }

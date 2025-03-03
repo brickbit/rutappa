@@ -45,7 +45,7 @@ fun providerModules(context: Context) = module {
     factory<FirebaseRemoteDataProvider>{ FirebaseRemoteDataProviderImpl(get()) }
     factory<FirestoreProvider>{ FirestoreProviderImpl() }
     factory<LoginProvider> { LoginProviderImpl(context, get(), get()) }
-    factory<LocationProvider> { LocationProviderImpl(get(),get()) }
+    factory<LocationProvider> { LocationProviderImpl(get(),get(), get()) }
 }
 
 val viewModelModules = module {

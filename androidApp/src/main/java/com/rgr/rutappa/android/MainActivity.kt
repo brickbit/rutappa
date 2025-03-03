@@ -47,8 +47,6 @@ class MainActivity : ComponentActivity() {
         ) { permissions ->
             if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
                 permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true) {
-            } else {
-                Toast.makeText(this, getString(R.string.denied_permission), Toast.LENGTH_SHORT).show()
             }
         }
         activityResultProvider.setActivityResultLauncher(permissionLauncher)

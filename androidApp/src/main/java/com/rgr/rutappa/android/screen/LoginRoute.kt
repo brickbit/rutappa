@@ -263,26 +263,21 @@ fun LoginScreen(
                 )
                 Text(
                     modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 8.dp),
-                    text = stringResource(R.string.login_title),
+                    text = stringResource(R.string.login_description),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center
                 )
-                Text(
-                    modifier = Modifier.padding(horizontal = 24.dp),
-                    text = stringResource(R.string.login_description),
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center
-                )
+
                 Text(
                     modifier = Modifier
-                        .padding(24.dp)
+                        .padding(horizontal = 24.dp)
                         .clickable {
                             val intent = Intent(ACTION_VIEW)
-                            intent.setData(Uri.parse("https://destapalaslegumbres.es/reglamento/"))
+                            intent.setData(Uri.parse("https://destapalaslegumbres.es/"))
                             startActivity(context, intent, null)
                         },
                     text = stringResource(R.string.legal_context),
-                    style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
+                    style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center
                 )
                 if (loading) {

@@ -5,8 +5,8 @@
     <string name="splash_title">#LEGUMBRES♡TAPAS</string>
     <string name="copyrigth">©2025 desTAPA las LEGUMBRES</string>
     <!--LOGIN-->
-    <string name="login_title">I CAMPEONATO NACIONAL desTAPA las LEGUMBRES</string>
-    <string name="login_description">El próximo 12 de Febrero de 2024 quedará abierta la convocatoria del Primer Campeonato Nacional de Legumbres en Tapas: desTAPA las LEGUMBRES Tierra de Sabor.</string>
+    <string name="login_title">II CAMPEONATO NACIONAL desTAPA las LEGUMBRES</string>
+    <string name="login_description">BIENVENIDO AL CAMPEONATO NACIONAL desTAPA las LEGUMBRES TIERRA DE SABOR.</string>
     <string name="legal_context">Puedes consultar el reglamento del Campeonato en este enlace</string>
     <string name="login_with_google">Inicia sesión con Google</string>
     <string name="error">Error</string>
@@ -15,7 +15,7 @@
     <string name="error_user_not_logged">El usuario no ha sido logado</string>
     <string name="ok">Ok</string>
     <!--MAIN-->
-    <string name="main_title">I CAMPEONATO NACIONAL desTAPA las LEGUMBRES</string>
+    <string name="main_title">II CAMPEONATO NACIONAL desTAPA las LEGUMBRES</string>
     <string name="main_subtitle">LAS TAPAS</string>
     <!--DETAIL-->
     <string name="error_detail_firestore_other">Se ha producido un error al enviar la votación</string>

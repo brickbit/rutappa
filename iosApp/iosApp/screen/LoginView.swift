@@ -109,14 +109,14 @@ struct LoginInformation: View {
                 .resizable()
                 .frame(width: 360, height: 180)
                 .padding()
-            Text("I CAMPEONATO NACIONAL desTAPA las LEGUMBRES")
+            Text("II CAMPEONATO NACIONAL desTAPA las LEGUMBRES")
                 .foregroundStyle(Color("secondaryColor"))
                 .font(Font.custom("Berlin Sans FB Demi", size: 20))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal,24)
                 .padding(.bottom, 8)
                 .padding(.horizontal, 24)
-            Text("El próximo 12 de Febrero de 2024 quedará abierta la convocatoria del Primer Campeonato Nacional de Legumbres en Tapas: desTAPA las LEGUMBRES Tierra de Sabor.")
+            Text("BIENVENIDO AL CAMPEONATO NACIONAL desTAPA las LEGUMBRES TIERRA DE SABOR.")
                 .foregroundStyle(Color("secondaryColor"))
                 .font(Font.custom("Montserrat", size: 16))
                 .multilineTextAlignment(.center)
@@ -128,7 +128,7 @@ struct LoginInformation: View {
                 .multilineTextAlignment(.center)
                 .padding(.vertical, 16)
                 .onTapGesture {
-                    if let url = URL(string: "https://destapalaslegumbres.es/reglamento/"), UIApplication.shared.canOpenURL(url) {
+                    if let url = URL(string: "https://destapalaslegumbres.es/"), UIApplication.shared.canOpenURL(url) {
                         UIApplication.shared.open(url)
                     }
                 }.padding(.horizontal, 24)

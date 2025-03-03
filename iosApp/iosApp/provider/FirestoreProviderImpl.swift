@@ -57,6 +57,40 @@ class FirestoreProviderImpl: FirestoreProvider {
         }
     }
     
+    func vote(user: String, vote: Int32, tapa: String) async -> Vote {
+        var votedYet = false
+        do {
+            let snapshot = try await db.collection("tapa_contest").getDocuments()
+            for document in snapshot.documents {
+                print("\(document.documentID) => \(document.data())")
+                let dbUser: String? = document.data()["user"] as? String
+                let dbTapa: String? = document.data()["tapa"] as? String
+                if(dbUser == user && dbTapa == tapa) {
+                    votedYet = true
+                    return Vote.votedYet
+                }
+            }
+            if(!votedYet) {
+                do {
+                    let ref = try await db.collection("tapa_contest").addDocument(data: [
+                        "user": user,
+                        "vote": vote,
+                        "tapa": tapa
+                    ])
+                    
+                    print("Document added with ID: \(ref.documentID)")
+                    return Vote.votedSuccessfully
+                } catch {
+                    print("Error adding document: \(error)")
+                    return Vote.error
+                }
+            }
+        } catch {
+            print("Error getting documents: \(error)")
+            return Vote.error
+        }
+    }
+    
     func removeVote(user: String, completionHandler: @escaping (KmmresultKmmResult<KotlinUnit>?, Error?) -> Void) {
         Task {
             do {
@@ -79,4 +113,10 @@ class FirestoreProviderImpl: FirestoreProvider {
             }
         }
     }
+}
+
+enum Vote {
+    case votedSuccessfully
+    case votedYet
+    case error
 }

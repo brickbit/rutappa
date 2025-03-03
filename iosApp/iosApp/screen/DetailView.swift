@@ -55,7 +55,7 @@ struct DetailView: View {
                     },
                     voteTapa: { vote, tapa in
                         Task {
-                            viewModel.voteTapa(vote: vote, tapa: tapa)
+                            await viewModel.voteTapa(vote: vote, tapa: tapa)
                         }
                     },
                     logoutAction: {
@@ -82,6 +82,11 @@ struct DetailView: View {
                     },
                     checkLocation: {
                         viewModel.checkLocation()
+                    },
+                    checkVoteStatus: { tapa in
+                        Task {
+                            await viewModel.checkVoteStatus(id: tapa.id)
+                        }
                     }
                 ).overlay(alignment: .top) {
                     Color("secondaryColor")
@@ -139,6 +144,7 @@ struct DetailScreen: View {
     let navigateToPartnersAction: () -> ()
     let navigateToTapasAction: () -> ()
     let checkLocation: () -> ()
+    let checkVoteStatus: (TapaItemBo) -> Void
     @State private var showingLogout = false
     @State private var showingMenu = false
     
@@ -156,7 +162,8 @@ struct DetailScreen: View {
                                 latitude: latitude,
                                 voteTapa: voteTapa,
                                 getLocation: getLocation,
-                                checkLocation: checkLocation
+                                checkLocation: checkLocation,
+                                checkVoteStatus: checkVoteStatus
                             )
                         }
                         HeaderView(
@@ -208,6 +215,7 @@ struct DetailScreenContent: View {
     let voteTapa: (Int32, String) -> ()
     let getLocation: () -> ()
     let checkLocation: () -> ()
+    let checkVoteStatus: (TapaItemBo) -> Void
     
     var body: some View {
         ScrollView {
@@ -218,7 +226,7 @@ struct DetailScreenContent: View {
                         Text(tapa.name.uppercased())
                             .foregroundStyle(Color("secondaryColor"))
                             .font(Font.custom("Berlin Sans FB Demi", size: 20))
-                        Text("\(tapa.local.name) \(tapa.local.province)")
+                        Text("\(tapa.local.name) (\(tapa.local.province))")
                             .foregroundStyle(Color("secondaryColor"))
                             .font(Font.custom("Montserrat", size: 14))
                         HStack {
@@ -255,14 +263,18 @@ struct DetailScreenContent: View {
                             voteStatus: voteStatus,
                             checkLocation: checkLocation,
                             voteTapa: voteTapa
-                        )
+                        ).onAppear {
+                            checkVoteStatus(tapa)
+                        }
                     } else {
                         VoteOptionNoLocation(
                             tapa: tapa,
                             voteStatus: voteStatus,
                             getLocation: getLocation,
                             voteTapa: voteTapa
-                        )
+                        ).onAppear {
+                            checkVoteStatus(tapa)
+                        }
                     }
                 }
                 .padding(.horizontal,24)
@@ -603,8 +615,93 @@ extension DetailView {
             viewModel.getLocation()
         }
         
-        func voteTapa(vote: Int32, tapa: String) {
-            viewModel.vote(vote: vote, tapa: tapa)
+        func checkVoteStatus(id: String) async {
+            let localRepository = LocalRepositoryImpl.shared
+
+            let tapaVoted = try? await localRepository.getTapaVoted().contains(id)
+            if(tapaVoted == true) {
+                self.state = DetailStateSwift(
+                    isLoading: state.isLoading,
+                    logout: state.logout,
+                    tapa: state.tapa,
+                    location: state.location,
+                    voteStatus: VoteStatus.voted
+                )
+            } else {
+                self.state = DetailStateSwift(
+                    isLoading: state.isLoading,
+                    logout: state.logout,
+                    tapa: state.tapa,
+                    location: state.location,
+                    voteStatus: state.voteStatus
+                )
+            }
+        }
+        
+        func voteTapa(vote: Int32, tapa: String) async {
+            //viewModel.vote(vote: vote, tapa: tapa)
+            let localRepository = LocalRepositoryImpl.shared
+
+            let tapaVoted = try? await localRepository.getTapaVoted().contains(tapa)
+            if(tapaVoted == true) {
+                self.state = DetailStateSwift(
+                    isLoading: state.isLoading,
+                    logout: state.logout,
+                    tapa: state.tapa,
+                    location: state.location,
+                    voteStatus: VoteStatus.voted
+                )
+            } else {
+                self.state = DetailStateSwift(
+                    isLoading: true,
+                    logout: state.logout,
+                    tapa: state.tapa,
+                    location: state.location,
+                    voteStatus: state.voteStatus
+                )
+                let provider = FirestoreProviderImpl.shared
+                let user = try? await localRepository.getUid()
+                if let user = user {
+                    let vote = await provider.vote(user: user, vote: vote, tapa: tapa)
+                    switch vote {
+                    case .votedSuccessfully:
+                        let voted = true
+                        self.state = DetailStateSwift(
+                            isLoading: false,
+                            logout: self.state.logout,
+                            tapa: self.state.tapa,
+                            location: self.state.location,
+                            voteStatus: (self.state.voteStatus == VoteStatus.canVote && voted == true) ? VoteStatus.voted : self.state.voteStatus
+                        )
+                    case .votedYet:
+                        let voted = true
+                        self.state = DetailStateSwift(
+                            isLoading: false,
+                            logout: self.state.logout,
+                            tapa: self.state.tapa,
+                            location: self.state.location,
+                            voteStatus: (self.state.voteStatus == VoteStatus.canVote && voted == true) ? VoteStatus.voted : self.state.voteStatus
+                        )
+                    case .error:
+                        let voted = false
+                        self.state = DetailStateSwift(
+                            isLoading: false,
+                            logout: self.state.logout,
+                            tapa: self.state.tapa,
+                            location: self.state.location,
+                            voteStatus: (self.state.voteStatus == VoteStatus.canVote && voted == true) ? VoteStatus.voted : self.state.voteStatus
+                        )
+                    }
+                } else {
+                    self.state = DetailStateSwift(
+                        isLoading: false,
+                        logout: state.logout,
+                        tapa: state.tapa,
+                        location: state.location,
+                        voteStatus: state.voteStatus
+                    )
+                }
+            }
         }
         
         func clearError() {

@@ -257,6 +257,10 @@ struct CategoryItemView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 8)
+                    .onTapGesture {
+                        guard let url = URL(string: partner.link) else { return }
+                        UIApplication.shared.open(url)
+                    }
             }
         }
         .padding(.horizontal,16)

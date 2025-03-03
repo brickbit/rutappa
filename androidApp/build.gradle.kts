@@ -57,7 +57,7 @@ android {
     productFlavors {
         create("dev") {
             dimension = "version"
-            applicationIdSuffix = ".debug"
+            //applicationIdSuffix = ".debug"
         }
         create("pro") {
             dimension = "version"

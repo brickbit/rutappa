@@ -12,6 +12,30 @@ import CoreLocation
 import UIKit
 
 class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLocationManagerDelegate {
+    
+    func hasPermission() async throws -> KotlinBoolean? {
+        let status = locationManager?.authorizationStatus
+        switch status {
+        case .notDetermined:
+            return false
+        case .restricted, .denied:
+            return false
+        case .authorizedWhenInUse, .authorizedAlways:
+            return true
+        case .none:
+            return false
+        @unknown default:
+           return false
+        }
+    }
+    
+    func getLocation() async throws -> ResultKMM<TapaLocation> {
+        locationManager?.requestLocation()
+        let latitude = userLocation?.coordinate.latitude ?? 0.0
+        let longitude = userLocation?.coordinate.longitude ?? 0.0
+        return ResultKMMSuccess(data: TapaLocation(latitude: "\(latitude)", longitude: "\(longitude)"))
+    }
+    
     private let localRepository: LocalRepositoryImpl = LocalRepositoryImpl.shared
     private var locationManager: CLLocationManager?
     
@@ -44,15 +68,6 @@ class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLoca
     
     func requestPermission() {
         locationManager?.requestWhenInUseAuthorization()
-    }
-    
-    func getLocation(completionHandler: @escaping (ResultKMM<KotlinPair<NSString, NSString>>?, (any Error)?) -> Void) {
-        Task {
-            locationManager?.requestLocation()
-            let latitude = userLocation?.coordinate.latitude ?? 0.0
-            let longitude = userLocation?.coordinate.longitude ?? 0.0
-            completionHandler(ResultKMMSuccess(data: KotlinPair(first: "\(latitude)" as NSString, second: "\(longitude)" as NSString)), FirestoreError.TapaVotedYet() as? Error)
-        }
     }
     
     // Delegate method - called when location updates

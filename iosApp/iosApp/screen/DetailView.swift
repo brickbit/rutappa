@@ -43,11 +43,14 @@ struct DetailView: View {
         } else {
             return AnyView(
                 DetailScreen(
-                    location: (viewModel.state.location?.first ?? "0.0") as String,
+                    location: (viewModel.state.location?.latitude ?? "0.0") as String,
                     tapa: viewModel.state.tapa!,
                     voteStatus: viewModel.state.voteStatus,
-                    longitude: (viewModel.state.location?.second ?? "0.0") as String,
-                    latitude: (viewModel.state.location?.first ?? "0.0") as String,
+                    longitude: (viewModel.state.location?.longitude ?? "0.0") as String,
+                    latitude: (viewModel.state.location?.latitude ?? "0.0") as String,
+                    hasLocationPermission: viewModel.state.hasLocationPermission,
+                    isGPSActive: viewModel.state.isGPSActive,
+                    isInRadius: viewModel.state.isInRadius,
                     getLocation: {
                         Task {
                             viewModel.getLocation()
@@ -137,6 +140,9 @@ struct DetailScreen: View {
     let voteStatus: VoteStatus
     let longitude: String?
     let latitude: String?
+    let hasLocationPermission: Bool?
+    let isGPSActive: Bool
+    let isInRadius: Bool?
     let getLocation: () -> ()
     let voteTapa: (Int32, String) -> ()
     let logoutAction: () -> ()
@@ -160,6 +166,9 @@ struct DetailScreen: View {
                                 voteStatus: voteStatus,
                                 longitude: longitude,
                                 latitude: latitude,
+                                hasLocationPermission: hasLocationPermission,
+                                isGPSActive: isGPSActive,
+                                isInRadius: isInRadius,
                                 voteTapa: voteTapa,
                                 getLocation: getLocation,
                                 checkLocation: checkLocation,
@@ -212,6 +221,9 @@ struct DetailScreenContent: View {
     let voteStatus: VoteStatus
     let longitude: String?
     let latitude: String?
+    let hasLocationPermission: Bool?
+    let isGPSActive: Bool
+    let isInRadius: Bool?
     let voteTapa: (Int32, String) -> ()
     let getLocation: () -> ()
     let checkLocation: () -> ()
@@ -261,6 +273,9 @@ struct DetailScreenContent: View {
                         VoteOptionLocation(
                             tapa: tapa,
                             voteStatus: voteStatus,
+                            hasLocationPermission: hasLocationPermission,
+                            isGPSActive: isGPSActive,
+                            isInRadius: isInRadius,
                             checkLocation: checkLocation,
                             voteTapa: voteTapa
                         ).onAppear {
@@ -286,6 +301,9 @@ struct DetailScreenContent: View {
 struct VoteOptionLocation: View {
     let tapa: TapaItemBo
     let voteStatus: VoteStatus
+    let hasLocationPermission: Bool?
+    let isGPSActive: Bool
+    let isInRadius: Bool?
     let checkLocation: () -> Void
     let voteTapa: (Int32, String) -> ()
 
@@ -293,50 +311,14 @@ struct VoteOptionLocation: View {
         if(voteStatus == .unknown) {
             AnyView(
                 RequestLocationButton(
-                    text: "Pulse para activar la ubicación y poder votar",
+                    text: getLocationButtonText(
+                        hasLocationPermission: hasLocationPermission,
+                        isGPSActive: isGPSActive,
+                        isInRadius: isInRadius
+                    ),
                     onClickAction: {
                         checkLocation()
                     }
-                )
-            )
-        } else if(voteStatus == .locationInactive) {
-            AnyView(
-                RequestLocationButton(
-                    text: "Pulse para activar la ubicación y poder votar",
-                    onClickAction: {
-                        checkLocation()
-                    }
-                )
-            )
-        } else if(voteStatus == .locationNotAllow) {
-            AnyView(
-                RequestLocationButton(
-                    text: "Pulse para solicitar permiso de ubicación y votar",
-                    onClickAction: {
-                        checkLocation()
-                    }
-                )
-            )
-        } else if(voteStatus == .unableObtainLocation) {
-            AnyView(
-                ErrorRequestLocationContent(
-                    text: "Se ha producido un error al obtener la ubicación",
-                    buttonText: "Reintentar",
-                    onClickAction: {
-                        checkLocation()
-                    }
-                )
-            )
-        } else if(voteStatus == .outOfRange) {
-            AnyView(
-                AnyView(
-                    ErrorRequestLocationContent(
-                        text: "Para poder votar ha de estar en las inmediaciones del local",
-                        buttonText: "Reintentar",
-                        onClickAction: {
-                            checkLocation()
-                        }
-                    )
                 )
             )
         } else if(voteStatus == .canVote) {
@@ -367,46 +349,6 @@ struct VoteOptionNoLocation: View {
                     onClickAction: {
                         getLocation()
                     }
-                )
-            )
-        } else if(voteStatus == .locationInactive) {
-            AnyView(
-                RequestLocationButton(
-                    text: "Pulse para activar la ubicación y poder votar",
-                    onClickAction: {
-                        getLocation()
-                    }
-                )
-            )
-        } else if(voteStatus == .locationNotAllow) {
-            AnyView(
-                RequestLocationButton(
-                    text: "Pulse para solicitar permiso de ubicación y votar",
-                    onClickAction: {
-                        getLocation()
-                    }
-                )
-            )
-        } else if(voteStatus == .unableObtainLocation) {
-            AnyView(
-                ErrorRequestLocationContent(
-                    text: "Se ha producido un error al obtener la ubicación",
-                    buttonText: "Reintentar",
-                    onClickAction: {
-                        getLocation()
-                    }
-                )
-            )
-        } else if(voteStatus == .outOfRange) {
-            AnyView(
-                AnyView(
-                    ErrorRequestLocationContent(
-                        text: "Para poder votar ha de estar en las inmediaciones del local",
-                        buttonText: "Reintentar",
-                        onClickAction: {
-                            getLocation()
-                        }
-                    )
                 )
             )
         } else if(voteStatus == .canVote) {
@@ -612,7 +554,7 @@ extension DetailView {
         }
         
         func getLocation() {
-            viewModel.getLocation()
+            viewModel.manageLocation(updateLocationStatus: {status in}, onDeniedPermission: {})
         }
         
         func checkVoteStatus(id: String) async {
@@ -728,8 +670,8 @@ extension DetailView {
                 print("Executed after 2 seconds")
                 let provider = LocationProviderImpl.shared
                 let isWithinRadius = provider.areCoordinatesWithinDistance(
-                    lat1: Double((self.state.location?.first ?? "0.0") as Substring) ?? 0.0,
-                    lon1: Double((self.state.location?.second ?? "0.0") as Substring) ?? 0.0,
+                    lat1: Double(self.state.location?.latitude ?? "0.0") ?? 0.0,
+                    lon1: Double(self.state.location?.longitude ?? "0.0") ?? 0.0,
                     lat2: Double(self.state.tapa?.local.latitude ?? "0.0") ?? 0.0,
                     lon2: Double(self.state.tapa?.local.longitude ?? "0.0") ?? 0.0,
                     maxDistance: 300
@@ -737,12 +679,14 @@ extension DetailView {
                 
                 self.viewModel.state.subscribe(onCollect: { state in
                     if let state = state {
+                        let voteStatus = (isWithinRadius && state.voteStatus == VoteStatus.unknown) ? VoteStatus.canVote : state.voteStatus
+                        print(voteStatus)
                         self.state = DetailStateSwift(
                             isLoading: state.isLoading,
                             logout: state.logout,
                             tapa: state.tapa,
                             location: state.location,
-                            voteStatus: isWithinRadius ? VoteStatus.canVote : VoteStatus.outOfRange
+                            voteStatus: voteStatus
                         )
                     }
                 })
@@ -765,5 +709,30 @@ func getLegumeImage(legume: String)-> UIImage {
     case "Lenteja": return lentil!
     case "Garbanzo": return chickpea!
     default: return bean!
+    }
+}
+
+func getLocationButtonText(
+    hasLocationPermission: Bool?,
+    isGPSActive: Bool,
+    isInRadius: Bool?
+) -> String {
+    if(hasLocationPermission == nil) {
+        return "Pulse aquí para solicitar permiso de ubicación"
+    }
+    if(hasLocationPermission == true) {
+        if(!isGPSActive) {
+            return "Pulse aquí para activar el GPS"
+        } else {
+            if(isInRadius == nil) {
+                return "Pulse aquí para obtener la ubicación"
+            } else if(isInRadius == true) {
+                return "Pulse aquí para votar"
+            } else {
+                return "Para poder votar ha de estar en las inmediaciones del local"
+            }
+        }
+    } else {
+        return "Permiso denegado vaya a ajustes para activar el permiso"
     }
 }

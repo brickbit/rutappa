@@ -33,7 +33,16 @@ class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLoca
         locationManager?.requestLocation()
         let latitude = userLocation?.coordinate.latitude ?? 0.0
         let longitude = userLocation?.coordinate.longitude ?? 0.0
+        
         return ResultKMMSuccess(data: TapaLocation(latitude: "\(latitude)", longitude: "\(longitude)"))
+    }
+    
+    func getLocationIOS() async throws ->TapaLocation{
+        locationManager?.requestLocation()
+        let latitude = userLocation?.coordinate.latitude ?? 0.0
+        let longitude = userLocation?.coordinate.longitude ?? 0.0
+        
+        return TapaLocation(latitude: "\(latitude)", longitude: "\(longitude)")
     }
     
     private let localRepository: LocalRepositoryImpl = LocalRepositoryImpl.shared
@@ -116,6 +125,7 @@ class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLoca
         let location2 = CLLocation(latitude: lat2, longitude: lon2)
 
         let distance = Float(location1.distance(from: location2)) // Distance in meters
+        print("lat1: \(lat1) lon1: \(lon1) lat2: \(lat2) lon2: \(lon2) distance: \(distance)")
         return distance < maxDistance
     }
     

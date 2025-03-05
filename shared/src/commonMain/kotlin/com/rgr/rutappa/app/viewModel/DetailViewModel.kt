@@ -81,8 +81,16 @@ class DetailViewModel(
     fun checkPermission() {
         scope.launch {
             hasLocationPermissionUseCase.invoke()
-            _state.update { it.copy(hasLocationPermission = localRepository.getPermissionStatus()) }
+            _state.update { it.copy(hasLocationPermission = hasLocationPermissionUseCase.invoke()/*ANDROID; localRepository.getPermissionStatus()*/) }
         }
+    }
+
+    fun checkPermissionIOS(): Boolean? {
+        scope.launch {
+            val permission = hasLocationPermissionUseCase.invoke()
+            _state.update { it.copy(hasLocationPermission = permission) }
+        }
+        return state.value.hasLocationPermission
     }
 
     fun manageLocation(updateLocationStatus: (Boolean?) -> Unit, onDeniedPermission: () -> Unit) {

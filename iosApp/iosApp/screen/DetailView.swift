@@ -15,6 +15,7 @@ struct DetailView: View {
     let id: String
     @ObservedObject var viewModel: IOSDetailViewModel
     @EnvironmentObject var navigator: Navigator
+    @Environment(\.scenePhase) private var scenePhase
 
     init(id: String) {
         self.id = id
@@ -29,8 +30,21 @@ struct DetailView: View {
                 })
             }
         }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                print("App moved to foreground!")
+                Task {
+                    await viewModel.checkPermission()
+                    //viewModel.checkGPSEnabled()
+                }
+            }
+        }
         .onAppear {
             viewModel.startObserving()
+            Task {
+                await viewModel.checkPermission()
+                //viewModel.checkGPSEnabled()
+            }
         }
         .onDisappear {
             viewModel.dispose()
@@ -48,9 +62,6 @@ struct DetailView: View {
                     voteStatus: viewModel.state.voteStatus,
                     longitude: (viewModel.state.location?.longitude ?? "0.0") as String,
                     latitude: (viewModel.state.location?.latitude ?? "0.0") as String,
-                    hasLocationPermission: viewModel.state.hasLocationPermission,
-                    isGPSActive: viewModel.state.isGPSActive,
-                    isInRadius: viewModel.state.isInRadius,
                     getLocation: {
                         Task {
                             viewModel.getLocation()
@@ -90,6 +101,18 @@ struct DetailView: View {
                         Task {
                             await viewModel.checkVoteStatus(id: tapa.id)
                         }
+                    },
+                    checkLocationPermission: {
+                        return viewModel.checkPermission()
+                    },
+                    checkGPSActive: {
+                        return viewModel.checkGPSEnabled()
+                    },
+                    checkIsInRadius: {
+                        return viewModel.checkIsInRadius()
+                    },
+                    obtainLocation: {
+                        //viewModel.obtainLocation()
                     }
                 ).overlay(alignment: .top) {
                     Color("secondaryColor")
@@ -140,9 +163,6 @@ struct DetailScreen: View {
     let voteStatus: VoteStatus
     let longitude: String?
     let latitude: String?
-    let hasLocationPermission: Bool?
-    let isGPSActive: Bool
-    let isInRadius: Bool?
     let getLocation: () -> ()
     let voteTapa: (Int32, String) -> ()
     let logoutAction: () -> ()
@@ -151,6 +171,11 @@ struct DetailScreen: View {
     let navigateToTapasAction: () -> ()
     let checkLocation: () -> ()
     let checkVoteStatus: (TapaItemBo) -> Void
+    let checkLocationPermission: () -> Bool?
+    let checkGPSActive: () -> Bool
+    let checkIsInRadius: () -> Bool?
+    let obtainLocation: () -> Void
+
     @State private var showingLogout = false
     @State private var showingMenu = false
     
@@ -166,13 +191,14 @@ struct DetailScreen: View {
                                 voteStatus: voteStatus,
                                 longitude: longitude,
                                 latitude: latitude,
-                                hasLocationPermission: hasLocationPermission,
-                                isGPSActive: isGPSActive,
-                                isInRadius: isInRadius,
                                 voteTapa: voteTapa,
                                 getLocation: getLocation,
                                 checkLocation: checkLocation,
-                                checkVoteStatus: checkVoteStatus
+                                checkVoteStatus: checkVoteStatus,
+                                checkLocationPermission: checkLocationPermission,
+                                checkGPSActive: checkGPSActive,
+                                checkIsInRadius: checkIsInRadius,
+                                obtainLocation: obtainLocation
                             )
                         }
                         HeaderView(
@@ -221,14 +247,15 @@ struct DetailScreenContent: View {
     let voteStatus: VoteStatus
     let longitude: String?
     let latitude: String?
-    let hasLocationPermission: Bool?
-    let isGPSActive: Bool
-    let isInRadius: Bool?
     let voteTapa: (Int32, String) -> ()
     let getLocation: () -> ()
     let checkLocation: () -> ()
     let checkVoteStatus: (TapaItemBo) -> Void
-    
+    let checkLocationPermission: () -> Bool?
+    let checkGPSActive: () -> Bool
+    let checkIsInRadius: () -> Bool?
+    let obtainLocation: () -> Void
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
@@ -273,11 +300,12 @@ struct DetailScreenContent: View {
                         VoteOptionLocation(
                             tapa: tapa,
                             voteStatus: voteStatus,
-                            hasLocationPermission: hasLocationPermission,
-                            isGPSActive: isGPSActive,
-                            isInRadius: isInRadius,
                             checkLocation: checkLocation,
-                            voteTapa: voteTapa
+                            voteTapa: voteTapa,
+                            checkLocationPermission: checkLocationPermission,
+                            checkGPSActive: checkGPSActive,
+                            checkIsInRadius: checkIsInRadius,
+                            obtainLocation: obtainLocation
                         ).onAppear {
                             checkVoteStatus(tapa)
                         }
@@ -286,7 +314,11 @@ struct DetailScreenContent: View {
                             tapa: tapa,
                             voteStatus: voteStatus,
                             getLocation: getLocation,
-                            voteTapa: voteTapa
+                            voteTapa: voteTapa,
+                            checkLocationPermission: checkLocationPermission,
+                            checkGPSActive: checkGPSActive,
+                            checkIsInRadius: checkIsInRadius,
+                            obtainLocation: obtainLocation
                         ).onAppear {
                             checkVoteStatus(tapa)
                         }
@@ -301,20 +333,21 @@ struct DetailScreenContent: View {
 struct VoteOptionLocation: View {
     let tapa: TapaItemBo
     let voteStatus: VoteStatus
-    let hasLocationPermission: Bool?
-    let isGPSActive: Bool
-    let isInRadius: Bool?
     let checkLocation: () -> Void
     let voteTapa: (Int32, String) -> ()
-
+    let checkLocationPermission: () -> Bool?
+    let checkGPSActive: () -> Bool
+    let checkIsInRadius: () -> Bool?
+    let obtainLocation: () -> Void
     var body: some View {
         if(voteStatus == .unknown) {
             AnyView(
                 RequestLocationButton(
                     text: getLocationButtonText(
-                        hasLocationPermission: hasLocationPermission,
-                        isGPSActive: isGPSActive,
-                        isInRadius: isInRadius
+                        checkIsInRadius: checkIsInRadius,
+                        checkLocationPermission: checkLocationPermission,
+                        checkGPSActive: checkGPSActive,
+                        obtainLocation: obtainLocation
                     ),
                     onClickAction: {
                         checkLocation()
@@ -340,12 +373,21 @@ struct VoteOptionNoLocation: View {
     let voteStatus: VoteStatus
     let getLocation: () -> Void
     let voteTapa: (Int32, String) -> ()
+    let checkLocationPermission: () -> Bool?
+    let checkGPSActive: () -> Bool
+    let checkIsInRadius: () -> Bool?
+    let obtainLocation: () -> Void
 
     var body: some View {
         if(voteStatus == .unknown) {
             AnyView(
                 RequestLocationButton(
-                    text: "Pulse para activar la ubicación y poder votar",
+                    text: getLocationButtonText(
+                        checkIsInRadius: checkIsInRadius,
+                        checkLocationPermission: checkLocationPermission,
+                        checkGPSActive: checkGPSActive,
+                        obtainLocation: obtainLocation
+                    ),
                     onClickAction: {
                         getLocation()
                     }
@@ -547,6 +589,8 @@ extension DetailView {
                         logout: state.logout,
                         tapa: state.tapa,
                         location: state.location,
+                        hasLocationPermission: state.hasLocationPermission as? Bool,
+                        isGPSActive: state.isGPSActive,
                         voteStatus: state.voteStatus
                     )
                 }
@@ -554,7 +598,12 @@ extension DetailView {
         }
         
         func getLocation() {
-            viewModel.manageLocation(updateLocationStatus: {status in}, onDeniedPermission: {})
+            viewModel.manageLocation(updateLocationStatus: {status in}, onDeniedPermission: {
+                guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
+                if UIApplication.shared.canOpenURL(settingsURL) {
+                    UIApplication.shared.open(settingsURL)
+                }
+            })
         }
         
         func checkVoteStatus(id: String) async {
@@ -668,6 +717,10 @@ extension DetailView {
             )
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 print("Executed after 2 seconds")
+                let lat1 = Double(self.state.location?.latitude ?? "0.0") ?? 0.0
+                let lon1 = Double(self.state.location?.longitude ?? "0.0") ?? 0.0
+                let lat2 = Double(self.state.tapa?.local.latitude ?? "0.0") ?? 0.0
+                let lon2 = Double(self.state.tapa?.local.longitude ?? "0.0") ?? 0.0
                 let provider = LocationProviderImpl.shared
                 let isWithinRadius = provider.areCoordinatesWithinDistance(
                     lat1: Double(self.state.location?.latitude ?? "0.0") ?? 0.0,
@@ -676,7 +729,8 @@ extension DetailView {
                     lon2: Double(self.state.tapa?.local.longitude ?? "0.0") ?? 0.0,
                     maxDistance: 300
                 )
-                
+                print("B lat1: \(lat1) lon1: \(lon1) lat2: \(lat2) lon2: \(lon2)")
+
                 self.viewModel.state.subscribe(onCollect: { state in
                     if let state = state {
                         let voteStatus = (isWithinRadius && state.voteStatus == VoteStatus.unknown) ? VoteStatus.canVote : state.voteStatus
@@ -697,6 +751,42 @@ extension DetailView {
         func dispose() {
             handle?.dispose()
         }
+        
+        func checkPermission() -> Bool? {
+            return viewModel.checkPermissionIOS() as? Bool
+        }
+        
+        func checkGPSEnabled() -> Bool {
+            return viewModel.checkGPSEnabled()
+        }
+        
+        func checkIsInRadius() -> Bool? {
+            obtainLocation()
+            let provider = LocationProviderImpl.shared
+            let lat1 = Double(self.state.location?.latitude ?? "0.0") ?? 0.0
+            let lon1 = Double(self.state.location?.longitude ?? "0.0") ?? 0.0
+            let lat2 = Double(self.state.tapa?.local.latitude ?? "0.0") ?? 0.0
+            let lon2 = Double(self.state.tapa?.local.longitude ?? "0.0") ?? 0.0
+            
+            let isWithinRadius = provider.areCoordinatesWithinDistance(
+                lat1: Double(self.state.location?.latitude ?? "0.0") ?? 0.0,
+                lon1: Double(self.state.location?.longitude ?? "0.0") ?? 0.0,
+                lat2: Double(self.state.tapa?.local.latitude ?? "0.0") ?? 0.0,
+                lon2: Double(self.state.tapa?.local.longitude ?? "0.0") ?? 0.0,
+                maxDistance: 300
+            )
+            print("A lat1: \(lat1) lon1: \(lon1) lat2: \(lat2) lon2: \(lon2)")
+            return isWithinRadius
+        }
+        
+        func obtainLocation() {
+            Task {
+                let provider = LocationProviderImpl.shared
+                let location = try? await provider.getLocationIOS()
+            
+                
+            }
+        }
     }
 }
 
@@ -713,17 +803,26 @@ func getLegumeImage(legume: String)-> UIImage {
 }
 
 func getLocationButtonText(
-    hasLocationPermission: Bool?,
-    isGPSActive: Bool,
-    isInRadius: Bool?
+    checkIsInRadius: () -> Bool?,
+    checkLocationPermission: () -> Bool?,
+    checkGPSActive: () -> Bool,
+    obtainLocation: () -> Void
 ) -> String {
-    if(hasLocationPermission == nil) {
-        return "Pulse aquí para solicitar permiso de ubicación"
-    }
-    if(hasLocationPermission == true) {
-        if(!isGPSActive) {
-            return "Pulse aquí para activar el GPS"
-        } else {
+    let permission = checkLocationPermission()
+    let isGPSActive = checkGPSActive()
+    let isInRadius = checkIsInRadius()
+    print("""
+        hasLocationPermission: \(permission == nil ? "null" : permission == true ? "true" : "false"),
+        isGPSActive: \(isGPSActive),
+        isInRadius: \(isInRadius == nil ? "null" : isInRadius == true ? "true" : "false")
+    """)
+    if(!isGPSActive) {
+        return "Pulse aquí para activar el GPS"
+    } else {
+        if(permission == nil) {
+            return "Pulse aquí para solicitar permiso de ubicación"
+        } else if(permission == true) {
+            obtainLocation()
             if(isInRadius == nil) {
                 return "Pulse aquí para obtener la ubicación"
             } else if(isInRadius == true) {
@@ -731,8 +830,9 @@ func getLocationButtonText(
             } else {
                 return "Para poder votar ha de estar en las inmediaciones del local"
             }
+        } else {
+            return "Permiso denegado vaya a ajustes para activar el permiso"
+
         }
-    } else {
-        return "Permiso denegado vaya a ajustes para activar el permiso"
     }
 }

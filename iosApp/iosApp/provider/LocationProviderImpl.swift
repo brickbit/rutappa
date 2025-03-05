@@ -9,9 +9,10 @@
 import Foundation
 import shared
 import CoreLocation
+import UIKit
 
 class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLocationManagerDelegate {
-    
+    private let localRepository: LocalRepositoryImpl = LocalRepositoryImpl.shared
     private var locationManager: CLLocationManager?
     
     @Published var userLocation: CLLocation?
@@ -84,10 +85,15 @@ class LocationProviderImpl: NSObject, LocationProvider, ObservableObject, CLLoca
     }
     
     func isLocationActive() -> Bool {
-        return false
+        return CLLocationManager.locationServicesEnabled()
     }
     
     func activeLocation() {
+        guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
+        
+        if UIApplication.shared.canOpenURL(settingsURL) {
+            UIApplication.shared.open(settingsURL)
+        }
     }
     
     func areCoordinatesWithinDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double, maxDistance: Float) -> Bool {

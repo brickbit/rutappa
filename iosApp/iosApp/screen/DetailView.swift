@@ -727,7 +727,7 @@ extension DetailView {
                     lon1: Double(self.state.location?.longitude ?? "0.0") ?? 0.0,
                     lat2: Double(self.state.tapa?.local.latitude ?? "0.0") ?? 0.0,
                     lon2: Double(self.state.tapa?.local.longitude ?? "0.0") ?? 0.0,
-                    maxDistance: 300
+                    maxDistance: 3000
                 )
                 print("B lat1: \(lat1) lon1: \(lon1) lat2: \(lat2) lon2: \(lon2)")
 
@@ -773,7 +773,7 @@ extension DetailView {
                 lon1: Double(self.state.location?.longitude ?? "0.0") ?? 0.0,
                 lat2: Double(self.state.tapa?.local.latitude ?? "0.0") ?? 0.0,
                 lon2: Double(self.state.tapa?.local.longitude ?? "0.0") ?? 0.0,
-                maxDistance: 300
+                maxDistance: 3000
             )
             print("A lat1: \(lat1) lon1: \(lon1) lat2: \(lat2) lon2: \(lon2)")
             return isWithinRadius

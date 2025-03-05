@@ -3,7 +3,6 @@ package com.rgr.rutappa.android.screen
 import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import androidx.compose.foundation.Image
@@ -50,8 +49,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat
@@ -60,8 +57,6 @@ import androidx.lifecycle.LifecycleOwner
 import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.accompanist.permissions.rememberPermissionState
-import com.rgr.rutappa.android.MyApplicationTheme
 import com.rgr.rutappa.android.R
 import com.rgr.rutappa.android.backgroundColor
 import com.rgr.rutappa.android.screen.common.AlertDialogError
@@ -72,7 +67,6 @@ import com.rgr.rutappa.android.screen.common.SocialWall
 import com.rgr.rutappa.app.state.VoteStatus
 import com.rgr.rutappa.app.viewModel.DetailViewModel
 import com.rgr.rutappa.domain.error.FirestoreError
-import com.rgr.rutappa.domain.model.LocalItemBo
 import com.rgr.rutappa.domain.model.TapaItemBo
 import org.koin.androidx.compose.koinViewModel
 import kotlin.math.roundToInt
@@ -395,39 +389,6 @@ fun RequestLocationButton(
 }
 
 @Composable
-fun ErrorRequestLocationContent(
-    text: String,
-    buttonText: String,
-    onClickAction: () -> Unit
-) {
-    Column {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .padding(bottom = 8.dp),
-            text = text,
-            style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Center
-        )
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 136.dp, start = 16.dp, end = 16.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary
-            ),
-            onClick = { onClickAction() }
-        ) {
-            Text(
-                text = buttonText,
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
-    }
-}
-
-@Composable
 fun TapaInfo(
     tapa: TapaItemBo
 ) {
@@ -606,39 +567,3 @@ fun VoteSection(
         }
     }
 }
-
-@Preview(device = Devices.PIXEL_3A)
-@Composable
-fun DetailScreenPreview() {
-    MyApplicationTheme {
-        DetailScreen(
-            tapa = TapaItemBo(
-                id = "1",
-                name = "Nombre de tapa 1",
-                photo = "https://destapalaslegumbres.es/wp-content/uploads/2023/10/LA-VINA-DE-PATXI-PATXI-IRISARRI-1-scaled.jpg",
-                shortDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet mollis metus. Sed sollicitudin placerat ante quis rutrum. Aliquam eget nibh scelerisque, auctor lacus eu, dictum nulla. Morbi posuere magna a magna varius, quis consequat ante sodales. Morbi sodales eget erat a dignissim. Phasellus elementum est pulvinar scelerisque venenatis. Duis condimentum risus nisl.",
-                legumes = listOf("Lentejas", "Garbanzos"),
-                local = LocalItemBo(
-                    id = "1",
-                    name = "Taberna los Cazurros",
-                    province = "León",
-                    instagram = "",
-                    facebook = "",
-                    longitude = "",
-                    latitude = ""
-                )
-            ),
-            hasLocationPermission = false,
-            isGPSActive = false,
-            isInRadius = false,
-            voteStatus = VoteStatus.VOTED,
-            getLocation = {},
-            onVoteClicked={_,_ ->},
-            deleteAccount = {},
-            logout = {},
-            navigateToPartners = {},
-            navigateToTapas = {},
-        )
-    }
-}
- 

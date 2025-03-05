@@ -13,7 +13,10 @@ struct DetailStateSwift {
     var isLoading: Bool = true
     var logout: Bool = false
     var tapa: TapaItemBo? = nil
-    var location: KotlinPair<NSString, NSString>? = nil
+    var location: TapaLocation? = nil
+    var hasLocationPermission: Bool? = nil
+    var isGPSActive: Bool = false
+    var isInRadius: Bool? = nil
     var voteStatus: VoteStatus = VoteStatus.unknown
 }
 

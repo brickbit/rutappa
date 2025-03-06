@@ -73,7 +73,7 @@ class LoginProvideImpl: LoginProvider {
                 completionHandler(KmmresultKmmResult(value: KotlinUnit()), nil)                
             } catch {
                 print("Unable to delete account")
-                completionHandler(nil, LoginError.UnableToDeleteUser() as? Error)
+                //completionHandler(nil, LoginError.UnableToDeleteUser() as? Error)
             }
         }
     }

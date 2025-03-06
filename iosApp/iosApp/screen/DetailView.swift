@@ -10,12 +10,14 @@ import Foundation
 import SwiftUI
 import shared
 import Kingfisher
+import Security
 
 struct DetailView: View {
     let id: String
     @ObservedObject var viewModel: IOSDetailViewModel
     @EnvironmentObject var navigator: Navigator
     @Environment(\.scenePhase) private var scenePhase
+    @State private var showAlert = false
 
     init(id: String) {
         self.id = id
@@ -69,7 +71,9 @@ struct DetailView: View {
                     },
                     voteTapa: { vote, tapa in
                         Task {
-                            await viewModel.voteTapa(vote: vote, tapa: tapa)
+                            await viewModel.voteTapa(vote: vote, tapa: tapa, onExpiredSession: {
+                                showAlert = true
+                            })
                         }
                     },
                     logoutAction: {
@@ -119,6 +123,15 @@ struct DetailView: View {
                         .background(Color("secondaryColor"))
                         .ignoresSafeArea(edges: .top)
                         .frame(height: 0)
+                }.alert("Sesión caducada", isPresented: $showAlert) {
+                    Button("OK", role: .cancel) {
+                        Task {
+                            viewModel.logout()
+                            navigator.logout()
+                        }
+                    }
+                } message: {
+                    Text("Es necesario cerrar sesión.")
                 }
             )
         }
@@ -627,7 +640,7 @@ extension DetailView {
         
         func checkVoteStatus(id: String) async {
             //let tapaVoted = try? await localRepository.getTapaVoted().contains(id)
-            let tapaVoted = UserDefaults.standard.stringArray(forKey: "tapaVoted")?.contains(id)
+            let tapaVoted = getArrayFromKeychain(forKey: "tapaVoted")?.contains(id)
             if(tapaVoted == true) {
                 self.state = DetailStateSwift(
                     isLoading: state.isLoading,
@@ -647,7 +660,7 @@ extension DetailView {
             }
         }
         
-        func voteTapa(vote: Int32, tapa: String) async {
+        func voteTapa(vote: Int32, tapa: String, onExpiredSession: () -> Void) async {
             //viewModel.vote(vote: vote, tapa: tapa)
             let tapaVoted = UserDefaults.standard.stringArray(forKey: "tapaVoted")?.contains(tapa)
 
@@ -683,7 +696,7 @@ extension DetailView {
                         }
                         tapaArray?.append(tapa)
                         print("tapaArray \(tapaArray)")
-                        UserDefaults.standard.set(tapaArray, forKey: "tapaVoted")
+                        saveArrayToKeychain(array: tapaArray ?? [], forKey: "tapaVoted")
                         self.state = DetailStateSwift(
                             isLoading: false,
                             logout: self.state.logout,
@@ -718,6 +731,7 @@ extension DetailView {
                         location: state.location,
                         voteStatus: state.voteStatus
                     )
+                    onExpiredSession()
                 }
             }
         }
@@ -867,4 +881,37 @@ func getLocationButtonText(
 
         }
     }
+}
+
+func saveArrayToKeychain(array: [String], forKey key: String) -> Bool {
+    guard let data = try? JSONEncoder().encode(array) else { return false }
+    
+    let query: [String: Any] = [
+        kSecClass as String: kSecClassGenericPassword,
+        kSecAttrAccount as String: key,
+        kSecValueData as String: data
+    ]
+    
+    // Delete any existing item
+    SecItemDelete(query as CFDictionary)
+    
+    // Add new item
+    let status = SecItemAdd(query as CFDictionary, nil)
+    return status == errSecSuccess
+}
+
+func getArrayFromKeychain(forKey key: String) -> [String]? {
+    let query: [String: Any] = [
+        kSecClass as String: kSecClassGenericPassword,
+        kSecAttrAccount as String: key,
+        kSecReturnData as String: kCFBooleanTrue!,
+        kSecMatchLimit as String: kSecMatchLimitOne
+    ]
+    
+    var dataTypeRef: AnyObject?
+    let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
+    
+    guard status == errSecSuccess, let data = dataTypeRef as? Data else { return nil }
+    
+    return try? JSONDecoder().decode([String].self, from: data)
 }

@@ -682,7 +682,7 @@ extension DetailView {
                     voteStatus: state.voteStatus
                 )
                 let provider = FirestoreProviderImpl.shared
-                let user = UserDefaults.standard.string(forKey: "user")
+                let user = getFromKeychain(forKey: "user")
                 //let user = try? await localRepository.getUid()
                 print("user: \(user)")
                 if let user = user {
@@ -914,4 +914,36 @@ func getArrayFromKeychain(forKey key: String) -> [String]? {
     guard status == errSecSuccess, let data = dataTypeRef as? Data else { return nil }
     
     return try? JSONDecoder().decode([String].self, from: data)
+}
+
+func saveToKeychain(value: String, forKey key: String) -> Bool {
+    guard let data = value.data(using: .utf8) else { return false }
+    
+    let query: [String: Any] = [
+        kSecClass as String: kSecClassGenericPassword,
+        kSecAttrAccount as String: key,
+        kSecValueData as String: data
+    ]
+    
+    // Delete any existing item
+    SecItemDelete(query as CFDictionary)
+    
+    // Add new item
+    let status = SecItemAdd(query as CFDictionary, nil)
+    return status == errSecSuccess
+}
+
+func getFromKeychain(forKey key: String) -> String? {
+    let query: [String: Any] = [
+        kSecClass as String: kSecClassGenericPassword,
+        kSecAttrAccount as String: key,
+        kSecReturnData as String: kCFBooleanTrue!,
+        kSecMatchLimit as String: kSecMatchLimitOne
+    ]
+    
+    var dataTypeRef: AnyObject?
+    let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
+    
+    guard status == errSecSuccess, let data = dataTypeRef as? Data else { return nil }
+    return String(data: data, encoding: .utf8)
 }

@@ -113,7 +113,7 @@ class LoginProvideImpl: LoginProvider {
                 Task {
                     do {
                         let result = try await Auth.auth().signIn(with: credential)
-                        UserDefaults.standard.set(result.user.uid, forKey: "user")
+                        saveToKeychain(value: result.user.uid, forKey: "user")
 
                         completionHandler(KmmresultKmmResult(value: result.user.uid as NSString?), nil)
                         

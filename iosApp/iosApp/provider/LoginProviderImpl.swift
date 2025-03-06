@@ -113,7 +113,10 @@ class LoginProvideImpl: LoginProvider {
                 Task {
                     do {
                         let result = try await Auth.auth().signIn(with: credential)
+                        UserDefaults.standard.set(result.user.uid, forKey: "user")
+
                         completionHandler(KmmresultKmmResult(value: result.user.uid as NSString?), nil)
+                        
                     }
                     catch {
                         print("Error authenticating: \(error.localizedDescription)")

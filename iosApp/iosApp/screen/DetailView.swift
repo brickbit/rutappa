@@ -34,7 +34,7 @@ struct DetailView: View {
             if newPhase == .active {
                 print("App moved to foreground!")
                 Task {
-                    await viewModel.checkPermission()
+                    viewModel.checkPermission()
                     //viewModel.checkGPSEnabled()
                 }
             }
@@ -42,7 +42,7 @@ struct DetailView: View {
         .onAppear {
             viewModel.startObserving()
             Task {
-                await viewModel.checkPermission()
+                viewModel.checkPermission()
                 //viewModel.checkGPSEnabled()
             }
         }
@@ -340,6 +340,7 @@ struct VoteOptionLocation: View {
     let checkIsInRadius: () -> Bool?
     let obtainLocation: () -> Void
     var body: some View {
+        
         if(voteStatus == .unknown) {
             AnyView(
                 RequestLocationButton(
@@ -355,9 +356,26 @@ struct VoteOptionLocation: View {
                 )
             )
         } else if(voteStatus == .canVote) {
-            VoteSection(tapa: tapa, voted: false, voteTapa: { vote,tapa in
-                voteTapa(vote,tapa)
-            })
+            if(checkIsInRadius() == false) {
+                AnyView(
+                    RequestLocationButton(
+                        text: getLocationButtonText(
+                            checkIsInRadius: checkIsInRadius,
+                            checkLocationPermission: checkLocationPermission,
+                            checkGPSActive: checkGPSActive,
+                            obtainLocation: obtainLocation
+                        ),
+                        onClickAction: {
+                            checkLocation()
+                        }
+                    )
+                )
+            } else {
+                VoteSection(tapa: tapa, voted: false, voteTapa: { vote,tapa in
+                    voteTapa(vote,tapa)
+                })
+            }
+            
         } else if (voteStatus == .voted) {
             VoteSection(tapa: tapa, voted: true, voteTapa: { vote,tapa in
                 voteTapa(vote,tapa)
@@ -591,6 +609,7 @@ extension DetailView {
                         location: state.location,
                         hasLocationPermission: state.hasLocationPermission as? Bool,
                         isGPSActive: state.isGPSActive,
+                        isInRadius: state.isInRadius as? Bool,
                         voteStatus: state.voteStatus
                     )
                 }
@@ -607,9 +626,8 @@ extension DetailView {
         }
         
         func checkVoteStatus(id: String) async {
-            let localRepository = LocalRepositoryImpl.shared
-
-            let tapaVoted = try? await localRepository.getTapaVoted().contains(id)
+            //let tapaVoted = try? await localRepository.getTapaVoted().contains(id)
+            let tapaVoted = UserDefaults.standard.stringArray(forKey: "tapaVoted")?.contains(id)
             if(tapaVoted == true) {
                 self.state = DetailStateSwift(
                     isLoading: state.isLoading,
@@ -631,9 +649,9 @@ extension DetailView {
         
         func voteTapa(vote: Int32, tapa: String) async {
             //viewModel.vote(vote: vote, tapa: tapa)
-            let localRepository = LocalRepositoryImpl.shared
+            let tapaVoted = UserDefaults.standard.stringArray(forKey: "tapaVoted")?.contains(tapa)
 
-            let tapaVoted = try? await localRepository.getTapaVoted().contains(tapa)
+            //let tapaVoted = try? await localRepository.getTapaVoted().contains(tapa)
             if(tapaVoted == true) {
                 self.state = DetailStateSwift(
                     isLoading: state.isLoading,
@@ -651,12 +669,21 @@ extension DetailView {
                     voteStatus: state.voteStatus
                 )
                 let provider = FirestoreProviderImpl.shared
-                let user = try? await localRepository.getUid()
+                let user = UserDefaults.standard.string(forKey: "user")
+                //let user = try? await localRepository.getUid()
+                print("user: \(user)")
                 if let user = user {
                     let vote = await provider.vote(user: user, vote: vote, tapa: tapa)
                     switch vote {
                     case .votedSuccessfully:
                         let voted = true
+                        var tapaArray = UserDefaults.standard.stringArray(forKey: "tapaVoted")
+                        if tapaArray == nil {
+                            tapaArray = []
+                        }
+                        tapaArray?.append(tapa)
+                        print("tapaArray \(tapaArray)")
+                        UserDefaults.standard.set(tapaArray, forKey: "tapaVoted")
                         self.state = DetailStateSwift(
                             isLoading: false,
                             logout: self.state.logout,
@@ -713,6 +740,7 @@ extension DetailView {
                 logout: state.logout,
                 tapa: state.tapa,
                 location: state.location,
+                isInRadius: state.isInRadius,
                 voteStatus: state.voteStatus
             )
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -740,6 +768,7 @@ extension DetailView {
                             logout: state.logout,
                             tapa: state.tapa,
                             location: state.location,
+                            isInRadius: isWithinRadius,
                             voteStatus: voteStatus
                         )
                     }
@@ -753,6 +782,8 @@ extension DetailView {
         }
         
         func checkPermission() -> Bool? {
+            let provider = LocationProviderImpl.shared
+            provider.requestPermission()
             return viewModel.checkPermissionIOS() as? Bool
         }
         
@@ -768,13 +799,16 @@ extension DetailView {
             let lat2 = Double(self.state.tapa?.local.latitude ?? "0.0") ?? 0.0
             let lon2 = Double(self.state.tapa?.local.longitude ?? "0.0") ?? 0.0
             
-            let isWithinRadius = provider.areCoordinatesWithinDistance(
+            var isWithinRadius = provider.areCoordinatesWithinDistance(
                 lat1: Double(self.state.location?.latitude ?? "0.0") ?? 0.0,
                 lon1: Double(self.state.location?.longitude ?? "0.0") ?? 0.0,
                 lat2: Double(self.state.tapa?.local.latitude ?? "0.0") ?? 0.0,
                 lon2: Double(self.state.tapa?.local.longitude ?? "0.0") ?? 0.0,
                 maxDistance: 3000
             )
+            if(lat1 == 0.0  || lon1 == 0.0) {
+                return nil
+            }
             print("A lat1: \(lat1) lon1: \(lon1) lat2: \(lat2) lon2: \(lon2)")
             return isWithinRadius
         }
@@ -782,9 +816,7 @@ extension DetailView {
         func obtainLocation() {
             Task {
                 let provider = LocationProviderImpl.shared
-                let location = try? await provider.getLocationIOS()
-            
-                
+                try? await provider.getLocationIOS()
             }
         }
     }
